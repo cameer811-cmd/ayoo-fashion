@@ -2,559 +2,249 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#35040d">
-  <meta name="description" content="AYOO — Contemporary womenswear. A vision shaped by elegance, form and detail.">
-  <title>AYOO — A Vision of Elegance</title>
-
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
-
-  <style>
-    :root {
-      --wine: #35040d;
-      --wine-light: #570d1c;
-      --gold: #c9a16c;
-      --gold-light: #ead2a7;
-      --cream: #f7f1e8;
-      --paper: #fffdf9;
-      --ink: #241b19;
-      --muted: #887a70;
-      --line: #e8ded1;
-    }
-
-    * { box-sizing: border-box; }
-
-    html { scroll-behavior: smooth; }
-
-    body {
-      margin: 0;
-      background: var(--cream);
-      color: var(--ink);
-      font-family: 'DM Sans', sans-serif;
-    }
-
-    a {
-      color: inherit;
-      text-decoration: none;
-    }
-
-    img { max-width: 100%; }
-
-    .topline {
-      height: 5px;
-      background: linear-gradient(90deg, var(--wine), var(--gold), var(--wine));
-    }
-
-    header {
-      min-height: 100px;
-      padding: 12px 6%;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 25px;
-      background: var(--paper);
-      border-bottom: 1px solid var(--line);
-    }
-
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 15px;
-    }
-
-    .brand img {
-      display: block;
-      width: 76px;
-      height: 76px;
-      object-fit: cover;
-      border-radius: 50%;
-    }
-
-    .brand-caption {
-      color: var(--wine);
-      font-family: 'Playfair Display', serif;
-      font-size: 12px;
-      letter-spacing: 3px;
-    }
-
-    nav {
-      display: flex;
-      align-items: center;
-      gap: 32px;
-      color: var(--wine);
-      font-size: 10px;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-    }
-
-    nav a:hover { color: var(--gold); }
-
-    .hero {
-      display: grid;
-      grid-template-columns: 0.92fr 1.08fr;
-      min-height: 650px;
-      background: var(--wine);
-      color: var(--cream);
-    }
-
-    .hero-copy {
-      padding: 90px 10% 90px 12%;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-    }
-
-    .eyebrow {
-      color: var(--gold);
-      font-size: 10px;
-      letter-spacing: 4px;
-      text-transform: uppercase;
-    }
-
-    h1, h2, h3 {
-      font-family: 'Playfair Display', serif;
-      font-weight: 400;
-    }
-
-    h1 {
-      margin: 28px 0;
-      font-size: clamp(48px, 6vw, 82px);
-      line-height: 1.08;
-    }
-
-    h1 em, h2 em {
-      color: var(--gold-light);
-      font-weight: 400;
-    }
-
-    .hero-copy p {
-      max-width: 390px;
-      color: #e2d4c9;
-      font-size: 14px;
-      line-height: 2;
-    }
-
-    .cta {
-      display: inline-flex;
-      align-items: center;
-      gap: 15px;
-      width: fit-content;
-      margin-top: 32px;
-      padding: 13px 0;
-      border-bottom: 1px solid var(--gold);
-      color: var(--gold-light);
-      font-size: 10px;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-    }
-
-    .hero-image {
-      min-height: 650px;
-      background:
-        linear-gradient(90deg, #35040d22, #35040d00),
-        url('https://images.unsplash.com/photo-1539109136881-3be0616acf4b?auto=format&fit=crop&w=1600&q=90')
-        center 35% / cover no-repeat;
-    }
-
-    .intro {
-      padding: 105px 22px;
-      text-align: center;
-      background: var(--paper);
-    }
-
-    .intro h2 {
-      margin: 24px 0;
-      color: var(--wine);
-      font-size: clamp(38px, 5vw, 65px);
-      line-height: 1.15;
-    }
-
-    .intro h2 em { color: var(--gold); }
-
-    .intro p {
-      max-width: 550px;
-      margin: 0 auto;
-      color: var(--muted);
-      font-size: 14px;
-      line-height: 2;
-    }
-
-    .collection {
-      padding: 95px 7%;
-      background: var(--cream);
-    }
-
-    .section-head {
-      display: flex;
-      align-items: end;
-      justify-content: space-between;
-      gap: 20px;
-      margin-bottom: 38px;
-    }
-
-    .section-head h2 {
-      margin: 12px 0 0;
-      color: var(--wine);
-      font-size: clamp(36px, 4vw, 52px);
-    }
-
-    .season {
-      color: var(--muted);
-      font-size: 10px;
-      letter-spacing: 2px;
-    }
-
-    .products {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 28px 20px;
-    }
-
-    .product {
-      min-width: 0;
-    }
-
-    .product-image {
-      display: block;
-      width: 100%;
-      aspect-ratio: 3 / 4;
-      object-fit: cover;
-      background: #e8ded1;
-    }
-
-    .product h3 {
-      margin: 16px 0 6px;
-      color: var(--wine);
-      font-size: 22px;
-    }
-
-    .product p {
-      margin: 0;
-      color: var(--muted);
-      font-size: 10px;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-    }
-
-    .empty {
-      grid-column: 1 / -1;
-      padding: 65px 20px;
-      text-align: center;
-      color: var(--muted);
-      line-height: 2;
-    }
-
-    .empty strong {
-      display: block;
-      margin-bottom: 10px;
-      color: var(--wine);
-      font-family: 'Playfair Display', serif;
-      font-size: 27px;
-      font-weight: 400;
-    }
-
-    .brand-story {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      background: var(--wine);
-      color: var(--cream);
-    }
-
-    .story-image {
-      min-height: 470px;
-      background: url('https://images.unsplash.com/photo-1483985988355-763728e1935b?auto=format&fit=crop&w=1200&q=85') center / cover;
-    }
-
-    .story-copy {
-      padding: 80px 12%;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-    }
-
-    .story-copy h2 {
-      margin: 22px 0;
-      font-size: clamp(38px, 4vw, 58px);
-      line-height: 1.15;
-    }
-
-    .story-copy p {
-      color: #e2d4c9;
-      font-size: 13px;
-      line-height: 2;
-    }
-
-    .contact {
-      padding: 90px 20px;
-      text-align: center;
-      background: var(--paper);
-    }
-
-    .contact h2 {
-      margin: 20px 0;
-      color: var(--wine);
-      font-size: clamp(40px, 5vw, 65px);
-    }
-
-    .contact h2 em { color: var(--gold); }
-
-    .contact p {
-      color: var(--muted);
-      font-size: 13px;
-    }
-
-    .contact .cta {
-      margin-top: 20px;
-      color: var(--wine);
-      border-color: var(--gold);
-    }
-
-    footer {
-      padding: 28px 6%;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 15px;
-      background: var(--wine);
-      color: var(--gold-light);
-      font-size: 9px;
-      letter-spacing: 2px;
-    }
-
-    @media (max-width: 760px) {
-      header {
-        min-height: 82px;
-        padding: 9px 17px;
-      }
-
-      .brand img {
-        width: 61px;
-        height: 61px;
-      }
-
-      .brand-caption {
-        font-size: 9px;
-        letter-spacing: 2px;
-      }
-
-      nav {
-        gap: 13px;
-        font-size: 8px;
-        letter-spacing: 1px;
-      }
-
-      .hero {
-        grid-template-columns: 1fr;
-      }
-
-      .hero-copy {
-        padding: 70px 27px;
-      }
-
-      .hero-image {
-        min-height: 490px;
-      }
-
-      .intro { padding: 75px 23px; }
-
-      .collection { padding: 70px 17px; }
-
-      .section-head {
-        align-items: start;
-        flex-direction: column;
-      }
-
-      .products {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 25px 12px;
-      }
-
-      .product h3 { font-size: 18px; }
-
-      .product p {
-        font-size: 9px;
-        letter-spacing: 1px;
-      }
-
-      .brand-story {
-        grid-template-columns: 1fr;
-      }
-
-      .story-image { min-height: 390px; }
-
-      .story-copy { padding: 65px 27px; }
-
-      .contact { padding: 75px 20px; }
-
-      footer {
-        padding: 23px 16px;
-        font-size: 8px;
-        letter-spacing: 1px;
-      }
-    }
-
-    @media (max-width: 390px) {
-      .brand-caption { display: none; }
-      nav { gap: 10px; }
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#f5efe5">
+<title>AYOO — A Vision in Form</title>
+<style>
+:root{
+ --cream:#f5efe5;
+ --wine:#470d1c;
+ --gold:#b99a72;
+ --ink:#291d1c;
+ --muted:#8e8179;
+ --line:#dfd5ca;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--cream);color:var(--ink);font-family:Arial,sans-serif}
+a{color:inherit;text-decoration:none}
+button{font:inherit;cursor:pointer}
+header{
+ height:82px;padding:0 5%;display:flex;align-items:center;
+ justify-content:space-between;border-bottom:1px solid var(--line)
+}
+.brand img{width:105px;height:65px;object-fit:contain;mix-blend-mode:multiply}
+nav{display:flex;gap:30px;font-size:11px;letter-spacing:2px;text-transform:uppercase}
+.hero{padding:90px 7% 70px;min-height:390px}
+.eyebrow{font-size:11px;letter-spacing:5px;color:var(--gold)}
+h1{font:clamp(48px,9vw,100px)/.95 Georgia,serif;color:var(--wine);font-weight:400;margin:25px 0}
+.hero p{max-width:390px;line-height:1.8;color:var(--muted);font-size:13px}
+.collection{padding:30px 5% 100px}
+.section-top{display:flex;justify-content:space-between;align-items:end;margin-bottom:30px}
+h2{font:42px Georgia,serif;font-weight:400;color:var(--wine);margin:8px 0}
+.small{font-size:10px;letter-spacing:3px;color:var(--muted)}
+.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:35px 18px}
+.card{cursor:pointer;min-width:0}
+.card img{width:100%;aspect-ratio:3/4;object-fit:cover;display:block;background:#e9dfd4}
+.card h3{font:23px Georgia,serif;font-weight:400;margin:15px 0 7px}
+.card p{font-size:10px;letter-spacing:2px;color:var(--muted);text-transform:uppercase}
+.card:hover img{opacity:.88}
+.story{background:var(--wine);color:var(--cream);padding:70px 7%;text-align:center}
+.story h2{color:var(--cream)}
+.story p{max-width:500px;margin:20px auto;line-height:1.9;font-size:13px;color:#ddcfc3}
+footer{padding:35px 6%;display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;font-size:10px;letter-spacing:2px;color:var(--muted)}
+#detail{display:none;padding:35px 5% 90px}
+.back{border:0;background:none;color:var(--wine);letter-spacing:2px;font-size:11px;padding:15px 0 30px}
+.detail-layout{display:grid;grid-template-columns:1.15fr .85fr;gap:6%;align-items:start}
+.gallery-main{width:100%;aspect-ratio:4/5;object-fit:cover;background:#e9dfd4}
+.thumbs{display:flex;gap:10px;overflow-x:auto;margin-top:12px}
+.thumbs img{width:76px;height:96px;object-fit:cover;cursor:pointer;opacity:.65;border:1px solid transparent}
+.thumbs img.active{opacity:1;border-color:var(--wine)}
+.detail-info{padding:25px 0}
+.detail-info h1{font-size:clamp(40px,6vw,70px);margin:20px 0}
+.detail-info .description{font:16px/1.9 Georgia,serif;color:#75665e;white-space:pre-line}
+.detail-info .collection-name{font-size:11px;letter-spacing:3px;color:var(--gold)}
+.detail-note{margin-top:35px;padding-top:20px;border-top:1px solid var(--line);font-size:10px;letter-spacing:2px;color:var(--muted)}
+.empty{padding:40px 0;color:var(--muted);font-family:Georgia,serif}
+@media(max-width:700px){
+ header{height:70px;padding:0 5%}
+ .brand img{width:85px;height:55px}
+ nav{gap:13px;font-size:9px}
+ .hero{padding:65px 7% 55px;min-height:330px}
+ .grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:28px 12px}
+ h2{font-size:34px}
+ .collection{padding-left:4%;padding-right:4%}
+ .detail-layout{grid-template-columns:1fr;gap:10px}
+ .detail-info{padding:10px 0}
+ #detail{padding:20px 5% 60px}
+}
+</style>
 </head>
-
 <body>
-  <div class="topline"></div>
 
-  <header>
-    <a class="brand" href="#" aria-label="AYOO home">
-      <img
-        src="./9AEC5617-2D25-41EC-83BF-7AB413B242A8.png"
-        alt="AYOO official logo">
-      <span class="brand-caption">A VISION OF ELEGANCE</span>
-    </a>
+<header>
+<a class="brand" href="./" aria-label="AYOO home">
+<img src="./9AEC5617-2D25-41EC-83BF-7AB413B242A8.png" alt="AYOO logo">
+</a>
+<nav>
+<a href="./">Home</a>
+<a href="#collection">Collection</a>
+<a href="#story">Our Story</a>
+</nav>
+</header>
 
-    <nav aria-label="Main navigation">
-      <a href="#collection">Collection</a>
-      <a href="#story">Our story</a>
-      <a href="#contact">Contact</a>
-    </nav>
-  </header>
+<section id="home">
+<div class="hero">
+<div class="eyebrow">A VISION IN FORM</div>
+<h1>Elegance<br>in every form.</h1>
+<p>Contemporary pieces shaped by timeless femininity, thoughtful details and a distinctive point of view.</p>
+</div>
 
-  <main>
-    <section class="hero">
-      <div class="hero-copy">
-        <div class="eyebrow">FORM 01 — FIRST COLLECTION</div>
-        <h1>Elegance,<br><em>shaped by form.</em></h1>
-        <p>
-          Considered silhouettes. Exceptional textures.
-          Contemporary pieces designed to become part of your story.
-        </p>
-        <a class="cta" href="#collection">
-          Discover the collection <span>↗</span>
-        </a>
-      </div>
+<section class="collection" id="collection">
+<div class="section-top">
+<div>
+<div class="small">THE EDIT</div>
+<h2>Selected pieces</h2>
+</div>
+<div class="small">FORM 01 / 2026</div>
+</div>
+<div id="productGrid" class="grid">
+<div class="empty">Discovering the collection...</div>
+</div>
+</section>
 
-      <div class="hero-image" role="img" aria-label="Fashion editorial photograph"></div>
-    </section>
+<section class="story" id="story">
+<div class="eyebrow">THE AYOO POINT OF VIEW</div>
+<h2>Designed to be remembered.</h2>
+<p>AYOO explores the meeting of modern expression and timeless elegance. Each piece is an invitation to define your own form.</p>
+</section>
+</section>
 
-    <section class="intro" id="story">
-      <div class="eyebrow">THE ART OF SILHOUETTE</div>
-      <h2>Quiet presence.<br><em>Distinctive form.</em></h2>
-      <p>
-        AYOO explores modern femininity through sculptural outerwear,
-        thoughtful proportions and the beauty of detail.
-        A vision shaped by confidence, character and timeless elegance.
-      </p>
-    </section>
+<section id="detail">
+<button class="back" id="backButton">← BACK TO COLLECTION</button>
+<div class="detail-layout">
+<div>
+<img id="mainImage" class="gallery-main" alt="Product image">
+<div id="thumbs" class="thumbs"></div>
+</div>
+<div class="detail-info">
+<div class="eyebrow">AYOO / THE EDIT</div>
+<h1 id="detailName"></h1>
+<div id="detailCollection" class="collection-name"></div>
+<p id="detailSubtitle" class="description"></p>
+<p id="detailDescription" class="description"></p>
+<div class="detail-note">A VISION BY AYOO · FORM 01</div>
+</div>
+</div>
+</section>
 
-    <section class="collection" id="collection">
-      <div class="section-head">
-        <div>
-          <div class="eyebrow">THE EDIT</div>
-          <h2>Selected pieces</h2>
-        </div>
-        <div class="season">FORM 01 / 2026</div>
-      </div>
+<footer>
+<span>AYOO © 2026</span>
+<span>A VISION IN FORM</span>
+<span>DESIGNED WITH INTENTION</span>
+</footer>
 
-      <div class="products" id="products">
-        <div class="empty" id="loading">
-          Discovering the collection...
-        </div>
-      </div>
-    </section>
+<script type="module">
+import {supabase} from './config.js';
 
-    <section class="brand-story">
-      <div class="story-image" role="img" aria-label="Fashion editorial"></div>
-      <div class="story-copy">
-        <div class="eyebrow">THE AYOO SIGNATURE</div>
-        <h2>Designed to be<br><em>remembered.</em></h2>
-        <p>
-          More than a wardrobe, a point of view.
-          AYOO brings together refined shapes, considered details
-          and a quiet confidence that speaks without words.
-        </p>
-      </div>
-    </section>
+const grid=document.getElementById('productGrid');
+const home=document.getElementById('home');
+const detail=document.getElementById('detail');
+let products=[];
 
-    <section class="contact" id="contact">
-      <div class="eyebrow">A VISION BY AYOO</div>
-      <h2>A silhouette,<br><em>remembered.</em></h2>
-      <p>For enquiries and collaborations, get in touch.</p>
-      <a class="cta" href="mailto:hello@ayoo.com">Get in touch ↗</a>
-    </section>
-  </main>
+function safeText(value){
+ return value==null?'':String(value);
+}
 
-  <footer>
-    <span>© AYOO 2026</span>
-    <span>DESIGNED WITH INTENTION</span>
-  </footer>
+function productImages(p){
+ const images=Array.isArray(p.image_urls)?p.image_urls:[];
+ const all=[...images];
+ if(p.image_url&&!all.includes(p.image_url))all.unshift(p.image_url);
+ return all.filter(Boolean);
+}
 
-  <script type="module">
-    import { supabase } from './config.js';
+function makeCard(p){
+ const card=document.createElement('article');
+ card.className='card';
+ const image=document.createElement('img');
+ image.loading='lazy';
+ image.src=p.image_url||(productImages(p)[0]||'');
+ image.alt=safeText(p.name);
+ const title=document.createElement('h3');
+ title.textContent=safeText(p.name);
+ const label=document.createElement('p');
+ label.textContent=safeText(p.collection||'AYOO COLLECTION');
+ card.append(image,title,label);
+ card.addEventListener('click',()=>openProduct(p.id));
+ return card;
+}
 
-    const container = document.getElementById('products');
-    const loading = document.getElementById('loading');
+function renderProducts(){
+ grid.innerHTML='';
+ if(!products.length){
+  grid.innerHTML='<div class="empty">The collection is being prepared.</div>';
+  return;
+ }
+ products.forEach(p=>grid.append(makeCard(p)));
+}
 
-    function addProduct(product) {
-      const card = document.createElement('article');
-      card.className = 'product';
+async function loadProducts(){
+ const {data,error}=await supabase.from('products')
+ .select('*').eq('published',true).order('sort_order',{ascending:true});
+ if(error){
+  grid.textContent='The collection is temporarily unavailable.';
+  console.error(error);
+  return;
+ }
+ products=data||[];
+ renderProducts();
+ const id=new URLSearchParams(location.search).get('product');
+ if(id)openProduct(id,false);
+}
 
-      const image = document.createElement('img');
-      image.className = 'product-image';
-      image.src = product.image_url || '';
-      image.alt = product.name || 'AYOO collection piece';
-      image.loading = 'lazy';
+function openProduct(id,updateUrl=true){
+ const p=products.find(item=>String(item.id)===String(id));
+ if(!p)return;
+ const images=productImages(p);
+ if(!images.length&&p.image_url)images.push(p.image_url);
 
-      const title = document.createElement('h3');
-      title.textContent = product.name || 'AYOO Piece';
+ document.getElementById('detailName').textContent=safeText(p.name);
+ document.getElementById('detailCollection').textContent=safeText(p.collection||'FORM 01');
+ document.getElementById('detailSubtitle').textContent=safeText(p.subtitle);
+ document.getElementById('detailDescription').textContent=safeText(p.description);
 
-      const subtitle = document.createElement('p');
-      subtitle.textContent =
-        product.subtitle || product.collection || 'AYOO COLLECTION';
+ const main=document.getElementById('mainImage');
+ main.src=images[0]||'';
+ main.alt=safeText(p.name);
 
-      card.append(image, title, subtitle);
-      container.append(card);
-    }
+ const thumbs=document.getElementById('thumbs');
+ thumbs.innerHTML='';
+ images.forEach((url,index)=>{
+  const img=document.createElement('img');
+  img.src=url;
+  img.alt=safeText(p.name)+' image '+(index+1);
+  if(index===0)img.classList.add('active');
+  img.addEventListener('click',()=>{
+   main.src=url;
+   thumbs.querySelectorAll('img').forEach(x=>x.classList.remove('active'));
+   img.classList.add('active');
+  });
+  thumbs.append(img);
+ });
 
-    async function loadCollection() {
-      try {
-        const { data, error } = await supabase
-          .from('products')
-          .select('id,name,subtitle,collection,image_url,sort_order')
-          .eq('published', true)
-          .order('sort_order', { ascending: true });
+ home.style.display='none';
+ detail.style.display='block';
+ window.scrollTo(0,0);
+ if(updateUrl){
+  history.pushState({product:id},'', '?product='+encodeURIComponent(id));
+ }
+}
 
-        if (error) throw error;
+function showHome(){
+ detail.style.display='none';
+ home.style.display='block';
+ if(location.search)history.pushState({},'',location.pathname);
+ window.scrollTo(0,0);
+}
 
-        loading.remove();
+document.getElementById('backButton').addEventListener('click',showHome);
+window.addEventListener('popstate',()=>{
+ const id=new URLSearchParams(location.search).get('product');
+ if(id)openProduct(id,false);
+ else showHome();
+});
 
-        if (!data || data.length === 0) {
-          const empty = document.createElement('div');
-          empty.className = 'empty';
-
-          const title = document.createElement('strong');
-          title.textContent = 'The collection is taking shape.';
-
-          const message = document.createElement('span');
-          message.textContent =
-            'Our first pieces will be revealed here soon.';
-
-          empty.append(title, message);
-          container.append(empty);
-          return;
-        }
-
-        data.forEach(addProduct);
-      } catch (error) {
-        console.error('AYOO collection:', error);
-        loading.className = 'empty';
-        loading.textContent =
-          'The collection is temporarily unavailable. Please visit us again soon.';
-      }
-    }
-
-    loadCollection();
-  </script>
+loadProducts();
+</script>
 </body>
 </html>
