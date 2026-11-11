@@ -1,250 +1,45 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#f5efe5">
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#f7f1ea">
 <title>AYOO — A Vision in Form</title>
+<meta name="description" content="Discover AYOO's considered wardrobe: modern femininity, timeless forms and thoughtful details.">
 <style>
-:root{
- --cream:#f5efe5;
- --wine:#470d1c;
- --gold:#b99a72;
- --ink:#291d1c;
- --muted:#8e8179;
- --line:#dfd5ca;
-}
-*{box-sizing:border-box}
-body{margin:0;background:var(--cream);color:var(--ink);font-family:Arial,sans-serif}
-a{color:inherit;text-decoration:none}
-button{font:inherit;cursor:pointer}
-header{
- height:82px;padding:0 5%;display:flex;align-items:center;
- justify-content:space-between;border-bottom:1px solid var(--line)
-}
-.brand img{width:105px;height:65px;object-fit:contain;mix-blend-mode:multiply}
-nav{display:flex;gap:30px;font-size:11px;letter-spacing:2px;text-transform:uppercase}
-.hero{padding:90px 7% 70px;min-height:390px}
-.eyebrow{font-size:11px;letter-spacing:5px;color:var(--gold)}
-h1{font:clamp(48px,9vw,100px)/.95 Georgia,serif;color:var(--wine);font-weight:400;margin:25px 0}
-.hero p{max-width:390px;line-height:1.8;color:var(--muted);font-size:13px}
-.collection{padding:30px 5% 100px}
-.section-top{display:flex;justify-content:space-between;align-items:end;margin-bottom:30px}
-h2{font:42px Georgia,serif;font-weight:400;color:var(--wine);margin:8px 0}
-.small{font-size:10px;letter-spacing:3px;color:var(--muted)}
-.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:35px 18px}
-.card{cursor:pointer;min-width:0}
-.card img{width:100%;aspect-ratio:3/4;object-fit:cover;display:block;background:#e9dfd4}
-.card h3{font:23px Georgia,serif;font-weight:400;margin:15px 0 7px}
-.card p{font-size:10px;letter-spacing:2px;color:var(--muted);text-transform:uppercase}
-.card:hover img{opacity:.88}
-.story{background:var(--wine);color:var(--cream);padding:70px 7%;text-align:center}
-.story h2{color:var(--cream)}
-.story p{max-width:500px;margin:20px auto;line-height:1.9;font-size:13px;color:#ddcfc3}
-footer{padding:35px 6%;display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;font-size:10px;letter-spacing:2px;color:var(--muted)}
-#detail{display:none;padding:35px 5% 90px}
-.back{border:0;background:none;color:var(--wine);letter-spacing:2px;font-size:11px;padding:15px 0 30px}
-.detail-layout{display:grid;grid-template-columns:1.15fr .85fr;gap:6%;align-items:start}
-.gallery-main{width:100%;aspect-ratio:4/5;object-fit:cover;background:#e9dfd4}
-.thumbs{display:flex;gap:10px;overflow-x:auto;margin-top:12px}
-.thumbs img{width:76px;height:96px;object-fit:cover;cursor:pointer;opacity:.65;border:1px solid transparent}
-.thumbs img.active{opacity:1;border-color:var(--wine)}
-.detail-info{padding:25px 0}
-.detail-info h1{font-size:clamp(40px,6vw,70px);margin:20px 0}
-.detail-info .description{font:16px/1.9 Georgia,serif;color:#75665e;white-space:pre-line}
-.detail-info .collection-name{font-size:11px;letter-spacing:3px;color:var(--gold)}
-.detail-note{margin-top:35px;padding-top:20px;border-top:1px solid var(--line);font-size:10px;letter-spacing:2px;color:var(--muted)}
-.empty{padding:40px 0;color:var(--muted);font-family:Georgia,serif}
-@media(max-width:700px){
- header{height:70px;padding:0 5%}
- .brand img{width:85px;height:55px}
- nav{gap:13px;font-size:9px}
- .hero{padding:65px 7% 55px;min-height:330px}
- .grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:28px 12px}
- h2{font-size:34px}
- .collection{padding-left:4%;padding-right:4%}
- .detail-layout{grid-template-columns:1fr;gap:10px}
- .detail-info{padding:10px 0}
- #detail{padding:20px 5% 60px}
-}
-</style>
-</head>
+:root{--cream:#f7f1ea;--paper:#fffdf9;--wine:#470d1c;--wine2:#65192e;--gold:#b99a72;--ink:#291d1c;--muted:#8e8179;--line:#e4d9cf;--shadow:0 20px 55px #31111b12}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--cream);color:var(--ink);font-family:Arial,sans-serif}a{color:inherit;text-decoration:none}button{font:inherit;cursor:pointer}img{display:block;max-width:100%}
+header{height:82px;padding:0 5%;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--line);background:#f7f1eaeF;position:sticky;top:0;z-index:10;backdrop-filter:blur(14px)}
+.brand img{width:108px;height:66px;object-fit:contain;mix-blend-mode:multiply}nav{display:flex;gap:30px;font-size:10px;letter-spacing:2px;text-transform:uppercase}nav a{padding:12px 0;position:relative}nav a:after{content:"";height:1px;position:absolute;bottom:5px;left:0;width:0;background:var(--wine);transition:.25s}nav a:hover:after{width:100%}.header-actions{display:flex;align-items:center;gap:12px}.icon-btn{border:1px solid var(--line);background:transparent;color:var(--wine);width:38px;height:38px;border-radius:50%;font-size:17px}.hero{min-height:560px;padding:95px 8% 85px;display:flex;align-items:center;position:relative;overflow:hidden;background:radial-gradient(ellipse at 83% 40%,#e8d9c9 0,transparent 36%),linear-gradient(110deg,#f7f1ea,#f0e5d9)}.hero:after{content:"";position:absolute;width:34vw;height:34vw;min-width:250px;min-height:250px;border:1px solid #b99a7255;border-radius:50%;right:8%;top:12%;box-shadow:0 0 0 35px #b99a7208,0 0 0 70px #b99a7206}.hero-copy{max-width:630px;position:relative;z-index:1}.eyebrow{font-size:10px;letter-spacing:5px;color:var(--gold);text-transform:uppercase}.hero h1{font:clamp(58px,9vw,116px)/.9 Georgia,serif;color:var(--wine);font-weight:400;margin:28px 0}.hero p{max-width:410px;line-height:1.9;color:#786b64;font-size:13px}.cta{display:inline-flex;align-items:center;gap:24px;background:var(--wine);color:white;padding:16px 22px;margin-top:22px;font-size:10px;letter-spacing:2px;text-transform:uppercase;transition:.25s}.cta:hover{background:var(--wine2);transform:translateY(-2px)}
+.collection{padding:80px 6% 110px}.section-top{display:flex;justify-content:space-between;align-items:end;margin-bottom:30px;gap:20px}.section-top h2{font:clamp(34px,5vw,52px) Georgia,serif;font-weight:400;color:var(--wine);margin:10px 0 0}.small{font-size:10px;letter-spacing:3px;color:var(--muted);text-transform:uppercase}.tools{display:flex;gap:8px;align-items:center}.tools select{border:1px solid var(--line);background:transparent;padding:10px 12px;color:var(--ink);font-size:11px}.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:42px 20px}.card{cursor:pointer;min-width:0;position:relative}.card-media{position:relative;overflow:hidden;background:#e9dfd4}.card img{width:100%;aspect-ratio:3/4;object-fit:cover;transition:transform .65s cubic-bezier(.2,.7,.2,1),opacity .3s}.card:hover img{transform:scale(1.035)}.card h3{font:25px Georgia,serif;font-weight:400;margin:16px 0 7px}.card-meta{display:flex;justify-content:space-between;gap:8px;color:var(--muted);font-size:10px;letter-spacing:1.5px;text-transform:uppercase}.price{color:var(--wine);font-size:12px;letter-spacing:1px}.old-price{text-decoration:line-through;color:#9e9290;margin-inline-start:7px}.sale{position:absolute;top:13px;left:13px;background:var(--wine);color:white;padding:7px 9px;font-size:9px;letter-spacing:1.5px}.favorite{position:absolute;top:11px;right:11px;border:0;border-radius:50%;width:35px;height:35px;background:#fffdf0e8;color:var(--wine);font-size:17px}.swatches{display:flex;gap:5px;margin-top:11px}.swatches i{width:11px;height:11px;border-radius:50%;border:1px solid #0002}.story{background:var(--wine);color:var(--cream);padding:85px 7%;text-align:center;position:relative;overflow:hidden}.story:before,.story:after{content:"";position:absolute;border:1px solid #c4a47744;border-radius:50%;width:330px;height:330px;top:-180px;left:-120px}.story:after{top:auto;left:auto;bottom:-230px;right:-90px}.story h2{font:clamp(36px,5vw,56px) Georgia,serif;font-weight:400;color:var(--cream);margin:18px 0}.story p{max-width:520px;margin:20px auto;line-height:2;font-size:13px;color:#ddcfc3}
+footer{padding:35px 6%;display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;font-size:9px;letter-spacing:2px;color:var(--muted);border-top:1px solid var(--line)}
+#detail{display:none;padding:25px 6% 90px}.back{border:0;background:none;color:var(--wine);letter-spacing:2px;font-size:10px;padding:18px 0 30px}.detail-layout{display:grid;grid-template-columns:1.1fr .9fr;gap:7%;align-items:start}.gallery-main{width:100%;aspect-ratio:4/5;object-fit:cover;background:#e9dfd4}.thumbs{display:flex;gap:10px;overflow-x:auto;margin-top:12px}.thumbs img{width:75px;height:95px;object-fit:cover;cursor:pointer;opacity:.6;border:1px solid transparent}.thumbs img.active{opacity:1;border-color:var(--wine)}.detail-info{padding:25px 0;position:sticky;top:105px}.detail-info h1{font:clamp(40px,6vw,70px) Georgia,serif;font-weight:400;color:var(--wine);margin:18px 0}.detail-info .description{font:16px/1.9 Georgia,serif;color:#75665e;white-space:pre-line}.collection-name{font-size:10px;letter-spacing:3px;color:var(--gold);text-transform:uppercase}.detail-price{font-size:18px;color:var(--wine);margin:20px 0}.detail-price del{font-size:13px;color:#9e9290;margin-inline-start:10px}.option-label{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin:24px 0 10px}.variant-colors{display:flex;gap:10px;flex-wrap:wrap}.color-option{border:1px solid var(--line);background:transparent;padding:7px 10px;display:flex;align-items:center;gap:8px;color:var(--ink);font-size:11px}.color-option.active,.size-option.active{border-color:var(--wine);outline:1px solid var(--wine)}.color-option:disabled,.size-option:disabled{opacity:.28;cursor:not-allowed;text-decoration:line-through}.size-options{display:flex;gap:8px;flex-wrap:wrap}.size-option{min-width:44px;padding:11px 12px;background:transparent;border:1px solid var(--line);color:var(--ink);font-size:11px}.availability{font-size:11px;color:var(--muted);margin:14px 0}.buy-row{display:flex;gap:9px;margin-top:22px}.add-bag{flex:1;background:var(--wine);color:white;border:0;padding:16px;letter-spacing:2px;font-size:10px}.share{width:48px;border:1px solid var(--line);background:transparent;color:var(--wine)}.detail-note{margin-top:30px;padding-top:20px;border-top:1px solid var(--line);font-size:9px;letter-spacing:2px;color:var(--muted)}.empty{padding:50px 0;color:var(--muted);font:20px Georgia,serif}.toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%);background:var(--wine);color:white;padding:13px 20px;border-radius:30px;font-size:12px;z-index:30;box-shadow:var(--shadow)}
+@media(max-width:750px){header{height:70px;padding:0 4%}.brand img{width:86px;height:55px}nav{gap:12px;font-size:8px}.header-actions{gap:6px}.icon-btn{width:32px;height:32px}.hero{min-height:480px;padding:70px 7%}.hero:after{right:-22%;top:22%;width:70vw;height:70vw}.collection{padding:60px 4% 75px}.grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:30px 12px}.card h3{font-size:21px}.section-top{align-items:start;flex-direction:column}.detail-layout{grid-template-columns:1fr;gap:10px}.detail-info{padding:10px 0;position:static}#detail{padding:15px 5% 60px}.detail-info h1{font-size:46px}}
+@media(max-width:390px){nav{gap:8px;font-size:7px}.brand img{width:72px}}
+</style></head>
 <body>
-
-<header>
-<a class="brand" href="./" aria-label="AYOO home">
-<img src="./9AEC5617-2D25-41EC-83BF-7AB413B242A8.png" alt="AYOO logo">
-</a>
-<nav>
-<a href="./">Home</a>
-<a href="#collection">Collection</a>
-<a href="#story">Our Story</a>
-</nav>
-</header>
-
-<section id="home">
-<div class="hero">
-<div class="eyebrow">A VISION IN FORM</div>
-<h1>Elegance<br>in every form.</h1>
-<p>Contemporary pieces shaped by timeless femininity, thoughtful details and a distinctive point of view.</p>
-</div>
-
-<section class="collection" id="collection">
-<div class="section-top">
-<div>
-<div class="small">THE EDIT</div>
-<h2>Selected pieces</h2>
-</div>
-<div class="small">FORM 01 / 2026</div>
-</div>
-<div id="productGrid" class="grid">
-<div class="empty">Discovering the collection...</div>
-</div>
-</section>
-
-<section class="story" id="story">
-<div class="eyebrow">THE AYOO POINT OF VIEW</div>
-<h2>Designed to be remembered.</h2>
-<p>AYOO explores the meeting of modern expression and timeless elegance. Each piece is an invitation to define your own form.</p>
-</section>
-</section>
-
-<section id="detail">
-<button class="back" id="backButton">← BACK TO COLLECTION</button>
-<div class="detail-layout">
-<div>
-<img id="mainImage" class="gallery-main" alt="Product image">
-<div id="thumbs" class="thumbs"></div>
-</div>
-<div class="detail-info">
-<div class="eyebrow">AYOO / THE EDIT</div>
-<h1 id="detailName"></h1>
-<div id="detailCollection" class="collection-name"></div>
-<p id="detailSubtitle" class="description"></p>
-<p id="detailDescription" class="description"></p>
-<div class="detail-note">A VISION BY AYOO · FORM 01</div>
-</div>
-</div>
-</section>
-
-<footer>
-<span>AYOO © 2026</span>
-<span>A VISION IN FORM</span>
-<span>DESIGNED WITH INTENTION</span>
-</footer>
-
+<header><a class="brand" href="./" aria-label="AYOO home"><img src="./9AEC5617-2D25-41EC-83BF-7AB413B242A8.png" alt="AYOO logo"></a><nav><a href="./">Home</a><a href="#collection">Collection</a><a href="#story">Our Story</a></nav><div class="header-actions"><button class="icon-btn" id="wishlistButton" aria-label="Wishlist">♡</button></div></header>
+<section id="home"><section class="hero"><div class="hero-copy"><div class="eyebrow">A VISION IN FORM</div><h1>Elegance<br>in every form.</h1><p>Contemporary pieces shaped by timeless femininity, thoughtful details and a distinctive point of view.</p><a class="cta" href="#collection">Explore the collection <span>↗</span></a></div></section>
+<section class="collection" id="collection"><div class="section-top"><div><div class="small">THE EDIT / 01</div><h2>Selected pieces</h2></div><div class="tools"><span class="small" id="productCount">THE AYOO EDIT</span><select id="sortProducts" aria-label="Sort products"><option value="featured">Featured</option><option value="name">Name A–Z</option><option value="priceLow">Price: low to high</option><option value="priceHigh">Price: high to low</option></select></div></div><div id="productGrid" class="grid"><div class="empty">Discovering the collection...</div></div></section>
+<section class="story" id="story"><div class="eyebrow">THE AYOO POINT OF VIEW</div><h2>Designed to be remembered.</h2><p>AYOO explores the meeting of modern expression and timeless elegance. Each piece is an invitation to define your own form.</p></section></section>
+<section id="detail"><button class="back" id="backButton">← BACK TO COLLECTION</button><div class="detail-layout"><div><img id="mainImage" class="gallery-main" alt="Product image"><div id="thumbs" class="thumbs"></div></div><div class="detail-info"><div class="eyebrow">AYOO / THE EDIT</div><h1 id="detailName"></h1><div id="detailCollection" class="collection-name"></div><div id="detailPrice" class="detail-price"></div><p id="detailSubtitle" class="description"></p><p id="detailDescription" class="description"></p><div class="option-label">Select colour</div><div id="colorOptions" class="variant-colors"></div><div class="option-label">Select size</div><div id="sizeOptions" class="size-options"></div><div id="availability" class="availability">Select a colour and size.</div><div class="buy-row"><button id="addBag" class="add-bag">ADD TO BAG · COMING SOON</button><button id="shareProduct" class="share" aria-label="Share product">↗</button></div><div class="detail-note">A VISION BY AYOO · FORM 01</div></div></div></section>
+<footer><span>AYOO © 2026</span><span>A VISION IN FORM</span><span>DESIGNED WITH INTENTION</span></footer>
 <script type="module">
 import {supabase} from './config.js';
-
-const grid=document.getElementById('productGrid');
-const home=document.getElementById('home');
-const detail=document.getElementById('detail');
-let products=[];
-
-function safeText(value){
- return value==null?'':String(value);
-}
-
-function productImages(p){
- const images=Array.isArray(p.image_urls)?p.image_urls:[];
- const all=[...images];
- if(p.image_url&&!all.includes(p.image_url))all.unshift(p.image_url);
- return all.filter(Boolean);
-}
-
-function makeCard(p){
- const card=document.createElement('article');
- card.className='card';
- const image=document.createElement('img');
- image.loading='lazy';
- image.src=p.image_url||(productImages(p)[0]||'');
- image.alt=safeText(p.name);
- const title=document.createElement('h3');
- title.textContent=safeText(p.name);
- const label=document.createElement('p');
- label.textContent=safeText(p.collection||'AYOO COLLECTION');
- card.append(image,title,label);
- card.addEventListener('click',()=>openProduct(p.id));
- return card;
-}
-
-function renderProducts(){
- grid.innerHTML='';
- if(!products.length){
-  grid.innerHTML='<div class="empty">The collection is being prepared.</div>';
-  return;
- }
- products.forEach(p=>grid.append(makeCard(p)));
-}
-
-async function loadProducts(){
- const {data,error}=await supabase.from('products')
- .select('*').eq('published',true).order('sort_order',{ascending:true});
- if(error){
-  grid.textContent='The collection is temporarily unavailable.';
-  console.error(error);
-  return;
- }
- products=data||[];
- renderProducts();
- const id=new URLSearchParams(location.search).get('product');
- if(id)openProduct(id,false);
-}
-
-function openProduct(id,updateUrl=true){
- const p=products.find(item=>String(item.id)===String(id));
- if(!p)return;
- const images=productImages(p);
- if(!images.length&&p.image_url)images.push(p.image_url);
-
- document.getElementById('detailName').textContent=safeText(p.name);
- document.getElementById('detailCollection').textContent=safeText(p.collection||'FORM 01');
- document.getElementById('detailSubtitle').textContent=safeText(p.subtitle);
- document.getElementById('detailDescription').textContent=safeText(p.description);
-
- const main=document.getElementById('mainImage');
- main.src=images[0]||'';
- main.alt=safeText(p.name);
-
- const thumbs=document.getElementById('thumbs');
- thumbs.innerHTML='';
- images.forEach((url,index)=>{
-  const img=document.createElement('img');
-  img.src=url;
-  img.alt=safeText(p.name)+' image '+(index+1);
-  if(index===0)img.classList.add('active');
-  img.addEventListener('click',()=>{
-   main.src=url;
-   thumbs.querySelectorAll('img').forEach(x=>x.classList.remove('active'));
-   img.classList.add('active');
-  });
-  thumbs.append(img);
- });
-
- home.style.display='none';
- detail.style.display='block';
- window.scrollTo(0,0);
- if(updateUrl){
-  history.pushState({product:id},'', '?product='+encodeURIComponent(id));
- }
-}
-
-function showHome(){
- detail.style.display='none';
- home.style.display='block';
- if(location.search)history.pushState({},'',location.pathname);
- window.scrollTo(0,0);
-}
-
-document.getElementById('backButton').addEventListener('click',showHome);
-window.addEventListener('popstate',()=>{
- const id=new URLSearchParams(location.search).get('product');
- if(id)openProduct(id,false);
- else showHome();
-});
-
-loadProducts();
-</script>
-</body>
-</html>
+const $=id=>document.getElementById(id);let products=[],variants=[],activeProduct=null,selectedColor=null,selectedSize=null;
+const wishlistKey='ayoo-wishlist';function wishList(){try{return JSON.parse(localStorage.getItem(wishlistKey)||'[]')}catch{return []}}function saveWish(a){localStorage.setItem(wishlistKey,JSON.stringify(a))}
+function text(v){return v==null?'':String(v)}function money(v,c){if(v==null||v==='')return '';try{return new Intl.NumberFormat(undefined,{style:'currency',currency:c||'USD',maximumFractionDigits:2}).format(Number(v))}catch{return Number(v).toFixed(2)+' '+(c||'USD')}}
+function productImages(p){const a=Array.isArray(p.image_urls)?p.image_urls:[];if(p.image_url&&!a.includes(p.image_url))a.unshift(p.image_url);return a.filter(Boolean)}
+function variantsFor(p){return variants.filter(v=>String(v.product_id)===String(p.id)&&v.active!==false)}
+function effectivePrice(p,v){return v?.price_override!=null?Number(v.price_override):Number(p.price||0)}
+function saleInfo(p){const v=variantsFor(p).find(x=>x.price_override!=null&&Number(x.price_override)<Number(p.price||0));return v?Number(v.price_override):null}
+function makeCard(p){const card=document.createElement('article');card.className='card';const media=document.createElement('div');media.className='card-media';const image=document.createElement('img');image.loading='lazy';image.src=p.image_url||(productImages(p)[0]||'');image.alt=text(p.name);const fav=document.createElement('button');fav.className='favorite';fav.textContent=wishList().includes(String(p.id))?'♥':'♡';fav.onclick=e=>{e.stopPropagation();let a=wishList(),id=String(p.id);a=a.includes(id)?a.filter(x=>x!==id):[...a,id];saveWish(a);fav.textContent=a.includes(id)?'♥':'♡'};media.append(image,fav);const sale=saleInfo(p);if(sale!=null){const badge=document.createElement('span');badge.className='sale';badge.textContent='SPECIAL PRICE';media.append(badge)}const title=document.createElement('h3');title.textContent=text(p.name);const meta=document.createElement('div');meta.className='card-meta';const collection=document.createElement('span');collection.textContent=text(p.collection||'AYOO COLLECTION');const price=document.createElement('span');price.className='price';price.textContent=money(sale??p.price,p.currency);if(sale!=null&&Number(p.price)>sale){const old=document.createElement('del');old.className='old-price';old.textContent=money(p.price,p.currency);price.append(old)}meta.append(collection,price);card.append(media,title,meta);const cs=[...new Map(variantsFor(p).map(v=>[v.color_name,v])).values()];if(cs.length){const sw=document.createElement('div');sw.className='swatches';cs.slice(0,6).forEach(v=>{const dot=document.createElement('i');dot.style.background=v.color_hex||'#888';dot.title=v.color_name;sw.append(dot)});card.append(sw)}card.onclick=()=>openProduct(p.id);return card}
+function renderProducts(){const grid=$('productGrid');grid.innerHTML='';let list=[...products];const sort=$('sortProducts').value;if(sort==='name')list.sort((a,b)=>text(a.name).localeCompare(text(b.name)));if(sort==='priceLow')list.sort((a,b)=>Number(a.price||0)-Number(b.price||0));if(sort==='priceHigh')list.sort((a,b)=>Number(b.price||0)-Number(a.price||0));$('productCount').textContent=String(list.length).padStart(2,'0')+' PIECES';if(!list.length){grid.innerHTML='<div class="empty">The collection is being prepared.</div>';return}list.forEach(p=>grid.append(makeCard(p)))}
+async function loadProducts(){const {data,error}=await supabase.from('products').select('*').eq('published',true).order('sort_order',{ascending:true});if(error){$('productGrid').textContent='The collection is temporarily unavailable.';console.error(error);return}products=data||[];const ids=products.map(p=>p.id);if(ids.length){const r=await supabase.from('public_product_variants').select('*').in('product_id',ids);if(r.error){console.error('Variant availability unavailable',r.error);variants=[]}else variants=(r.data||[]).filter(v=>v.active!==false)}renderProducts();const id=new URLSearchParams(location.search).get('product');if(id)openProduct(id,false)}
+function openProduct(id,updateUrl=true){const p=products.find(x=>String(x.id)===String(id));if(!p)return;activeProduct=p;const images=productImages(p);$('detailName').textContent=text(p.name);$('detailCollection').textContent=text(p.collection||'FORM 01');$('detailSubtitle').textContent=text(p.subtitle);$('detailDescription').textContent=text(p.description);const main=$('mainImage');main.src=images[0]||'';main.alt=text(p.name);const thumbs=$('thumbs');thumbs.innerHTML='';images.forEach((url,i)=>{const img=document.createElement('img');img.src=url;img.alt=text(p.name)+' image '+(i+1);if(i===0)img.classList.add('active');img.onclick=()=>{main.src=url;thumbs.querySelectorAll('img').forEach(x=>x.classList.remove('active'));img.classList.add('active')};thumbs.append(img)});const pv=variantsFor(p).filter(v=>v.in_stock===true);const colorMap=new Map();pv.forEach(v=>{if(!colorMap.has(v.color_name))colorMap.set(v.color_name,v)});const colorRoot=$('colorOptions');colorRoot.innerHTML='';[...colorMap.values()].forEach(v=>{const b=document.createElement('button');b.className='color-option';b.innerHTML='<span class="swatch" style="background:'+text(v.color_hex||'#888')+'"></span>';const label=document.createElement('span');label.textContent=text(v.color_name);b.append(label);b.onclick=()=>{selectedColor=v.color_name;selectedSize=null;renderVariantOptions(p);};colorRoot.append(b)});selectedColor=colorMap.size?[...colorMap.keys()][0]:null;selectedSize=null;renderVariantOptions(p);const priceVariants=pv.filter(v=>v.color_name===selectedColor);const discount=priceVariants.find(v=>v.price_override!=null&&Number(v.price_override)<Number(p.price||0));$('detailPrice').innerHTML='';const current=document.createElement('span');current.textContent=money(discount?discount.price_override:p.price,p.currency);$('detailPrice').append(current);if(discount){const old=document.createElement('del');old.textContent=money(p.price,p.currency);$('detailPrice').append(old)}$('home').style.display='none';$('detail').style.display='block';window.scrollTo(0,0);if(updateUrl)history.pushState({product:id},'','?product='+encodeURIComponent(id))}
+function renderVariantOptions(p){const pv=variantsFor(p);const colors=[...new Set(pv.filter(v=>v.in_stock===true).map(v=>v.color_name))];$('colorOptions').querySelectorAll('button').forEach(b=>{b.classList.toggle('active',b.textContent.trim()===selectedColor)});const sizes=$('sizeOptions');sizes.innerHTML='';const available=pv.filter(v=>v.color_name===selectedColor&&v.in_stock===true);const allSizes=[...new Set(pv.filter(v=>v.color_name===selectedColor).map(v=>v.size))];allSizes.forEach(s=>{const v=available.find(x=>x.size===s);const b=document.createElement('button');b.className='size-option';b.textContent=s;b.disabled=!v;b.title=v?'Available':'Out of stock';if(selectedSize===s)b.classList.add('active');b.onclick=()=>{selectedSize=s;renderVariantOptions(p);const selected=available.find(x=>x.size===s);if(selected){const price=effectivePrice(p,selected);$('detailPrice').innerHTML='';const cur=document.createElement('span');cur.textContent=money(price,p.currency);$('detailPrice').append(cur);if(price<Number(p.price||0)){const old=document.createElement('del');old.textContent=money(p.price,p.currency);$('detailPrice').append(old)}}};sizes.append(b)});if(!selectedColor||!colors.includes(selectedColor)){$('availability').textContent='Currently unavailable';}else if(!allSizes.length){$('availability').textContent='Select a size';}else if(!available.length){$('availability').textContent='This colour is currently unavailable';}else if(selectedSize){$('availability').textContent='Selected: '+selectedColor+' / '+selectedSize;}else{$('availability').textContent='Available sizes shown above';}}
+function showHome(){ $('detail').style.display='none';$('home').style.display='block';if(location.search)history.pushState({},'',location.pathname);window.scrollTo(0,0)}
+$('backButton').onclick=showHome;$('sortProducts').onchange=renderProducts;$('wishlistButton').onclick=()=>{const ids=wishList();const list=products.filter(p=>ids.includes(String(p.id)));if(!list.length){toast('Your wishlist is empty.');return}const grid=$('productGrid');grid.innerHTML='';list.forEach(p=>grid.append(makeCard(p)));$('collection').scrollIntoView({behavior:'smooth'})};
+$('shareProduct').onclick=async()=>{if(!activeProduct)return;const url=location.href;if(navigator.share){try{await navigator.share({title:activeProduct.name,url})}catch{}}else{await navigator.clipboard?.writeText(url);toast('Product link copied') }};
+$('addBag').onclick=()=>toast('Shopping bag and checkout will be enabled in the next phase.');
+function toast(t){const el=document.createElement('div');el.className='toast';el.textContent=t;document.body.append(el);setTimeout(()=>el.remove(),2500)}
+window.addEventListener('popstate',()=>{const id=new URLSearchParams(location.search).get('product');if(id)openProduct(id,false);else showHome()});loadProducts();
+</script></body></html>
