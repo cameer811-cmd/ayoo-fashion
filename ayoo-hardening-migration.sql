@@ -302,8 +302,8 @@ begin
   -- On dispatch, convert each reservation into a physical stock deduction exactly once.
   if v_order.order_status='processing' and p_new_status='shipped' then
     for v_item in
-      select variant_id,quantity from public.order_items
-      where order_id=v_order.id order by variant_id
+      select oi.variant_id,oi.quantity from public.order_items oi
+      where oi.order_id=v_order.id order by oi.variant_id
     loop
       update public.product_variants
         set stock_quantity=stock_quantity-v_item.quantity,
