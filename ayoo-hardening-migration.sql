@@ -14,10 +14,10 @@ create table if not exists public.ayoo_checkout_requests (
 alter table public.ayoo_checkout_requests enable row level security;
 revoke all on public.ayoo_checkout_requests from public, anon, authenticated;
 
--- 2) Replace the public checkout signature with a key-bearing version.
--- Disable the old overload so callers cannot bypass the idempotency guard.
-revoke all on function public.ayoo_create_order(text,text,text,text,jsonb,text,jsonb,text,numeric)
-  from public, anon, authenticated;
+-- 2) Add a key-bearing checkout signature.
+-- Keep the legacy signature operational during the rollout; it forwards to the
+-- hardened implementation with a fresh key so the already-live storefront does
+-- not lose checkout while the new frontend is being deployed.
 
 create or replace function public.ayoo_create_order(
   p_customer_name text,
@@ -186,6 +186,37 @@ $$;
 revoke all on function public.ayoo_create_order(text,text,text,text,jsonb,text,jsonb,text,numeric,text)
   from public;
 grant execute on function public.ayoo_create_order(text,text,text,text,jsonb,text,jsonb,text,numeric,text)
+  to anon, authenticated;
+
+-- Backward-compatible RPC for the currently deployed storefront.
+create or replace function public.ayoo_create_order(
+  p_customer_name text,
+  p_customer_email text,
+  p_customer_phone text,
+  p_shipping_country_code text,
+  p_shipping_address jsonb,
+  p_payment_method text,
+  p_items jsonb,
+  p_customer_note text default null,
+  p_shipping_amount numeric default 0
+)
+returns table(order_id uuid, order_number text, total_amount numeric, currency text)
+language plpgsql
+security definer
+set search_path = public, pg_temp
+as $
+begin
+  return query
+    select * from public.ayoo_create_order(
+      p_customer_name,p_customer_email,p_customer_phone,p_shipping_country_code,
+      p_shipping_address,p_payment_method,p_items,p_customer_note,p_shipping_amount,
+      gen_random_uuid()::text
+    );
+end;
+$;
+revoke all on function public.ayoo_create_order(text,text,text,text,jsonb,text,jsonb,text,numeric)
+  from public;
+grant execute on function public.ayoo_create_order(text,text,text,text,jsonb,text,jsonb,text,numeric)
   to anon, authenticated;
 
 -- 3) Cancellation releases exactly the reserved quantity or aborts the whole transaction.
