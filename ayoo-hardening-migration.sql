@@ -6,6 +6,7 @@ begin;
 
 -- Recreate both checkout overloads with an unambiguous PostgREST signature.
 drop function if exists public.ayoo_create_order(text,text,text,text,jsonb,text,jsonb,text,numeric);
+drop function if exists public.ayoo_create_order(text,text,text,text,jsonb,text,jsonb,text,numeric,text);
 drop function if exists public.ayoo_create_order(text,text,text,text,jsonb,text,jsonb,text,text,numeric);
 
 -- 1) Private idempotency ledger. No browser role receives table privileges.
@@ -15,6 +16,7 @@ create table if not exists public.ayoo_checkout_requests (
   order_id uuid not null references public.orders(id) on delete restrict,
   created_at timestamptz not null default now()
 );
+create index if not exists ayoo_checkout_requests_order_id_idx on public.ayoo_checkout_requests(order_id);
 alter table public.ayoo_checkout_requests enable row level security;
 revoke all on public.ayoo_checkout_requests from public, anon, authenticated;
 
