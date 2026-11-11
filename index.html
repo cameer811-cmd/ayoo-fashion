@@ -1,250 +1,90 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#f5efe5">
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#f7f1ea">
 <title>AYOO — A Vision in Form</title>
+<meta name="description" content="Discover AYOO's considered wardrobe: modern femininity, timeless forms and thoughtful details.">
+<meta name="robots" content="index,follow,max-image-preview:large">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="AYOO">
+<meta property="og:title" content="AYOO — A Vision in Form">
+<meta property="og:description" content="Discover AYOO's considered wardrobe: modern femininity, timeless forms and thoughtful details.">
+<meta property="og:image" content="./9AEC5617-2D25-41EC-83BF-7AB413B242A8.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="AYOO — A Vision in Form">
+<meta name="twitter:description" content="Discover AYOO's considered wardrobe: modern femininity, timeless forms and thoughtful details.">
 <style>
-:root{
- --cream:#f5efe5;
- --wine:#470d1c;
- --gold:#b99a72;
- --ink:#291d1c;
- --muted:#8e8179;
- --line:#dfd5ca;
-}
-*{box-sizing:border-box}
-body{margin:0;background:var(--cream);color:var(--ink);font-family:Arial,sans-serif}
-a{color:inherit;text-decoration:none}
-button{font:inherit;cursor:pointer}
-header{
- height:82px;padding:0 5%;display:flex;align-items:center;
- justify-content:space-between;border-bottom:1px solid var(--line)
-}
-.brand img{width:105px;height:65px;object-fit:contain;mix-blend-mode:multiply}
-nav{display:flex;gap:30px;font-size:11px;letter-spacing:2px;text-transform:uppercase}
-.hero{padding:90px 7% 70px;min-height:390px}
-.eyebrow{font-size:11px;letter-spacing:5px;color:var(--gold)}
-h1{font:clamp(48px,9vw,100px)/.95 Georgia,serif;color:var(--wine);font-weight:400;margin:25px 0}
-.hero p{max-width:390px;line-height:1.8;color:var(--muted);font-size:13px}
-.collection{padding:30px 5% 100px}
-.section-top{display:flex;justify-content:space-between;align-items:end;margin-bottom:30px}
-h2{font:42px Georgia,serif;font-weight:400;color:var(--wine);margin:8px 0}
-.small{font-size:10px;letter-spacing:3px;color:var(--muted)}
-.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:35px 18px}
-.card{cursor:pointer;min-width:0}
-.card img{width:100%;aspect-ratio:3/4;object-fit:cover;display:block;background:#e9dfd4}
-.card h3{font:23px Georgia,serif;font-weight:400;margin:15px 0 7px}
-.card p{font-size:10px;letter-spacing:2px;color:var(--muted);text-transform:uppercase}
-.card:hover img{opacity:.88}
-.story{background:var(--wine);color:var(--cream);padding:70px 7%;text-align:center}
-.story h2{color:var(--cream)}
-.story p{max-width:500px;margin:20px auto;line-height:1.9;font-size:13px;color:#ddcfc3}
-footer{padding:35px 6%;display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;font-size:10px;letter-spacing:2px;color:var(--muted)}
-#detail{display:none;padding:35px 5% 90px}
-.back{border:0;background:none;color:var(--wine);letter-spacing:2px;font-size:11px;padding:15px 0 30px}
-.detail-layout{display:grid;grid-template-columns:1.15fr .85fr;gap:6%;align-items:start}
-.gallery-main{width:100%;aspect-ratio:4/5;object-fit:cover;background:#e9dfd4}
-.thumbs{display:flex;gap:10px;overflow-x:auto;margin-top:12px}
-.thumbs img{width:76px;height:96px;object-fit:cover;cursor:pointer;opacity:.65;border:1px solid transparent}
-.thumbs img.active{opacity:1;border-color:var(--wine)}
-.detail-info{padding:25px 0}
-.detail-info h1{font-size:clamp(40px,6vw,70px);margin:20px 0}
-.detail-info .description{font:16px/1.9 Georgia,serif;color:#75665e;white-space:pre-line}
-.detail-info .collection-name{font-size:11px;letter-spacing:3px;color:var(--gold)}
-.detail-note{margin-top:35px;padding-top:20px;border-top:1px solid var(--line);font-size:10px;letter-spacing:2px;color:var(--muted)}
-.empty{padding:40px 0;color:var(--muted);font-family:Georgia,serif}
-@media(max-width:700px){
- header{height:70px;padding:0 5%}
- .brand img{width:85px;height:55px}
- nav{gap:13px;font-size:9px}
- .hero{padding:65px 7% 55px;min-height:330px}
- .grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:28px 12px}
- h2{font-size:34px}
- .collection{padding-left:4%;padding-right:4%}
- .detail-layout{grid-template-columns:1fr;gap:10px}
- .detail-info{padding:10px 0}
- #detail{padding:20px 5% 60px}
-}
-</style>
-</head>
+@import url('https://fonts.googleapis.com/css2?family=Alexandria:wght@300;400;500;600;700&family=Noto+Naskh+Arabic:wght@400;500;600;700&display=swap');
+:root{--cream:#f5eee6;--paper:#fffaf5;--wine:#470d1c;--wine2:#65192e;--wineDeep:#260914;--gold:#b99a72;--ink:#291d1c;--muted:#8e8179;--line:#e4d9cf;--shadow:0 20px 55px #31111b12;--serif:"Bodoni Moda",Didot,Georgia,serif;--arabic:"Noto Naskh Arabic",serif;--sans:"Alexandria","Helvetica Neue",Arial,sans-serif}
+*{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:90px}body{margin:0;background:var(--cream);color:var(--ink);font-family:var(--sans);-webkit-font-smoothing:antialiased}a{color:inherit;text-decoration:none}button{font:inherit;cursor:pointer}img{display:block;max-width:100%}
+header{height:86px;padding:0 6%;display:flex;align-items:center;justify-content:space-between;gap:26px;border-bottom:1px solid #e4d9cf;background:#fffaf5f2;position:sticky;top:0;z-index:20;backdrop-filter:blur(18px)}.brand{display:flex;align-items:center;gap:12px;flex:none}.brand-mark{width:auto;height:auto;padding:0;display:block;background:none;border:0;border-radius:0;box-shadow:none;overflow:visible}.brand-mark img{width:112px;height:66px;object-fit:contain;mix-blend-mode:normal;border-radius:0}.brand-caption{font:600 8px var(--sans);letter-spacing:2.3px;color:var(--gold);white-space:nowrap;align-self:flex-end;padding-bottom:13px}nav{display:flex;gap:36px;align-items:center;font:500 10px var(--sans);letter-spacing:1.5px;text-transform:uppercase}nav a{padding:12px 0;position:relative;color:#55464a}nav a:after{content:"";height:1px;position:absolute;bottom:5px;inset-inline-start:0;width:0;background:var(--wine);transition:.28s}nav a:hover:after{width:100%}.header-actions{display:flex;align-items:center;gap:10px}.icon-btn{border:1px solid var(--line);background:transparent;color:var(--wine);width:40px;height:40px;border-radius:50%;font-size:18px;transition:.2s}.icon-btn:hover{background:var(--wine);color:white}#languageSelect{font-family:var(--sans)!important}
+.hero{min-height:650px;padding:90px 9% 100px;display:flex;align-items:center;position:relative;isolation:isolate;overflow:hidden;background:radial-gradient(ellipse at 15% 58%,#e2cbb7 0%,transparent 34%),linear-gradient(115deg,#f5eee6 0%,#f2e7dc 54%,#ead9ca 100%)}.hero:before{content:"";position:absolute;z-index:-1;width:min(54vw,660px);aspect-ratio:1;border:1px solid #b99a7270;border-radius:50%;inset-inline-start:-9%;top:7%;box-shadow:0 0 0 26px #b99a7209,0 0 0 58px #b99a7207,0 0 0 95px #b99a7205}.hero:after{content:"AYOO";position:absolute;z-index:-1;inset-inline-start:7%;bottom:4%;font:clamp(90px,17vw,220px)/1 var(--serif);letter-spacing:-8px;color:#470d1c08;pointer-events:none}.hero-copy{width:min(690px,72%);margin-inline-start:auto;position:relative;z-index:1;text-align:start}.eyebrow{font:600 9px var(--sans);letter-spacing:4px;color:var(--gold);text-transform:uppercase;display:flex;align-items:center;gap:13px}.eyebrow:before{content:"";width:34px;height:1px;background:var(--gold);display:inline-block}.hero h1{font:clamp(56px,7.3vw,100px)/1.12 var(--serif);color:var(--wine);font-weight:400;letter-spacing:-1.7px;margin:28px 0 20px;max-width:700px}.hero p{max-width:470px;line-height:2.2;color:#75665e;font:400 15px/2 var(--sans);margin:0}.cta{display:inline-flex;align-items:center;justify-content:space-between;gap:35px;min-width:230px;background:var(--wine);color:white;padding:17px 22px;margin-top:34px;font:600 10px var(--sans);letter-spacing:1.3px;text-transform:uppercase;transition:.25s;border:1px solid var(--wine)}.cta:hover{background:transparent;color:var(--wine);transform:translateY(-2px);box-shadow:0 12px 24px #470d1c12}.cta span{font-size:17px}
+.collection{padding:92px 7% 112px}.section-top{display:flex;justify-content:space-between;align-items:end;margin-bottom:36px;gap:20px}.section-top h2{font:clamp(40px,5vw,62px) var(--serif);font-weight:400;color:var(--wine);letter-spacing:-.5px;margin:12px 0 0}.small{font:600 9px var(--sans);letter-spacing:2.5px;color:var(--muted);text-transform:uppercase}.tools{display:flex;gap:9px;align-items:center}.tools select{border:1px solid var(--line);background:#fffaf5;padding:11px 14px;color:var(--ink);font:400 11px var(--sans)}.tools input{width:170px;min-width:0;border:1px solid var(--line);background:#fffaf5;padding:11px 14px;color:var(--ink);font:400 11px var(--sans)}.tools input:focus,.tools select:focus{outline:1px solid var(--gold);border-color:var(--gold)}@media(max-width:750px){.tools{width:100%;flex-wrap:wrap}.tools input{flex:1;width:100%}.tools select{flex:1;min-width:125px}}.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:48px 23px}.card{cursor:pointer;min-width:0;position:relative}.card-media{position:relative;overflow:hidden;background:#e9dfd4}.card img{width:100%;aspect-ratio:3/4;object-fit:cover;transition:transform .8s cubic-bezier(.2,.7,.2,1),opacity .3s}.card:hover img{transform:scale(1.045)}.card h3{font:400 27px var(--serif);margin:17px 0 8px;color:var(--wine)}.card-meta{display:flex;justify-content:space-between;gap:8px;color:var(--muted);font:500 9px var(--sans);letter-spacing:1px;text-transform:uppercase}.price{color:var(--wine);font:600 11px var(--sans);white-space:nowrap}.old-price{text-decoration:line-through;color:#9e9290;margin-inline-start:7px}.sale{position:absolute;top:14px;inset-inline-start:14px;background:var(--wine);color:white;padding:8px 10px;font:600 9px var(--sans);letter-spacing:1px}.favorite{position:absolute;top:12px;inset-inline-end:12px;border:1px solid #fff9;border-radius:50%;width:38px;height:38px;background:#fffdf0e8;color:var(--wine);font-size:18px;backdrop-filter:blur(8px)}.swatches{display:flex;gap:6px;margin-top:12px}.swatches i{width:12px;height:12px;border-radius:50%;border:1px solid #0002}
+.story{background:linear-gradient(120deg,#260914,#4b1022 70%,#5c1a30);color:var(--cream);padding:100px 7%;text-align:center;position:relative;overflow:hidden}.story:before,.story:after{content:"";position:absolute;border:1px solid #c4a47744;border-radius:50%;width:360px;height:360px;top:-190px;inset-inline-start:-130px;pointer-events:none}.story:after{top:auto;inset-inline-start:auto;bottom:-250px;inset-inline-end:-100px}.story h2{font:400 clamp(40px,5vw,64px) var(--serif);color:var(--cream);margin:20px 0}.story p{max-width:560px;margin:22px auto;line-height:2.2;font:400 13px/2.2 var(--sans);color:#ddcfc3}
+footer{padding:38px 7%;display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;font:500 9px var(--sans);letter-spacing:1.5px;color:var(--muted);border-top:1px solid var(--line)}.footer-policies{display:flex;gap:15px;flex-wrap:wrap;align-items:center}.footer-policies a{color:var(--wine);font:600 9px var(--sans);letter-spacing:.5px}
+#detail{display:none;padding:28px 7% 100px}.back{border:0;background:none;color:var(--wine);letter-spacing:1.5px;font:600 10px var(--sans);padding:18px 0 32px}.detail-layout{display:grid;grid-template-columns:1.1fr .9fr;gap:8%;align-items:start}.gallery-main{width:100%;aspect-ratio:4/5;object-fit:cover;background:#e9dfd4}.thumbs{display:flex;gap:10px;overflow-x:auto;margin-top:13px}.thumbs img{width:78px;height:100px;object-fit:cover;cursor:pointer;opacity:.58;border:1px solid transparent}.thumbs img.active{opacity:1;border-color:var(--wine)}.detail-info{padding:28px 0;position:sticky;top:110px}.detail-info h1{font:400 clamp(42px,6vw,74px)/1.2 var(--serif);color:var(--wine);margin:20px 0}.detail-info .description{font:400 17px/2 var(--serif);color:#75665e;white-space:pre-line}.collection-name{font:600 9px var(--sans);letter-spacing:2.5px;color:var(--gold);text-transform:uppercase}.detail-price{font:600 18px var(--sans);color:var(--wine);margin:22px 0}.detail-price del{font-size:12px;color:#9e9290;margin-inline-start:10px}.option-label{font:600 10px var(--sans);letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin:26px 0 11px}.variant-colors{display:flex;gap:10px;flex-wrap:wrap}.color-option{border:1px solid var(--line);background:#fffaf5;padding:9px 12px;display:flex;align-items:center;gap:8px;color:var(--ink);font:400 11px var(--sans)}.color-option.active,.size-option.active{border-color:var(--wine);outline:1px solid var(--wine)}.color-option:disabled,.size-option:disabled{opacity:.28;cursor:not-allowed;text-decoration:line-through}.size-options{display:flex;gap:8px;flex-wrap:wrap}.size-option{min-width:46px;padding:12px;background:#fffaf5;border:1px solid var(--line);color:var(--ink);font:400 11px var(--sans)}.availability{font:400 11px var(--sans);color:var(--muted);margin:15px 0}.selection-summary{min-height:20px;color:var(--wine);font:500 11px/1.8 var(--sans);margin:6px 0 14px}.color-option{transition:border-color .2s,background .2s}.color-option.active,.size-option.active{background:#f2e7df;box-shadow:0 0 0 1px var(--wine)}.size-option:disabled{opacity:.35;text-decoration:line-through;cursor:not-allowed}.buy-row{display:flex;gap:10px;margin-top:24px}.add-bag{flex:1;background:var(--wine);color:white;border:0;padding:17px;letter-spacing:1.5px;font:600 10px var(--sans)}.share{width:50px;border:1px solid var(--line);background:transparent;color:var(--wine)}.detail-note{margin-top:34px;padding-top:22px;border-top:1px solid var(--line);font:600 9px var(--sans);letter-spacing:1.5px;color:var(--muted)}.empty{padding:55px 0;color:var(--muted);font:400 24px var(--serif)}.toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%);background:var(--wine);color:white;padding:14px 22px;border-radius:40px;font:400 12px var(--sans);z-index:30;box-shadow:var(--shadow)}
+:lang(ar) body,:lang(ar) button,:lang(ar) input,:lang(ar) select{font-family:var(--sans)}html[lang="ar"] .hero h1,html[lang="ar"] .section-top h2,html[lang="ar"] .story h2,html[lang="ar"] .detail-info h1{font-family:var(--arabic);font-weight:600;letter-spacing:0;line-height:1.38}html[lang="ar"] .hero p,html[lang="ar"] .story p,html[lang="ar"] .detail-info .description{font-family:var(--arabic);font-size:19px;line-height:2}html[lang="ar"] nav{letter-spacing:0;font-size:10px}html[lang="ar"] .cta{letter-spacing:0;font-size:12px}
+@media(max-width:900px){.collection{padding:72px 5% 88px}.grid{gap:36px 16px}.detail-layout{gap:5%}}
+@media(max-width:750px){header{height:74px;padding:0 4%;gap:8px}.brand-mark img{width:88px;height:56px}.brand-caption{display:none}nav{gap:13px;font-size:8px;letter-spacing:.5px}.header-actions{gap:6px}.icon-btn{width:34px;height:34px}.hero{min-height:570px;padding:65px 7% 78px;background:radial-gradient(ellipse at 10% 75%,#e2cbb7 0%,transparent 42%),linear-gradient(125deg,#f5eee6,#eee0d3)}.hero:before{width:78vw;top:7%;inset-inline-start:-34%}.hero:after{font-size:28vw;bottom:2%;inset-inline-start:3%}.hero-copy{width:100%;max-width:590px;margin-inline-start:0}.hero h1{font-size:clamp(48px,11vw,76px);line-height:1.3;margin:24px 0 17px}.hero p{font-size:13px;line-height:2}.cta{margin-top:26px;min-width:205px;padding:15px 18px}.collection{padding:62px 4% 75px}.grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:31px 12px}.card h3{font-size:22px}.section-top{align-items:start;flex-direction:column}.detail-layout{grid-template-columns:1fr;gap:10px}.detail-info{padding:12px 0;position:static}#detail{padding:15px 5% 65px}.detail-info h1{font-size:48px}.story{padding:76px 6%}html[lang="ar"] .hero h1{font-size:clamp(48px,11vw,72px)}}
+@media(max-width:390px){nav{gap:8px;font-size:7px}.brand-mark img{width:76px;height:52px}.header-actions{gap:4px}.icon-btn{width:31px;height:31px}header{padding:0 3%}}
+
+.instagram-link{display:grid;place-items:center}.instagram-link svg{width:19px;height:19px}.footer-instagram{display:inline-flex;align-items:center;gap:9px;color:var(--wine);transition:opacity .2s}.footer-instagram:hover{opacity:.68}.footer-instagram svg{width:17px;height:17px}.footer-instagram span{font-size:9px;letter-spacing:2px;font-weight:700}
+@media(max-width:750px){.header-actions{gap:5px}.instagram-link{width:32px;height:32px}.footer-instagram{flex-basis:100%}}
+
+/* AYOO shopping bag and checkout */
+.bag-trigger{position:relative}.bag-count{position:absolute;top:-4px;right:-3px;background:var(--gold);color:#fff;border-radius:50%;min-width:17px;height:17px;font:600 9px var(--sans);display:grid;place-items:center}.bag-overlay{position:fixed;inset:0;background:#1c0b12a8;z-index:80;display:none;align-items:center;justify-content:center;padding:14px}.bag-overlay.open{display:flex}.bag-panel{width:min(720px,100%);max-height:92vh;overflow:auto;background:var(--paper);padding:clamp(20px,4vw,38px);box-shadow:0 24px 80px #16060c55}.bag-head{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--line);padding-bottom:16px}.bag-head h2{font:400 34px var(--serif);color:var(--wine);margin:0}.bag-close{border:1px solid var(--line);background:transparent;width:38px;height:38px;color:var(--wine);font-size:20px}.bag-line{display:grid;grid-template-columns:74px 1fr auto;gap:14px;padding:17px 0;border-bottom:1px solid var(--line);align-items:center}.bag-line img{width:74px;height:92px;object-fit:cover;background:#eee}.bag-line strong{display:block;font:500 13px var(--sans);color:var(--wine)}.bag-line small{display:block;color:var(--muted);font:10px/1.8 var(--sans);margin-top:5px}.bag-qty{display:flex;align-items:center;gap:9px;margin-top:8px}.bag-qty button{width:25px;height:25px;border:1px solid var(--line);background:transparent;color:var(--wine)}.bag-remove{border:0;background:none;color:#9a6b6b;font-size:11px;margin-top:7px;padding:0}.bag-total{display:flex;justify-content:space-between;padding:18px 0;font:600 14px var(--sans);color:var(--wine)}.bag-note{font:11px/1.9 var(--sans);color:var(--muted);background:#f3eae1;padding:12px 14px;margin:10px 0 18px}.bag-checkout{width:100%;padding:16px;background:var(--wine);color:#fff;border:0;font:600 10px var(--sans);letter-spacing:1.5px}.bag-form{display:none;margin-top:20px;border-top:1px solid var(--line);padding-top:20px}.bag-form.open{display:block}.bag-form h3{font:400 27px var(--serif);color:var(--wine);margin:0 0 14px}.bag-fields{display:grid;grid-template-columns:1fr 1fr;gap:11px}.bag-fields label{display:block;font:600 9px var(--sans);letter-spacing:.7px;color:var(--muted)}.bag-fields input,.bag-fields textarea{width:100%;margin-top:6px;border:1px solid var(--line);background:#fff;padding:12px;color:var(--ink);font:12px var(--sans);border-radius:0}.bag-fields .wide{grid-column:1/-1}.bag-status{font:11px/1.8 var(--sans);color:var(--wine);margin-top:12px;white-space:pre-line}.bag-empty{padding:35px 0;text-align:center;color:var(--muted);font:22px var(--serif)}
+@media(max-width:520px){.bag-line{grid-template-columns:58px 1fr auto;gap:9px}.bag-line img{width:58px;height:76px}.bag-fields{grid-template-columns:1fr}.bag-fields .wide{grid-column:auto}}
+</style></head>
 <body>
-
-<header>
-<a class="brand" href="./" aria-label="AYOO home">
-<img src="./9AEC5617-2D25-41EC-83BF-7AB413B242A8.png" alt="AYOO logo">
-</a>
-<nav>
-<a href="./">Home</a>
-<a href="#collection">Collection</a>
-<a href="#story">Our Story</a>
-</nav>
-</header>
-
-<section id="home">
-<div class="hero">
-<div class="eyebrow">A VISION IN FORM</div>
-<h1>Elegance<br>in every form.</h1>
-<p>Contemporary pieces shaped by timeless femininity, thoughtful details and a distinctive point of view.</p>
-</div>
-
-<section class="collection" id="collection">
-<div class="section-top">
-<div>
-<div class="small">THE EDIT</div>
-<h2>Selected pieces</h2>
-</div>
-<div class="small">FORM 01 / 2026</div>
-</div>
-<div id="productGrid" class="grid">
-<div class="empty">Discovering the collection...</div>
-</div>
-</section>
-
-<section class="story" id="story">
-<div class="eyebrow">THE AYOO POINT OF VIEW</div>
-<h2>Designed to be remembered.</h2>
-<p>AYOO explores the meeting of modern expression and timeless elegance. Each piece is an invitation to define your own form.</p>
-</section>
-</section>
-
-<section id="detail">
-<button class="back" id="backButton">← BACK TO COLLECTION</button>
-<div class="detail-layout">
-<div>
-<img id="mainImage" class="gallery-main" alt="Product image">
-<div id="thumbs" class="thumbs"></div>
-</div>
-<div class="detail-info">
-<div class="eyebrow">AYOO / THE EDIT</div>
-<h1 id="detailName"></h1>
-<div id="detailCollection" class="collection-name"></div>
-<p id="detailSubtitle" class="description"></p>
-<p id="detailDescription" class="description"></p>
-<div class="detail-note">A VISION BY AYOO · FORM 01</div>
-</div>
-</div>
-</section>
-
-<footer>
-<span>AYOO © 2026</span>
-<span>A VISION IN FORM</span>
-<span>DESIGNED WITH INTENTION</span>
-</footer>
-
+<header><a class="brand" href="./" aria-label="AYOO home"><span class="brand-mark"><img src="./9AEC5617-2D25-41EC-83BF-7AB413B242A8.png" alt="AYOO logo"></span><span class="brand-caption">A VISION IN FORM</span></a><nav><a href="./">Home</a><a href="#collection">Collection</a><a href="#story">Our Story</a></nav><div class="header-actions"><a class="icon-btn instagram-link" href="https://www.instagram.com/ayoo_.fashion/" target="_blank" rel="noopener noreferrer" aria-label="AYOO on Instagram" title="Instagram"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5" fill="none" stroke="currentColor" stroke-width="1.7"/><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="1.7"/><circle cx="17.6" cy="6.6" r="1.1" fill="currentColor"/></svg></a><select id="languageSelect" aria-label="Language" style="border:1px solid var(--line);background:transparent;color:var(--wine);padding:8px;border-radius:20px;font-size:10px"><option value="en">EN</option><option value="tr">TR</option><option value="ar">AR</option></select><button class="icon-btn" id="wishlistButton" aria-label="Wishlist">♡</button><button class="icon-btn bag-trigger" id="bagButton" aria-label="Shopping bag">♧<span class="bag-count" id="bagCount">0</span></button></div></header>
+<section id="home"><section class="hero"><div class="hero-copy"><div class="eyebrow">A VISION IN FORM</div><h1>Elegance<br>in every form.</h1><p>Contemporary pieces shaped by timeless femininity, thoughtful details and a distinctive point of view.</p><a class="cta" href="#collection">Explore the collection <span>↗</span></a></div></section>
+<section class="collection" id="collectionBrowser" style="padding-top:35px;padding-bottom:20px"><div class="section-top"><div><div class="small">EXPLORE / AYOO</div><h2 id="collectionHeading">Collections</h2></div></div><div id="collectionCards" class="grid"></div></section>\n<section class="collection" id="collection"><div class="section-top"><div><div class="small">THE EDIT / 01</div><h2>Selected pieces</h2></div><div class="tools"><input id="productSearch" type="search" placeholder="Search pieces" aria-label="Search products"><select id="stockFilter" aria-label="Availability"><option value="all">All pieces</option><option value="available">In stock</option><option value="unavailable">Out of stock</option></select><span class="small" id="productCount">THE AYOO EDIT</span><select id="sortProducts" aria-label="Sort products"><option value="featured">Featured</option><option value="name">Name A–Z</option><option value="priceLow">Price: low to high</option><option value="priceHigh">Price: high to low</option></select></div></div><div id="productGrid" class="grid"><div class="empty">Discovering the collection...</div></div></section>
+<section class="story" id="story"><div class="eyebrow">THE AYOO POINT OF VIEW</div><h2>Designed to be remembered.</h2><p>AYOO explores the meeting of modern expression and timeless elegance. Each piece is an invitation to define your own form.</p></section></section>
+<section id="detail"><button class="back" id="backButton">← BACK TO COLLECTION</button><div class="detail-layout"><div><img id="mainImage" class="gallery-main" alt="Product image"><div id="thumbs" class="thumbs"></div></div><div class="detail-info"><div class="eyebrow">AYOO / THE EDIT</div><h1 id="detailName"></h1><div id="detailCollection" class="collection-name"></div><div id="detailPrice" class="detail-price"></div><p id="detailSubtitle" class="description"></p><p id="detailDescription" class="description"></p><div class="option-label">Select colour</div><div id="colorOptions" class="variant-colors"></div><div class="option-label">Select size</div><div id="sizeOptions" class="size-options"></div><div id="availability" class="availability" aria-live="polite">Select a colour and size.</div><div id="selectionSummary" class="selection-summary" aria-live="polite"></div><div class="buy-row"><button id="addBag" class="add-bag">ADD TO BAG</button><button id="shareProduct" class="share" aria-label="Share product">↗</button></div><div class="detail-note">A VISION BY AYOO · FORM 01</div></div></div></section>
+<div class="bag-overlay" id="bagOverlay" role="dialog" aria-modal="true" aria-label="Shopping bag"><div class="bag-panel"><div class="bag-head"><h2 id="bagTitle">Your bag</h2><button class="bag-close" id="bagClose" aria-label="Close">×</button></div><div id="bagLines"></div><div id="bagSummary"></div><div class="bag-form" id="checkoutFormWrap"><h3>Delivery details</h3><form id="checkoutForm"><div class="bag-fields"><label class="wide">Full name<input name="customer_name" required minlength="2" autocomplete="name"></label><label>Email address<input name="customer_email" type="email" required autocomplete="email"></label><label>Phone number<input name="customer_phone" required minlength="6" autocomplete="tel"></label><label class="wide">Street address<input name="address_line1" required minlength="4" autocomplete="street-address"></label><label>City<input name="city" required minlength="2" value="Istanbul" autocomplete="address-level2"></label><label>Postal code<input name="postal_code" required minlength="2" autocomplete="postal-code"></label><label class="wide">Order note (optional)<textarea name="customer_note" rows="2"></textarea></label></div><div class="bag-note">Cash on delivery is currently available only in Türkiye. Shipping cost will be confirmed by AYOO before dispatch; the amount shown above is the product subtotal, not a final delivered total.</div><button class="bag-checkout" id="placeOrder" type="submit">PLACE ORDER · CASH ON DELIVERY</button><div class="bag-status" id="checkoutStatus" role="status"></div></form></div></div></div><footer><span>AYOO © 2026</span><span>A VISION IN FORM</span><nav class="footer-policies" aria-label="Customer policies"><a href="./policies.html#policy-0">Delivery</a><a href="./policies.html#policy-1">Returns & Exchanges</a><a href="./policies.html#policy-2">Privacy</a><a href="./policies.html#policy-3">Terms</a></nav><a class="footer-instagram" href="https://www.instagram.com/ayoo_.fashion/" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5" fill="none" stroke="currentColor" stroke-width="1.7"/><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="1.7"/><circle cx="17.6" cy="6.6" r="1.1" fill="currentColor"/></svg><span>FOLLOW OUR JOURNEY</span></a><span>DESIGNED WITH INTENTION</span></footer>
 <script type="module">
 import {supabase} from './config.js';
+const $=id=>document.getElementById(id);let products=[],variants=[],translations={},collections=[],promotions=[],activeProduct=null,selectedColor=null,selectedSize=null,language=localStorage.getItem('ayoo-language')||'en';
+const wishlistKey='ayoo-wishlist';function wishList(){try{return JSON.parse(localStorage.getItem(wishlistKey)||'[]')}catch{return []}}function saveWish(a){localStorage.setItem(wishlistKey,JSON.stringify(a))}
+function text(v){return v==null?'':String(v)}
+function productText(p,field){return translations[String(p.id)]?.[field]||p[field]||''}
+const ui={en:{home:'Home',collection:'Collection',story:'Our Story',explore:'Explore the collection',selected:'Selected pieces',sortFeatured:'Featured',sortName:'Name A–Z',sortLow:'Price: low to high',sortHigh:'Price: high to low',search:'Search pieces',allPieces:'All pieces',inStock:'In stock',outOfStock:'Out of stock',back:'← BACK TO COLLECTION',color:'Select colour',size:'Select size',bag:'ADD TO BAG · COMING SOON',available:'Available sizes shown above',unavailable:'Currently unavailable',wishlistEmpty:'Your wishlist is empty.'},tr:{home:'Ana Sayfa',collection:'Koleksiyon',story:'Hikâyemiz',explore:'Koleksiyonu keşfet',selected:'Seçili parçalar',sortFeatured:'Öne çıkanlar',sortName:'İsim A–Z',sortLow:'Fiyat: artan',sortHigh:'Fiyat: azalan',search:'Ürün ara',allPieces:'Tüm ürünler',inStock:'Stokta',outOfStock:'Tükendi',back:'← KOLEKSİYONA DÖN',color:'Renk seçin',size:'Beden seçin',bag:'ÇANTAYA EKLE · YAKINDA',available:'Mevcut bedenler yukarıda',unavailable:'Şu anda mevcut değil',wishlistEmpty:'Favori listeniz boş.'},ar:{home:'الرئيسية',collection:'المجموعة',story:'قصتنا',explore:'اكتشفي المجموعة',selected:'قطع مختارة',sortFeatured:'الأبرز',sortName:'الاسم أ–ي',sortLow:'السعر: الأقل أولاً',sortHigh:'السعر: الأعلى أولاً',search:'ابحث عن قطعة',allPieces:'كل القطع',inStock:'متوفر',outOfStock:'نفد المخزون',back:'العودة إلى المجموعة ←',color:'اختاري اللون',size:'اختاري المقاس',bag:'أضيفي إلى الحقيبة · قريباً',available:'المقاسات المتاحة ظاهرة أعلاه',unavailable:'غير متوفر حالياً',wishlistEmpty:'قائمة أمنياتك فارغة.'}};
+function applyLanguage(){const t=ui[language]||ui.en;document.documentElement.lang=language;document.documentElement.dir=language==='ar'?'rtl':'ltr';const links=document.querySelectorAll('nav a');if(links[0])links[0].textContent=t.home;if(links[1])links[1].textContent=t.collection;if(links[2])links[2].textContent=t.story;const cta=document.querySelector('.cta');if(cta)cta.innerHTML=t.explore+' <span>↗</span>';const h=document.querySelector('.section-top h2');if(h)h.textContent=t.selected;const heroTitle=document.querySelector('.hero h1'),heroText=document.querySelector('.hero p'),storyTitle=document.querySelector('.story h2'),storyText=document.querySelector('.story p');if(language==='ar'){if(heroTitle)heroTitle.innerHTML='أناقة<br>في كل تفصيلة.';if(heroText)heroText.textContent='قطع عصرية تجمع الأنوثة الخالدة بالتفاصيل المدروسة والهوية المميزة.';if(storyTitle)storyTitle.textContent='تصميم يبقى في الذاكرة.';if(storyText)storyText.textContent='تستكشف AYOO لقاء التعبير المعاصر بالأناقة الخالدة. كل قطعة دعوة للتعبير عن أسلوبك الخاص.'}else if(language==='tr'){if(heroTitle)heroTitle.innerHTML='Her formda<br>zarafet.';if(heroText)heroText.textContent='Zamansız feminenlik, incelikli detaylar ve özgün bir bakış açısıyla şekillenen çağdaş parçalar.';if(storyTitle)storyTitle.textContent='Hatırlanmak için tasarlandı.';if(storyText)storyText.textContent='AYOO, modern ifade ile zamansız zarafetin buluşmasını keşfeder. Her parça kendi tarzınızı tanımlamaya davettir.'}else{if(heroTitle)heroTitle.innerHTML='Elegance<br>in every form.';if(heroText)heroText.textContent='Contemporary pieces shaped by timeless femininity, thoughtful details and a distinctive point of view.';if(storyTitle)storyTitle.textContent='Designed to be remembered.';if(storyText)storyText.textContent='AYOO explores the meeting of modern expression and timeless elegance. Each piece is an invitation to define your own form.'}$('backButton').textContent=t.back;$('addBag').textContent=t.bag;document.querySelectorAll('.option-label')[0].textContent=t.color;document.querySelectorAll('.option-label')[1].textContent=t.size;const opts=$('sortProducts').options;opts[0].text=t.sortFeatured;opts[1].text=t.sortName;opts[2].text=t.sortLow;opts[3].text=t.sortHigh;$('productSearch').placeholder=t.search;$('stockFilter').options[0].text=t.allPieces;$('stockFilter').options[1].text=t.inStock;$('stockFilter').options[2].text=t.outOfStock;$('languageSelect').value=language;renderProducts();}
+$('languageSelect').addEventListener('change',async(e)=>{language=e.target.value;localStorage.setItem('ayoo-language',language);translations={};applyLanguage();if(activeProduct)openProduct(activeProduct.id,false);const ids=products.map(p=>p.id);if(!ids.length)return;try{const {data,error}=await supabase.from('product_translations').select('*').in('product_id',ids).eq('language',language);if(error)throw error;(data||[]).forEach(x=>translations[String(x.product_id)]=x);renderProducts();if(activeProduct)openProduct(activeProduct.id,false)}catch(err){console.error('Translation loading failed:',err);toast('Some product translations could not be loaded.')}});function money(v,c){if(v==null||v==='')return '';try{return new Intl.NumberFormat(undefined,{style:'currency',currency:c||'USD',maximumFractionDigits:2}).format(Number(v))}catch{return Number(v).toFixed(2)+' '+(c||'USD')}}
+function productImages(p){const a=Array.isArray(p.image_urls)?p.image_urls:[];if(p.image_url&&!a.includes(p.image_url))a.unshift(p.image_url);return a.filter(Boolean)}
+function variantsFor(p){return variants.filter(v=>String(v.product_id)===String(p.id)&&v.active!==false)}
+function baseVariantPrice(p,v){return v?.price_override!=null?Number(v.price_override):Number(p.price||0)}
+function promotionalPrice(p,base){const now=Date.now();const applicable=promotions.filter(x=>x.active&&now>=new Date(x.starts_at).getTime()&&now<=new Date(x.ends_at).getTime()&&(x.scope==='all'||(x.scope==='collection'&&x.collection_name===p.collection)||(x.scope==='products'&&(x.product_ids||[]).map(String).includes(String(p.id)))));return applicable.reduce((best,x)=>{let candidate=base;if(x.discount_type==='percent')candidate=Math.max(0,base*(1-Number(x.discount_value)/100));else if((x.currency||'USD')===(p.currency||'USD'))candidate=Math.max(0,base-Number(x.discount_value));return Math.min(best,candidate)},base)}
+function effectivePrice(p,v){return Math.min(baseVariantPrice(p,v),promotionalPrice(p,baseVariantPrice(p,v)))}
+function saleInfo(p){const v=variantsFor(p).find(x=>x.in_stock===true);const base=baseVariantPrice(p,v);const sale=effectivePrice(p,v);return sale<base?{price:sale,base,percent:Math.round((1-sale/base)*100)}:null}
+function makeCard(p){const card=document.createElement('article');card.className='card';const media=document.createElement('div');media.className='card-media';const image=document.createElement('img');image.loading='lazy';image.src=p.image_url||(productImages(p)[0]||'');image.alt=text(p.name);const fav=document.createElement('button');fav.className='favorite';fav.textContent=wishList().includes(String(p.id))?'♥':'♡';fav.onclick=e=>{e.stopPropagation();let a=wishList(),id=String(p.id);a=a.includes(id)?a.filter(x=>x!==id):[...a,id];saveWish(a);fav.textContent=a.includes(id)?'♥':'♡'};media.append(image,fav);const sale=saleInfo(p);if(sale){const badge=document.createElement('span');badge.className='sale';badge.textContent='-'+sale.percent+'%';media.append(badge)}const title=document.createElement('h3');title.textContent=productText(p,'name');const meta=document.createElement('div');meta.className='card-meta';const collection=document.createElement('span');collection.textContent=text(p.collection||'AYOO COLLECTION');const price=document.createElement('span');price.className='price';price.textContent=money(sale?sale.price:p.price,p.currency);if(sale){const old=document.createElement('del');old.className='old-price';old.textContent=money(sale.base,p.currency);price.append(old)}meta.append(collection,price);card.append(media,title,meta);const cs=[...new Map(variantsFor(p).map(v=>[v.color_name,v])).values()];if(cs.length){const sw=document.createElement('div');sw.className='swatches';cs.slice(0,6).forEach(v=>{const dot=document.createElement('i');dot.style.background=v.color_hex||'#888';dot.title=v.color_name;sw.append(dot)});card.append(sw)}card.onclick=()=>openProduct(p.id);return card}
+function renderCollections(){const root=$('collectionCards');root.innerHTML='';if(!collections.length){$('collectionBrowser').style.display='none';return}collections.forEach(col=>{const card=document.createElement('article');card.className='card';const media=document.createElement('div');media.className='card-media';const img=document.createElement('img');img.loading='lazy';img.src=col.cover_image_url||'';img.alt=text(col.name);media.append(img);const title=document.createElement('h3');title.textContent=col.name;const desc=document.createElement('div');desc.className='card-meta';desc.textContent=text(col.description||'Explore the collection');card.append(media,title,desc);card.onclick=()=>{history.pushState({},'','?collection='+encodeURIComponent(col.slug));products=window.allPublishedProducts.filter(p=>p.collection===col.name||p.collection_id===col.id);$('collectionHeading').textContent=col.name;renderProducts();$('collection').scrollIntoView({behavior:'smooth'});};root.append(card)});window.allPublishedProducts=[...products];}
+function renderProducts(){const grid=$('productGrid');grid.innerHTML='';const query=$('productSearch').value.trim().toLocaleLowerCase(language==='tr'?'tr':language==='ar'?'ar':'en');const availability=$('stockFilter').value;let list=products.filter(p=>{const searchable=[productText(p,'name'),productText(p,'subtitle'),productText(p,'description'),p.collection].join(' ').toLocaleLowerCase(language==='tr'?'tr':language==='ar'?'ar':'en');const inStock=variantsFor(p).some(v=>v.in_stock===true);return(!query||searchable.includes(query))&&(availability==='all'||(availability==='available'?inStock:!inStock))});const sort=$('sortProducts').value;if(sort==='name')list.sort((a,b)=>text(a.name).localeCompare(text(b.name)));if(sort==='priceLow')list.sort((a,b)=>Number(a.price||0)-Number(b.price||0));if(sort==='priceHigh')list.sort((a,b)=>Number(b.price||0)-Number(a.price||0));$('productCount').textContent=String(list.length).padStart(2,'0')+' PIECES';if(!list.length){grid.innerHTML='<div class="empty">The collection is being prepared.</div>';return}list.forEach(p=>grid.append(makeCard(p)))}
+async function loadProducts(){const {data,error}=await supabase.from('products').select('*').eq('published',true).order('sort_order',{ascending:true});if(error){$('productGrid').textContent='The collection is temporarily unavailable.';console.error(error);return}products=data||[];const ids=products.map(p=>p.id);if(ids.length){const [vr,tr,pr]=await Promise.all([supabase.from('public_product_variants').select('*').in('product_id',ids),supabase.from('product_translations').select('*').in('product_id',ids).eq('language',language),supabase.from('promotions').select('*').eq('active',true)]);if(pr.error){console.warn('Promotions unavailable',pr.error);promotions=[]}else promotions=pr.data||[];if(vr.error){console.error('Variant availability unavailable',vr.error);variants=[]}else variants=(vr.data||[]).filter(v=>v.active!==false);if(tr.error){console.error('Translations unavailable',tr.error);translations={}}else{translations={};(tr.data||[]).forEach(x=>translations[String(x.product_id)]=x)}}const cr=await supabase.from('collections').select('*').eq('published',true).order('sort_order',{ascending:true});if(cr.error){console.warn('Collections unavailable',cr.error);collections=[]}else collections=cr.data||[];renderCollections();applyLanguage();const params=new URLSearchParams(location.search),id=params.get('product'),collectionSlug=params.get('collection');if(collectionSlug){const col=collections.find(x=>x.slug===collectionSlug);if(col){products=products.filter(p=>p.collection===col.name||p.collection_id===col.id);$('collectionHeading').textContent=col.name;document.querySelector('.section-top h2').textContent=col.name;}}renderProducts();renderBagCount();if(id)openProduct(id,false)}
+function updateDetailPrice(p,v){const base=baseVariantPrice(p,v),price=effectivePrice(p,v);$('detailPrice').innerHTML='';const current=document.createElement('span');current.textContent=money(price,p.currency);$('detailPrice').append(current);if(price<base){const old=document.createElement('del');old.textContent=money(base,p.currency);$('detailPrice').append(old)}}
+function setActiveGalleryImage(url){const main=$('mainImage');main.src=url||'';$('thumbs').querySelectorAll('img').forEach(img=>img.classList.toggle('active',img.dataset.src===url))}
+function openProduct(id,updateUrl=true){const p=products.find(x=>String(x.id)===String(id));if(!p)return;activeProduct=p;const images=productImages(p);$('detailName').textContent=productText(p,'name');$('detailCollection').textContent=text(p.collection||'FORM 01');$('detailSubtitle').textContent=productText(p,'subtitle');$('detailDescription').textContent=productText(p,'description');const main=$('mainImage');main.alt=text(p.name);const thumbs=$('thumbs');thumbs.innerHTML='';images.forEach((url,i)=>{const img=document.createElement('img');img.src=url;img.dataset.src=url;img.alt=text(p.name)+' image '+(i+1);img.tabIndex=0;img.setAttribute('role','button');if(i===0)img.classList.add('active');img.onclick=()=>setActiveGalleryImage(url);img.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();setActiveGalleryImage(url)}};thumbs.append(img)});setActiveGalleryImage(images[0]||'');const pv=variantsFor(p);const colorMap=new Map();pv.forEach(v=>{if(!colorMap.has(v.color_name))colorMap.set(v.color_name,v)});const colorRoot=$('colorOptions');colorRoot.innerHTML='';[...colorMap.values()].forEach(v=>{const b=document.createElement('button');b.type='button';b.className='color-option';b.setAttribute('aria-label',text(v.color_name));const sw=document.createElement('span');sw.className='swatch';sw.style.background=v.color_hex||'#888';const label=document.createElement('span');label.textContent=text(v.color_name);b.append(sw,label);b.onclick=()=>{selectedColor=v.color_name;selectedSize=null;if(v.image_url)setActiveGalleryImage(v.image_url);else setActiveGalleryImage(images[0]||'');renderVariantOptions(p)};colorRoot.append(b)});selectedColor=[...colorMap.keys()][0]||null;selectedSize=null;renderVariantOptions(p);$('home').style.display='none';$('detail').style.display='block';window.scrollTo(0,0);if(updateUrl)history.pushState({product:id},'','?product='+encodeURIComponent(id))}
+function renderVariantOptions(p){const pv=variantsFor(p);$('colorOptions').querySelectorAll('button').forEach(b=>{b.classList.toggle('active',b.getAttribute('aria-label')===selectedColor);b.setAttribute('aria-pressed',String(b.getAttribute('aria-label')===selectedColor))});const sizes=$('sizeOptions');sizes.innerHTML='';const colorVariants=pv.filter(v=>v.color_name===selectedColor);const allSizes=[...new Set(colorVariants.map(v=>v.size))];allSizes.forEach(s=>{const v=colorVariants.find(x=>x.size===s&&x.in_stock===true);const b=document.createElement('button');b.type='button';b.className='size-option';b.textContent=s;b.disabled=!v;b.title=v?'Available':'Out of stock';b.setAttribute('aria-label',s+(v?' — available':' — out of stock'));if(selectedSize===s)b.classList.add('active');b.onclick=()=>{if(!v)return;selectedSize=s;renderVariantOptions(p)};sizes.append(b)});const selected=colorVariants.find(v=>v.size===selectedSize&&v.in_stock===true);if(selected){updateDetailPrice(p,selected);$('availability').textContent=language==='ar'?'متوفر — اختير '+selectedColor+' / '+selectedSize:language==='tr'?'Stokta — Seçilen: '+selectedColor+' / '+selectedSize:'In stock — Selected: '+selectedColor+' / '+selectedSize;$('selectionSummary').textContent=language==='ar'?'اللون: '+selectedColor+' · المقاس: '+selectedSize:language==='tr'?'Renk: '+selectedColor+' · Beden: '+selectedSize:'Colour: '+selectedColor+' · Size: '+selectedSize}else{const sample=colorVariants.find(v=>v.in_stock===true)||colorVariants[0];if(sample)updateDetailPrice(p,sample);else updateDetailPrice(p,null);$('selectionSummary').textContent='';$('availability').textContent=!colorVariants.length?(language==='ar'?'غير متوفر حالياً':language==='tr'?'Şu anda mevcut değil':'Currently unavailable'):allSizes.length?(language==='ar'?'اختاري مقاسًا متاحًا':language==='tr'?'Mevcut bir beden seçin':'Choose an available size'):(language==='ar'?'هذا اللون غير متوفر':language==='tr'?'Bu renk mevcut değil':'This colour is unavailable')}$('addBag').disabled=!selected;$('addBag').style.opacity=selected?'1':'.55'}
+function showHome(){ $('detail').style.display='none';$('home').style.display='block';if(location.search)history.pushState({},'',location.pathname);window.scrollTo(0,0)}
+$('backButton').onclick=showHome;$('sortProducts').onchange=renderProducts;$('productSearch').addEventListener('input',renderProducts);$('stockFilter').addEventListener('change',renderProducts);$('wishlistButton').onclick=()=>{const ids=wishList();const list=products.filter(p=>ids.includes(String(p.id)));if(!list.length){toast((ui[language]||ui.en).wishlistEmpty);return}const grid=$('productGrid');grid.innerHTML='';list.forEach(p=>grid.append(makeCard(p)));$('collection').scrollIntoView({behavior:'smooth'})};
+$('shareProduct').onclick=async()=>{if(!activeProduct)return;const url=location.href;if(navigator.share){try{await navigator.share({title:activeProduct.name,url})}catch{}}else{await navigator.clipboard?.writeText(url);toast('Product link copied') }};
 
-const grid=document.getElementById('productGrid');
-const home=document.getElementById('home');
-const detail=document.getElementById('detail');
-let products=[];
+const bagKey='ayoo-shopping-bag';
+function readBag(){try{const x=JSON.parse(localStorage.getItem(bagKey)||'[]');return Array.isArray(x)?x:[]}catch{return []}}
+function writeBag(items){localStorage.setItem(bagKey,JSON.stringify(items));renderBagCount()}
+function bagVariant(id){return variants.find(v=>String(v.id)===String(id)&&v.active!==false)}
+function bagProduct(id){return products.find(p=>String(p.id)===String(id))}
+function bagPrice(p,v){return effectivePrice(p,v)}
+function renderBagCount(){const count=readBag().reduce((n,x)=>n+Number(x.quantity||0),0);$('bagCount').textContent=count}
+function addSelectedToBag(){if(!activeProduct||!selectedColor||!selectedSize){toast('Please select a colour and size.');return}const existingBag=readBag();if(existingBag.length&&bagProduct(existingBag[0].product_id)?.currency!==activeProduct.currency){toast('Please place separate orders for different currencies.');return}const v=variantsFor(activeProduct).find(x=>x.color_name===selectedColor&&x.size===selectedSize&&x.in_stock===true);if(!v){toast('This option is no longer available.');return}const items=readBag(),found=items.find(x=>String(x.variant_id)===String(v.id));if(found){if(found.quantity>=20){toast('Maximum quantity is 20 per item.');return}found.quantity++}else items.push({variant_id:v.id,product_id:activeProduct.id,quantity:1});writeBag(items);toast('Added to your bag.');}
+function renderBag(){const root=$('bagLines'),summary=$('bagSummary'),items=readBag();root.innerHTML='';summary.innerHTML='';$('checkoutFormWrap').classList.remove('open');$('checkoutStatus').textContent='';if(!items.length){root.innerHTML='<div class="bag-empty">Your bag is waiting for something beautiful.</div>';return}let subtotal=0,valid=[];items.forEach(item=>{const p=bagProduct(item.product_id),v=bagVariant(item.variant_id);if(!p||!v)return;const price=bagPrice(p,v),line=price*item.quantity;subtotal+=line;valid.push(item);const row=document.createElement('div');row.className='bag-line';const img=document.createElement('img');img.src=v.image_url||productImages(p)[0]||'';img.alt=text(p.name);const info=document.createElement('div'),name=document.createElement('strong'),meta=document.createElement('small'),qty=document.createElement('div'),minus=document.createElement('button'),num=document.createElement('span'),plus=document.createElement('button'),remove=document.createElement('button');name.textContent=productText(p,'name');meta.textContent=v.color_name+' · '+v.size+' · '+money(price,p.currency);qty.className='bag-qty';minus.textContent='−';plus.textContent='+';num.textContent=item.quantity;minus.onclick=()=>changeBagQty(v.id,-1);plus.onclick=()=>changeBagQty(v.id,1);remove.className='bag-remove';remove.textContent='Remove';remove.onclick=()=>{writeBag(readBag().filter(x=>String(x.variant_id)!==String(v.id)));renderBag()};qty.append(minus,num,plus);info.append(name,meta,qty,remove);const amount=document.createElement('strong');amount.textContent=money(line,p.currency);row.append(img,info,amount);root.append(row)});if(valid.length!==items.length)writeBag(valid);if(!valid.length){root.innerHTML='<div class="bag-empty">Your selected items are no longer available.</div>';return}const currency=bagProduct(valid[0].product_id)?.currency||'USD';const total=document.createElement('div');total.className='bag-total';const label=document.createElement('span');label.textContent='PRODUCT SUBTOTAL';const amount=document.createElement('span');amount.textContent=money(subtotal,currency);total.append(label,amount);summary.append(total);const note=document.createElement('div');note.className='bag-note';note.textContent='Shipping is not included yet. AYOO will confirm the shipping fee with you before dispatch.';summary.append(note);const checkout=document.createElement('button');checkout.className='bag-checkout';checkout.textContent='CONTINUE TO CHECKOUT';checkout.onclick=()=>{if(valid.some(x=>bagProduct(x.product_id)?.currency!==currency)){toast('Please keep one currency per order.');return}$('checkoutFormWrap').classList.add('open');$('checkoutFormWrap').scrollIntoView({behavior:'smooth',block:'nearest'})};summary.append(checkout)}
+function changeBagQty(id,delta){const items=readBag(),item=items.find(x=>String(x.variant_id)===String(id));if(!item)return;const next=item.quantity+delta;if(next<1){writeBag(items.filter(x=>String(x.variant_id)!==String(id)))}else if(next>20){toast('Maximum quantity is 20 per item.');return}else{item.quantity=next;writeBag(items)}renderBag()}
+function openBag(){renderBag();$('bagOverlay').classList.add('open')}
+$('bagButton').onclick=openBag;$('bagClose').onclick=()=>$('bagOverlay').classList.remove('open');$('bagOverlay').onclick=e=>{if(e.target===$('bagOverlay'))$('bagOverlay').classList.remove('open')};
+$('addBag').onclick=addSelectedToBag;
+$('checkoutForm').onsubmit=async e=>{e.preventDefault();const btn=$('placeOrder'),status=$('checkoutStatus'),form=new FormData(e.currentTarget);const items=readBag();if(!items.length){status.textContent='Your bag is empty.';return}if(items.some(x=>bagProduct(x.product_id)?.currency!==bagProduct(items[0].product_id)?.currency)){status.textContent='Please place separate orders for different currencies.';return}btn.disabled=true;btn.textContent='SUBMITTING ORDER…';status.textContent='Creating your order securely…';try{const payload={p_customer_name:String(form.get('customer_name')).trim(),p_customer_email:String(form.get('customer_email')).trim(),p_customer_phone:String(form.get('customer_phone')).trim(),p_shipping_country_code:'TR',p_shipping_address:{address_line1:String(form.get('address_line1')).trim(),city:String(form.get('city')).trim(),postal_code:String(form.get('postal_code')).trim()},p_payment_method:'cash_on_delivery',p_items:items.map(x=>({variant_id:x.variant_id,quantity:x.quantity})),p_customer_note:String(form.get('customer_note')||'').trim()||null,p_shipping_amount:0};const checkoutFingerprint=JSON.stringify(payload);let checkoutAttempt=null;try{checkoutAttempt=JSON.parse(sessionStorage.getItem('ayoo_checkout_attempt')||'null')}catch{}if(!checkoutAttempt||checkoutAttempt.fingerprint!==checkoutFingerprint){checkoutAttempt={fingerprint:checkoutFingerprint,key:crypto.randomUUID()};sessionStorage.setItem('ayoo_checkout_attempt',JSON.stringify(checkoutAttempt))}payload.p_idempotency_key=checkoutAttempt.key;const {data,error}=await supabase.rpc('ayoo_create_order',payload);if(error)throw error;const order=Array.isArray(data)?data[0]:data;if(!order?.order_number)throw new Error('The order response could not be verified. Please contact AYOO before retrying.');sessionStorage.removeItem('ayoo_checkout_attempt');writeBag([]);renderBag();$('checkoutStatus').textContent='';$('bagLines').innerHTML='<div class="bag-empty">Thank you. Your order '+order.order_number+' has been received. AYOO will contact you to confirm delivery and shipping cost.</div>';toast('Order received: '+order.order_number);e.currentTarget.reset()}catch(err){status.textContent='Order was not completed: '+(err.message||String(err));}finally{btn.disabled=false;btn.textContent='PLACE ORDER · CASH ON DELIVERY'}};
 
-function safeText(value){
- return value==null?'':String(value);
-}
-
-function productImages(p){
- const images=Array.isArray(p.image_urls)?p.image_urls:[];
- const all=[...images];
- if(p.image_url&&!all.includes(p.image_url))all.unshift(p.image_url);
- return all.filter(Boolean);
-}
-
-function makeCard(p){
- const card=document.createElement('article');
- card.className='card';
- const image=document.createElement('img');
- image.loading='lazy';
- image.src=p.image_url||(productImages(p)[0]||'');
- image.alt=safeText(p.name);
- const title=document.createElement('h3');
- title.textContent=safeText(p.name);
- const label=document.createElement('p');
- label.textContent=safeText(p.collection||'AYOO COLLECTION');
- card.append(image,title,label);
- card.addEventListener('click',()=>openProduct(p.id));
- return card;
-}
-
-function renderProducts(){
- grid.innerHTML='';
- if(!products.length){
-  grid.innerHTML='<div class="empty">The collection is being prepared.</div>';
-  return;
- }
- products.forEach(p=>grid.append(makeCard(p)));
-}
-
-async function loadProducts(){
- const {data,error}=await supabase.from('products')
- .select('*').eq('published',true).order('sort_order',{ascending:true});
- if(error){
-  grid.textContent='The collection is temporarily unavailable.';
-  console.error(error);
-  return;
- }
- products=data||[];
- renderProducts();
- const id=new URLSearchParams(location.search).get('product');
- if(id)openProduct(id,false);
-}
-
-function openProduct(id,updateUrl=true){
- const p=products.find(item=>String(item.id)===String(id));
- if(!p)return;
- const images=productImages(p);
- if(!images.length&&p.image_url)images.push(p.image_url);
-
- document.getElementById('detailName').textContent=safeText(p.name);
- document.getElementById('detailCollection').textContent=safeText(p.collection||'FORM 01');
- document.getElementById('detailSubtitle').textContent=safeText(p.subtitle);
- document.getElementById('detailDescription').textContent=safeText(p.description);
-
- const main=document.getElementById('mainImage');
- main.src=images[0]||'';
- main.alt=safeText(p.name);
-
- const thumbs=document.getElementById('thumbs');
- thumbs.innerHTML='';
- images.forEach((url,index)=>{
-  const img=document.createElement('img');
-  img.src=url;
-  img.alt=safeText(p.name)+' image '+(index+1);
-  if(index===0)img.classList.add('active');
-  img.addEventListener('click',()=>{
-   main.src=url;
-   thumbs.querySelectorAll('img').forEach(x=>x.classList.remove('active'));
-   img.classList.add('active');
-  });
-  thumbs.append(img);
- });
-
- home.style.display='none';
- detail.style.display='block';
- window.scrollTo(0,0);
- if(updateUrl){
-  history.pushState({product:id},'', '?product='+encodeURIComponent(id));
- }
-}
-
-function showHome(){
- detail.style.display='none';
- home.style.display='block';
- if(location.search)history.pushState({},'',location.pathname);
- window.scrollTo(0,0);
-}
-
-document.getElementById('backButton').addEventListener('click',showHome);
-window.addEventListener('popstate',()=>{
- const id=new URLSearchParams(location.search).get('product');
- if(id)openProduct(id,false);
- else showHome();
-});
-
-loadProducts();
-</script>
-</body>
-</html>
+function toast(t){const el=document.createElement('div');el.className='toast';el.textContent=t;document.body.append(el);setTimeout(()=>el.remove(),2500)}
+window.addEventListener('popstate',()=>{const id=new URLSearchParams(location.search).get('product');if(id)openProduct(id,false);else showHome()});loadProducts();
+</script></body></html>
