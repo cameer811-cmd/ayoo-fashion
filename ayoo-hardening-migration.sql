@@ -4,6 +4,10 @@
 
 begin;
 
+-- Recreate both checkout overloads with an unambiguous PostgREST signature.
+drop function if exists public.ayoo_create_order(text,text,text,text,jsonb,text,jsonb,text,numeric);
+drop function if exists public.ayoo_create_order(text,text,text,text,jsonb,text,jsonb,text,text,numeric);
+
 -- 1) Private idempotency ledger. No browser role receives table privileges.
 create table if not exists public.ayoo_checkout_requests (
   idempotency_key text primary key,
@@ -27,9 +31,9 @@ create or replace function public.ayoo_create_order(
   p_shipping_address jsonb,
   p_payment_method text,
   p_items jsonb,
+  p_idempotency_key text,
   p_customer_note text default null,
-  p_shipping_amount numeric default 0,
-  p_idempotency_key text default null
+  p_shipping_amount numeric default 0
 )
 returns table(order_id uuid, order_number text, total_amount numeric, currency text)
 language plpgsql
@@ -185,9 +189,9 @@ begin
 end;
 $$;
 
-revoke all on function public.ayoo_create_order(text,text,text,text,jsonb,text,jsonb,text,numeric,text)
+revoke all on function public.ayoo_create_order(text,text,text,text,jsonb,text,jsonb,text,text,numeric)
   from public;
-grant execute on function public.ayoo_create_order(text,text,text,text,jsonb,text,jsonb,text,numeric,text)
+grant execute on function public.ayoo_create_order(text,text,text,text,jsonb,text,jsonb,text,text,numeric)
   to anon, authenticated;
 
 -- Backward-compatible RPC for the currently deployed storefront.
@@ -211,8 +215,8 @@ begin
   return query
     select * from public.ayoo_create_order(
       p_customer_name,p_customer_email,p_customer_phone,p_shipping_country_code,
-      p_shipping_address,p_payment_method,p_items,p_customer_note,p_shipping_amount,
-      gen_random_uuid()::text
+      p_shipping_address,p_payment_method,p_items,gen_random_uuid()::text,
+      p_customer_note,p_shipping_amount
     );
 end;
 $wrapper$;
