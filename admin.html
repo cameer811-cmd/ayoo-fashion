@@ -34,7 +34,7 @@ body{font-family:"Alexandria","Segoe UI",Arial,sans-serif}h1,h2,.stat strong{fon
 <div class="headrow"><div><p class="pill">AYOO / MANAGEMENT</p><h1>مركز التحكم</h1><p class="muted">إدارة دقيقة لكل قطعة، لون، مقاس، وسعر.</p></div><button id="newProduct">＋ إضافة منتج</button></div>
 <div class="layout">
 <aside class="side">
-<button class="active" data-tab="overview">▦ نظرة عامة</button><button data-tab="orders">▣ الطلبات</button><button data-tab="products">◇ المنتجات والمخزون</button><button data-tab="editor">＋ إضافة / تعديل منتج</button><button data-tab="collections">▤ المجموعات</button><button data-tab="reports">▥ تقارير المخزون</button><button data-tab="promotions">٪ العروض والتخفيضات</button>
+<button class="active" data-tab="overview">▦ نظرة عامة</button><button data-tab="orders">▣ الطلبات</button><button data-tab="products">◇ المنتجات والمخزون</button><button data-tab="editor">＋ إضافة / تعديل منتج</button><button data-tab="collections">▤ المجموعات</button><button data-tab="reports">▥ تقارير المخزون</button><button data-tab="audit">◷ سجل حركة المخزون</button><button data-tab="promotions">٪ العروض والتخفيضات</button>
 <div class="side-foot"><button id="logoutSide" class="ghost">↪ تسجيل الخروج</button></div>
 </aside>
 <div class="content">
@@ -83,7 +83,7 @@ body{font-family:"Alexandria","Segoe UI",Arial,sans-serif}h1,h2,.stat strong{fon
 <div class="field wide toolbar"><button type="submit" id="savePromotion">حفظ العرض</button><button type="button" class="secondary" id="cancelPromotion">إلغاء</button></div><div id="promotionStatus" class="status wide"></div></form>
 <div class="section-title"><h2>العروض المحفوظة</h2><button id="refreshPromotions" class="secondary">تحديث</button></div><div id="promotionsList"></div></div></section>
 <section id="tab-orders" class="hidden"><div class="panel"><div class="headrow"><div><h2>إدارة الطلبات</h2><p class="muted">الطلبات الواردة، تفاصيل المنتجات، وتحديث حالة التنفيذ.</p></div><button id="refreshOrders" class="secondary">تحديث الطلبات</button></div><div class="stats"><div class="stat"><small>الطلبات المعروضة (آخر 100)</small><strong id="orderCount">—</strong></div><div class="stat"><small>طلبات قيد التنفيذ</small><strong id="orderActive">—</strong></div><div class="stat"><small>طلبات ملغاة</small><strong id="orderCancelled">—</strong></div><div class="stat"><small>قيمة الطلبات غير الملغاة</small><strong id="orderValue" style="font-size:20px">—</strong></div></div><p class="muted">القيمة تقديرية للطلبات غير الملغاة وليست مبالغ محصّلة؛ لا يوجد ربط دفع إلكتروني. يعرض الملخص أحدث 100 طلب فقط.</p><div class="toolbar"><input id="orderSearch" type="search" placeholder="ابحث برقم الطلب أو اسم العميل أو الهاتف"><select id="orderStatusFilter"><option value="all">كل الحالات</option><option value="pending">قيد المراجعة</option><option value="confirmed">تم التأكيد</option><option value="processing">قيد التجهيز</option><option value="shipped">تم الشحن</option><option value="delivered">تم التسليم</option><option value="cancelled">ملغي</option></select></div><div id="ordersStatus" class="status"></div><div id="ordersList"></div></div></section>
-<section id="tab-reports" class="hidden"><div class="panel"><div class="headrow"><div><h2>تقارير المخزون</h2><p class="muted">ملخص الكميات المتاحة والتنبيهات حسب المنتج واللون والمقاس.</p></div><button id="exportInventory" class="secondary">تصدير CSV</button></div><div class="stats"><div class="stat"><small>إجمالي الوحدات المتاحة</small><strong id="reportUnits">—</strong></div><div class="stat"><small>تركيبات منخفضة المخزون</small><strong id="reportLow">—</strong></div><div class="stat"><small>تركيبات نفدت</small><strong id="reportOut">—</strong></div><div class="stat"><small>قيمة المخزون التقديرية</small><strong id="reportValue">—</strong></div></div><div class="toolbar"><select id="stockThreshold"><option value="3">تنبيه عند 3 قطع أو أقل</option><option value="5">تنبيه عند 5 قطع أو أقل</option><option value="10">تنبيه عند 10 قطع أو أقل</option></select><input id="stockSearch" placeholder="ابحث عن منتج أو لون أو مقاس"></div><div id="inventoryReport"></div></div></section>
+<section id="tab-audit" class="hidden"><div class="panel"><div class="headrow"><div><h2>سجل حركة المخزون</h2><p class="muted">سجل تلقائي لتغييرات الكميات والحجوزات وتفعيل المتغيرات.</p></div><button id="refreshAudit" class="secondary">تحديث السجل</button></div><div class="toolbar"><input id="auditSearch" type="search" placeholder="ابحث باسم المنتج أو اللون أو المقاس"><select id="auditType"><option value="all">كل الحركات</option><option value="variant_created">إنشاء متغير</option><option value="stock_adjusted">تعديل المخزون</option><option value="reservation_changed">تغيير الحجز</option><option value="stock_and_reservation_changed">تعديل المخزون والحجز</option><option value="variant_activated">تفعيل متغير</option><option value="variant_deactivated">إيقاف متغير</option></select></div><div id="auditStatus" class="status"></div><div class="table-wrap"><table class="matrix" style="min-width:760px"><thead><tr><th>التاريخ</th><th>المنتج</th><th>اللون / المقاس</th><th>نوع الحركة</th><th>المخزون</th><th>المحجوز</th><th>المتاح قبل ← بعد</th><th>المستخدم</th></tr></thead><tbody id="auditRows"><tr><td colspan="8">افتح السجل لتحميل البيانات.</td></tr></tbody></table></div></div></section><section id="tab-reports" class="hidden"><div class="panel"><div class="headrow"><div><h2>تقارير المخزون</h2><p class="muted">ملخص الكميات المتاحة والتنبيهات حسب المنتج واللون والمقاس.</p></div><button id="exportInventory" class="secondary">تصدير CSV</button></div><div class="stats"><div class="stat"><small>إجمالي الوحدات المتاحة</small><strong id="reportUnits">—</strong></div><div class="stat"><small>تركيبات منخفضة المخزون</small><strong id="reportLow">—</strong></div><div class="stat"><small>تركيبات نفدت</small><strong id="reportOut">—</strong></div><div class="stat"><small>قيمة المخزون التقديرية</small><strong id="reportValue">—</strong></div></div><div class="toolbar"><select id="stockThreshold"><option value="3">تنبيه عند 3 قطع أو أقل</option><option value="5">تنبيه عند 5 قطع أو أقل</option><option value="10">تنبيه عند 10 قطع أو أقل</option></select><input id="stockSearch" placeholder="ابحث عن منتج أو لون أو مقاس"></div><div id="inventoryReport"></div></div></section>
 <section id="tab-collections" class="hidden"><div class="panel"><h2>المجموعات والمواسم</h2><p class="muted">إدارة أسماء المجموعات وربط المنتجات بها.</p><form id="collectionForm" class="form-grid"><div class="field"><label>اسم المجموعة</label><input id="collectionName" required placeholder="FORM 02"></div><div class="field"><label>الرابط المختصر</label><input id="collectionSlug" required placeholder="form-02"></div><div class="field wide"><label>الوصف</label><textarea id="collectionDesc"></textarea></div><div class="field wide"><label>صورة غلاف المجموعة</label><input id="collectionCover" type="file" accept="image/jpeg,image/png,image/webp"></div><div class="field"><label class="check"><input id="collectionPublished" type="checkbox" checked> منشورة</label></div><div class="field"><button type="submit">حفظ المجموعة</button></div></form><div id="collectionsList"></div><div id="collectionStatus" class="status"></div></div></section>
 </div></div></section></main>
 <script type="module">
@@ -93,13 +93,41 @@ const COLORS=[['أحمر','#c62828'],['عنابي','#64152b'],['وردي','#e7a0
 const DEFAULT_SIZES=['XS','S','M','L','XL','XXL'];
 let products=[],collections=[],variants=[],promotions=[],selectedColors=[],selectedSizes=[],existingImages=[],customColors=[],customSizes=[],editingVariantMap={},colorImageFiles={};
 const msg=(id,t)=>$(id).textContent=t;
-function showTab(tab){document.querySelectorAll('[id^="tab-"]').forEach(x=>x.classList.add('hidden'));$('tab-'+tab).classList.remove('hidden');document.querySelectorAll('[data-tab]').forEach(b=>b.classList.toggle('active',b.dataset.tab===tab));if(tab==='products')renderProducts();if(tab==='collections')renderCollections();if(tab==='reports')renderInventoryReport();if(tab==='promotions'){populatePromotionTargets();renderPromotions();}if(tab==='orders')loadOrders();}
+function showTab(tab){document.querySelectorAll('[id^="tab-"]').forEach(x=>x.classList.add('hidden'));$('tab-'+tab).classList.remove('hidden');document.querySelectorAll('[data-tab]').forEach(b=>b.classList.toggle('active',b.dataset.tab===tab));if(tab==='products')renderProducts();if(tab==='collections')renderCollections();if(tab==='reports')renderInventoryReport();if(tab==='audit')loadInventoryAudit();if(tab==='promotions'){populatePromotionTargets();renderPromotions();}if(tab==='orders')loadOrders();}
 document.querySelectorAll('[data-tab]').forEach(b=>b.onclick=()=>showTab(b.dataset.tab));
 function setLoggedIn(on){$('login').classList.toggle('hidden',on);$('dashboard').classList.toggle('hidden',!on);$('logout').classList.toggle('hidden',!on);if(on)loadAll();}
 async function checkSession(){const {data}=await supabase.auth.getSession();setLoggedIn(!!data.session);}
 $('loginForm').onsubmit=async e=>{e.preventDefault();msg('loginStatus','جارٍ تسجيل الدخول...');const {error}=await supabase.auth.signInWithPassword({email:$('email').value.trim(),password:$('password').value});if(error){msg('loginStatus',error.message);return}msg('loginStatus','');setLoggedIn(true)};
 async function logout(){await supabase.auth.signOut();location.reload()}$('logout').onclick=logout;$('logoutSide').onclick=logout;
 async function loadAll(){await Promise.all([loadProducts(),loadCollections(),loadPromotions(),loadOrders()]);}
+
+
+let inventoryAuditCache=[];
+const auditLabels={variant_created:'إنشاء متغير',stock_adjusted:'تعديل المخزون',reservation_changed:'تغيير الحجز',stock_and_reservation_changed:'تعديل المخزون والحجز',variant_activated:'تفعيل متغير',variant_deactivated:'إيقاف متغير'};
+async function loadInventoryAudit(){
+ const body=$('auditRows');if(!body)return;
+ msg('auditStatus','جارٍ تحميل سجل حركة المخزون…');
+ body.innerHTML='<tr><td colspan="8">جارٍ التحميل…</td></tr>';
+ const {data,error}=await supabase.from('inventory_audit').select('*').order('occurred_at',{ascending:false}).limit(250);
+ if(error){msg('auditStatus','تعذر تحميل السجل: '+error.message+' — تأكد من تشغيل inventory-audit-migration.sql.');body.innerHTML='';return}
+ inventoryAuditCache=data||[];renderInventoryAudit();
+ msg('auditStatus','آخر '+inventoryAuditCache.length+' حركة مسجلة. السجل يعرض حتى 250 حركة.');
+}
+function renderInventoryAudit(){
+ const body=$('auditRows');if(!body)return;body.innerHTML='';
+ const q=($('auditSearch')?.value||'').trim().toLowerCase(),type=$('auditType')?.value||'all';
+ const rows=inventoryAuditCache.filter(x=>(type==='all'||x.event_type===type)&&(!q||[x.product_name,x.color_name,x.size].join(' ').toLowerCase().includes(q)));
+ if(!rows.length){body.innerHTML='<tr><td colspan="8">لا توجد حركات مطابقة.</td></tr>';return}
+ rows.forEach(x=>{
+  const tr=document.createElement('tr');
+  const values=[new Date(x.occurred_at).toLocaleString(),x.product_name,x.color_name+' / '+x.size,auditLabels[x.event_type]||x.event_type,String(x.old_stock)+' ← '+String(x.new_stock),String(x.old_reserved)+' ← '+String(x.new_reserved),String(x.available_before)+' ← '+String(x.available_after),x.actor_id?String(x.actor_id).slice(0,8)+'…':'النظام / طلب عميل'];
+  values.forEach(v=>{const td=document.createElement('td');td.textContent=v;tr.append(td)});
+  body.append(tr);
+ });
+}
+$('refreshAudit').onclick=loadInventoryAudit;
+$('auditSearch').oninput=renderInventoryAudit;
+$('auditType').onchange=renderInventoryAudit;
 
 let orderCache=[];
 function applyOrderFilters(){const q=($('orderSearch')?.value||'').trim().toLowerCase(),st=$('orderStatusFilter')?.value||'all';document.querySelectorAll('#ordersList article[data-order-search]').forEach(card=>{const matchText=!q||card.dataset.orderSearch.includes(q);const matchStatus=st==='all'||card.dataset.orderStatus===st;card.classList.toggle('hidden',!(matchText&&matchStatus));});}
