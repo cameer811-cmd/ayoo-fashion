@@ -296,7 +296,41 @@ where p.published=true and v.active=true;
 -- 6) Event trigger remains callable by PostgreSQL event-trigger machinery only.
 revoke all on function public.rls_auto_enable() from public,anon,authenticated;
 
--- 7) Missing FK indexes found by the advisor.
+-- 7) Avoid per-row auth.uid() re-evaluation in owner RLS policies.
+alter policy "AYOO owner manages products" on public.products
+  using ((select auth.uid())='03b2c71f-23d6-4968-8b4b-ca9d1681f91c'::uuid)
+  with check ((select auth.uid())='03b2c71f-23d6-4968-8b4b-ca9d1681f91c'::uuid);
+alter policy "AYOO owner manages collections" on public.collections
+  using ((select auth.uid())='03b2c71f-23d6-4968-8b4b-ca9d1681f91c'::uuid)
+  with check ((select auth.uid())='03b2c71f-23d6-4968-8b4b-ca9d1681f91c'::uuid);
+alter policy "AYOO owner manages collection translations" on public.collection_translations
+  using ((select auth.uid())='03b2c71f-23d6-4968-8b4b-ca9d1681f91c'::uuid)
+  with check ((select auth.uid())='03b2c71f-23d6-4968-8b4b-ca9d1681f91c'::uuid);
+alter policy "AYOO owner manages product_variants" on public.product_variants
+  using ((select auth.uid())='03b2c71f-23d6-4968-8b4b-ca9d1681f91c'::uuid)
+  with check ((select auth.uid())='03b2c71f-23d6-4968-8b4b-ca9d1681f91c'::uuid);
+alter policy "AYOO owner manages product_images" on public.product_images
+  using ((select auth.uid())='03b2c71f-23d6-4968-8b4b-ca9d1681f91c'::uuid)
+  with check ((select auth.uid())='03b2c71f-23d6-4968-8b4b-ca9d1681f91c'::uuid);
+alter policy "AYOO owner manages product_translations" on public.product_translations
+  using ((select auth.uid())='03b2c71f-23d6-4968-8b4b-ca9d1681f91c'::uuid)
+  with check ((select auth.uid())='03b2c71f-23d6-4968-8b4b-ca9d1681f91c'::uuid);
+alter policy "AYOO owner manages inventory_movements" on public.inventory_movements
+  using ((select auth.uid())='03b2c71f-23d6-4968-8b4b-ca9d1681f91c'::uuid)
+  with check ((select auth.uid())='03b2c71f-23d6-4968-8b4b-ca9d1681f91c'::uuid);
+alter policy "AYOO owner manages promotions" on public.promotions
+  using ((select auth.uid())='03b2c71f-23d6-4968-8b4b-ca9d1681f91c'::uuid)
+  with check ((select auth.uid())='03b2c71f-23d6-4968-8b4b-ca9d1681f91c'::uuid);
+alter policy "AYOO owner reads orders" on public.orders
+  using ((select auth.uid())='03b2c71f-23d6-4968-8b4b-ca9d1681f91c'::uuid);
+alter policy "AYOO owner reads order items" on public.order_items
+  using (exists (select 1 from public.orders o
+    where o.id=order_items.order_id
+      and (select auth.uid())='03b2c71f-23d6-4968-8b4b-ca9d1681f91c'::uuid));
+alter policy "AYOO owner reads inventory audit" on public.inventory_audit
+  using ((select auth.uid())='03b2c71f-23d6-4968-8b4b-ca9d1681f91c'::uuid);
+
+-- 8) Missing FK indexes found by the advisor.
 create index if not exists inventory_movements_created_by_idx
   on public.inventory_movements(created_by);
 create index if not exists inventory_movements_variant_id_idx
