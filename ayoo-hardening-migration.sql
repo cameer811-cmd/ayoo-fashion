@@ -270,11 +270,25 @@ revoke insert,update,delete on public.orders from anon,authenticated;
 grant select on public.orders to authenticated;
 drop policy if exists "AYOO owner updates orders" on public.orders;
 
--- 5) Make the public variants view obey the caller's RLS policies.
+-- 5) Public catalogue variant access: expose availability, never raw stock counts.
+alter table public.product_variants
+  add column if not exists in_stock boolean
+  generated always as (coalesce(stock_quantity,0)>coalesce(reserved_quantity,0)) stored;
+drop policy if exists "Public can view active published variants" on public.product_variants;
+create policy "Public can view active published variants"
+  on public.product_variants for select to anon,authenticated
+  using (active=true and exists (
+    select 1 from public.products p
+    where p.id=product_variants.product_id and p.published=true
+  ));
+revoke all on public.product_variants from anon;
+grant select (id,product_id,color_name,color_hex,size,image_url,active,in_stock)
+  on public.product_variants to anon;
+
+-- The invoker view now checks caller RLS and only needs the safe generated availability field.
 create or replace view public.public_product_variants
 with (security_invoker=true) as
-select v.id,v.product_id,v.color_name,v.color_hex,v.size,v.image_url,v.active,
-  ((v.stock_quantity-v.reserved_quantity)>0) as in_stock
+select v.id,v.product_id,v.color_name,v.color_hex,v.size,v.image_url,v.active,v.in_stock
 from public.product_variants v
 join public.products p on p.id=v.product_id
 where p.published=true and v.active=true;
