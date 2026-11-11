@@ -22,9 +22,12 @@
 
 body{font-family:"Alexandria","Segoe UI",Arial,sans-serif}h1,h2,.stat strong{font-family:"Noto Naskh Arabic",Georgia,serif}button,input,textarea,select{font-family:"Alexandria",Arial,sans-serif}
 .admin-brand-copy strong{font-family:Georgia,serif;letter-spacing:2px}
+
+.admin-instagram{position:relative;z-index:2;display:flex;align-items:center;gap:8px;color:#f5e9e6;text-decoration:none;border:1px solid #c4a47766;border-radius:30px;padding:9px 13px;font-size:8px;font-weight:700;letter-spacing:1.5px;transition:.2s}.admin-instagram:hover{background:#ffffff15;color:white}.admin-instagram svg{width:17px;height:17px}
+@media(max-width:600px){.admin-instagram{padding:8px}.admin-instagram span{display:none}.admin-private{display:none}}
 </style></head>
 <body>
-<header class="top"><a class="admin-brand" href="./" aria-label="AYOO store"><span class="admin-logo-frame"><img src="./9AEC5617-2D25-41EC-83BF-7AB413B242A8.png" alt="AYOO"></span><span class="admin-brand-copy"><strong>AYOO</strong><small>ADMIN ATELIER · CONTROL CENTER</small></span></a><small class="admin-private">PRIVATE MANAGEMENT</small><button id="logout" class="secondary hidden">تسجيل الخروج</button></header>
+<header class="top"><a class="admin-brand" href="./" aria-label="AYOO store"><span class="admin-logo-frame"><img src="./9AEC5617-2D25-41EC-83BF-7AB413B242A8.png" alt="AYOO"></span><span class="admin-brand-copy"><strong>AYOO</strong><small>ADMIN ATELIER · CONTROL CENTER</small></span></a><a class="admin-instagram" href="https://www.instagram.com/ayoo_.fashion/" target="_blank" rel="noopener noreferrer" aria-label="AYOO Instagram"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5" fill="none" stroke="currentColor" stroke-width="1.7"/><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="1.7"/><circle cx="17.6" cy="6.6" r="1.1" fill="currentColor"/></svg><span>INSTAGRAM</span></a><small class="admin-private">PRIVATE MANAGEMENT</small><button id="logout" class="secondary hidden">تسجيل الخروج</button></header>
 <main class="wrap">
 <section id="login" class="login"><p class="pill">AYOO / SECURE ACCESS</p><h1>مرحباً بعودتك</h1><p class="muted">سجّل الدخول لإدارة منتجات ومتجر AYOO.</p><form id="loginForm"><div class="field"><label>البريد الإلكتروني</label><input id="email" type="email" required autocomplete="username"></div><div class="field"><label>كلمة المرور</label><input id="password" type="password" required autocomplete="current-password"></div><button type="submit">دخول إلى لوحة الإدارة</button></form><div id="loginStatus" class="status"></div></section>
 <section id="dashboard" class="hidden">
