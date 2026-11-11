@@ -147,6 +147,19 @@ begin
     raise exception 'A maximum of 30 different items can be ordered at once.';
   end if;
 
+  v_order_number := 'AY-' || to_char(now() at time zone 'UTC','YYMMDD') || '-' || upper(substr(replace(v_order_id::text,'-',''),1,8));
+
+  -- Create the parent order first because order_items has an immediate foreign key.
+  insert into public.orders(
+    id, order_number, customer_name, customer_email, customer_phone,
+    shipping_country_code, shipping_address, customer_note, currency,
+    subtotal, shipping_amount, total_amount, payment_method
+  ) values (
+    v_order_id, v_order_number, trim(p_customer_name), lower(trim(p_customer_email)),
+    trim(p_customer_phone), v_country, p_shipping_address, nullif(trim(coalesce(p_customer_note,'')),''),
+    'USD', 0, round(v_shipping,2), round(v_shipping,2), v_method
+  );
+
   -- Aggregate duplicate variant IDs so stock cannot be reserved twice through duplicate lines.
   for v_item in
     select x.variant_id::uuid as variant_id, sum(x.quantity)::integer as quantity
@@ -230,17 +243,12 @@ begin
   end loop;
 
   v_total := round(v_subtotal + v_shipping, 2);
-  v_order_number := 'AY-' || to_char(now() at time zone 'UTC','YYMMDD') || '-' || upper(substr(replace(v_order_id::text,'-',''),1,8));
-
-  insert into public.orders(
-    id, order_number, customer_name, customer_email, customer_phone,
-    shipping_country_code, shipping_address, customer_note, currency,
-    subtotal, shipping_amount, total_amount, payment_method
-  ) values (
-    v_order_id, v_order_number, trim(p_customer_name), lower(trim(p_customer_email)),
-    trim(p_customer_phone), v_country, p_shipping_address, nullif(trim(coalesce(p_customer_note,'')),''),
-    coalesce(v_currency,'USD'), round(v_subtotal,2), round(v_shipping,2), v_total, v_method
-  );
+  update public.orders
+  set currency = coalesce(v_currency,'USD'),
+      subtotal = round(v_subtotal,2),
+      total_amount = v_total,
+      updated_at = now()
+  where id = v_order_id;
 
   return query select v_order_id, v_order_number, v_total, coalesce(v_currency,'USD');
 end;
