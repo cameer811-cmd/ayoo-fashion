@@ -1,292 +1,100 @@
-
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ar" dir="rtl">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>AYOO — Admin Studio</title>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#210b13"><title>AYOO — لوحة التحكم</title>
 <style>
-:root{--wine:#470d1c;--cream:#f4ede4;--gold:#bd9870;--ink:#271b19}
-*{box-sizing:border-box}
-body{margin:0;background:var(--cream);color:var(--ink);font-family:Arial,sans-serif}
-header{background:var(--wine);color:white;padding:22px 6%;display:flex;justify-content:space-between;align-items:center}
-.logo{font:36px Georgia,serif;letter-spacing:-2px}
-.logo span{color:var(--gold)}
-main{max-width:1000px;margin:35px auto;padding:0 18px}
-h1,h2{font-family:Georgia,serif;font-weight:400}
-.panel{background:#fffdf9;padding:24px;margin:20px 0;border:1px solid #e4d9cf}
-label{display:block;font-size:11px;letter-spacing:1.5px;margin-top:15px;text-transform:uppercase}
-input,textarea{width:100%;padding:13px;margin:7px 0;border:1px solid #d9cfc5;background:white;font:15px Arial;color:var(--ink)}
-textarea{min-height:100px}
-input[type=checkbox]{width:auto}
-button{padding:13px 19px;border:0;background:var(--wine);color:white;cursor:pointer;margin:8px 5px 8px 0;letter-spacing:1px}
-.secondary{background:#e9ded2;color:var(--ink)}
-.danger{background:#8b2424}
-.hidden{display:none!important}
-.status{font-size:13px;color:var(--wine);margin:12px 0;overflow-wrap:anywhere}
-.preview-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin:12px 0}
-.preview-grid img{width:100%;aspect-ratio:3/4;object-fit:cover}
-.product{display:grid;grid-template-columns:75px 1fr auto;gap:12px;align-items:center;padding:14px 0;border-top:1px solid #e5dbd1}
-.product img{width:75px;height:95px;object-fit:cover}
-.product p{font-size:12px;color:#88796f}
-@media(max-width:600px){.panel{padding:16px}.product{grid-template-columns:65px 1fr}.product img{width:65px;height:85px}.product-actions{grid-column:2}}
-</style>
-</head>
+:root{--wine:#470d1c;--wine2:#64162b;--cream:#f6f0e8;--paper:#fffdfa;--gold:#c4a477;--ink:#24171b;--muted:#887b7c;--line:#e9e0d9;--green:#267653;--red:#a83c49;--shadow:0 14px 40px #30101a0d}
+*{box-sizing:border-box}body{margin:0;background:#f5f2ef;color:var(--ink);font-family:Inter,Arial,sans-serif}button,input,textarea,select{font:inherit}button{cursor:pointer;border:0;border-radius:10px;padding:11px 16px;background:var(--wine);color:white;font-weight:650}button:disabled{opacity:.5;cursor:wait}.secondary{background:#eee7e1;color:var(--ink)}.danger{background:#fff0f0;color:#a22d3b}.ghost{background:transparent;color:var(--wine);border:1px solid var(--line)}.hidden{display:none!important}
+.top{background:linear-gradient(115deg,#260914,#541329);color:white;padding:17px 4%;display:flex;align-items:center;justify-content:space-between;gap:15px}.brand{font:30px Georgia,serif;letter-spacing:-2px}.brand span{color:var(--gold)}.top small{color:#d9c6ca;letter-spacing:2px;font-size:10px}
+.wrap{max-width:1440px;margin:auto;padding:26px 3% 70px}.login{max-width:430px;margin:8vh auto;background:white;padding:32px;border-radius:18px;box-shadow:var(--shadow)}h1,h2,h3,p{margin-top:0}h1{font:38px Georgia,serif;color:var(--wine)}h2{font:25px Georgia,serif;color:var(--wine);margin-bottom:8px}.muted{color:var(--muted);font-size:13px}.field{margin:13px 0}.field label{display:block;font-size:12px;font-weight:700;margin-bottom:7px;color:#66565a}.field input,.field textarea,.field select{width:100%;border:1px solid #e4dad3;background:#fff;padding:12px 13px;border-radius:9px;color:var(--ink);outline:none}.field input:focus,.field textarea:focus,.field select:focus{border-color:var(--gold);box-shadow:0 0 0 3px #c4a47720}.field textarea{min-height:90px;resize:vertical}.check{display:flex;align-items:center;gap:8px;font-size:13px}.check input{width:auto}
+.layout{display:grid;grid-template-columns:230px minmax(0,1fr);gap:22px}.side{background:#fff;border:1px solid var(--line);border-radius:16px;padding:14px;height:max-content;position:sticky;top:14px}.side button{display:flex;align-items:center;gap:10px;width:100%;text-align:right;background:transparent;color:#65575a;margin:3px 0}.side button.active{background:#f5eaf0;color:var(--wine)}.side .side-foot{border-top:1px solid var(--line);margin-top:14px;padding-top:12px}
+.headrow{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:18px}.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin:18px 0}.stat,.panel{background:#fff;border:1px solid var(--line);border-radius:15px;padding:18px;box-shadow:var(--shadow)}.stat small{color:var(--muted)}.stat strong{display:block;font:30px Georgia,serif;color:var(--wine);margin-top:8px}.panel{margin:15px 0}.toolbar{display:flex;gap:9px;flex-wrap:wrap;margin:12px 0}.toolbar input,.toolbar select{border:1px solid var(--line);background:#fff;border-radius:9px;padding:10px;min-width:130px}
+.product-row{display:grid;grid-template-columns:70px minmax(0,1fr) auto;align-items:center;gap:13px;padding:12px 0;border-bottom:1px solid var(--line)}.product-row:last-child{border:0}.product-row img{width:70px;height:88px;object-fit:cover;border-radius:8px;background:#eee}.product-row strong{display:block}.product-row small{display:block;color:var(--muted);margin-top:5px}.actions{display:flex;gap:6px;flex-wrap:wrap}
+.form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 15px}.wide{grid-column:1/-1}.section-title{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--line);padding-bottom:10px;margin:20px 0 10px}.palette{display:grid;grid-template-columns:repeat(auto-fill,minmax(105px,1fr));gap:8px}.color-choice{border:1px solid var(--line);background:#fff;color:var(--ink);display:flex;align-items:center;gap:8px;padding:9px;border-radius:9px;font-size:12px}.color-choice.selected{border:2px solid var(--wine);background:#fbf4f6}.swatch{width:19px;height:19px;border-radius:50%;border:1px solid #0002;flex:none}.sizes{display:flex;gap:7px;flex-wrap:wrap}.size-choice{background:#fff;color:var(--ink);border:1px solid var(--line);min-width:46px}.size-choice.selected{background:var(--wine);color:white}
+.table-wrap{overflow:auto}.matrix{width:100%;border-collapse:collapse;min-width:540px}.matrix th,.matrix td{border-bottom:1px solid var(--line);padding:9px;text-align:center;font-size:12px}.matrix th{background:#faf7f4;color:#695b5e}.matrix input{width:76px;padding:8px;border:1px solid var(--line);border-radius:7px;text-align:center}.matrix .colorcell{text-align:right;white-space:nowrap}.preview-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(95px,1fr));gap:9px;margin:12px 0}.preview{position:relative}.preview img{width:100%;aspect-ratio:3/4;object-fit:cover;border-radius:8px}.preview button{position:absolute;top:5px;left:5px;padding:4px 8px;background:#281019d9}.status{font-size:13px;white-space:pre-wrap;margin:12px 0;color:var(--wine)}.pill{display:inline-block;padding:4px 8px;border-radius:30px;background:#f2e9ed;color:var(--wine);font-size:11px}.pill.ok{background:#e9f5ef;color:var(--green)}.pill.off{background:#f4eeee;color:#8c6266}
+@media(max-width:850px){.layout{grid-template-columns:1fr}.side{position:static;display:flex;overflow:auto}.side button{white-space:nowrap;width:auto}.side .side-foot{border:0;margin:0;padding:0}.stats{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:560px){.wrap{padding:18px 4% 50px}.top{padding:15px 4%}.brand{font-size:25px}.stats{gap:8px}.stat{padding:13px}.stat strong{font-size:25px}.form-grid{grid-template-columns:1fr}.wide{grid-column:auto}.product-row{grid-template-columns:58px minmax(0,1fr)}.product-row img{width:58px;height:74px}.actions{grid-column:2}.headrow{align-items:flex-start}.headrow h1{font-size:30px}}
+</style></head>
 <body>
-<header>
-<div class="logo">AY<span>♡</span>O</div>
-<small>ADMIN STUDIO</small>
-</header>
-<main>
-<section id="login" class="panel">
-<p>AYOO / PRIVATE ACCESS</p>
-<h1>Welcome back.</h1>
-<form id="loginForm">
-<label>Email address</label>
-<input id="email" type="email" required>
-<label>Password</label>
-<input id="password" type="password" required>
-<button type="submit">SIGN IN</button>
-</form>
-<div id="loginStatus" class="status"></div>
-</section>
-
+<header class="top"><div class="brand">AY<span>♡</span>O</div><small>ADMIN CONTROL CENTER · PRIVATE</small><button id="logout" class="secondary hidden">تسجيل الخروج</button></header>
+<main class="wrap">
+<section id="login" class="login"><p class="pill">AYOO / SECURE ACCESS</p><h1>مرحباً بعودتك</h1><p class="muted">سجّل الدخول لإدارة منتجات ومتجر AYOO.</p><form id="loginForm"><div class="field"><label>البريد الإلكتروني</label><input id="email" type="email" required autocomplete="username"></div><div class="field"><label>كلمة المرور</label><input id="password" type="password" required autocomplete="current-password"></div><button type="submit">دخول إلى لوحة الإدارة</button></form><div id="loginStatus" class="status"></div></section>
 <section id="dashboard" class="hidden">
-<h1>Admin Studio.</h1>
-<p>Manage your AYOO collection.</p>
-<button id="logout" class="secondary">SIGN OUT</button>
-
-<div class="panel">
-<h2 id="formTitle">Add a new piece</h2>
+<div class="headrow"><div><p class="pill">AYOO / MANAGEMENT</p><h1>مركز التحكم</h1><p class="muted">إدارة دقيقة لكل قطعة، لون، مقاس، وسعر.</p></div><button id="newProduct">＋ إضافة منتج</button></div>
+<div class="layout">
+<aside class="side">
+<button class="active" data-tab="overview">▦ نظرة عامة</button><button data-tab="products">◇ المنتجات والمخزون</button><button data-tab="editor">＋ إضافة / تعديل منتج</button><button data-tab="collections">▤ المجموعات</button>
+<div class="side-foot"><button id="logoutSide" class="ghost">↪ تسجيل الخروج</button></div>
+</aside>
+<div class="content">
+<section id="tab-overview">
+<div class="stats"><div class="stat"><small>إجمالي المنتجات</small><strong id="statProducts">—</strong></div><div class="stat"><small>المنتجات المنشورة</small><strong id="statPublished">—</strong></div><div class="stat"><small>متغيرات المخزون</small><strong id="statVariants">—</strong></div><div class="stat"><small>نفد المخزون</small><strong id="statOut">—</strong></div></div>
+<div class="panel"><div class="headrow"><div><h2>نظرة سريعة</h2><p class="muted">حالة الكتالوج والمخزون الحالي.</p></div><button class="secondary" id="refresh">تحديث البيانات</button></div><div id="overviewList" class="muted">جارٍ تحميل البيانات...</div></div>
+</section>
+<section id="tab-products" class="hidden"><div class="panel"><div class="headrow"><div><h2>المنتجات</h2><p class="muted">ابحث وعدّل المنتجات ومخزونها.</p></div><button id="addFromProducts">＋ منتج جديد</button></div><div class="toolbar"><input id="searchProducts" placeholder="ابحث باسم المنتج أو المجموعة"><select id="filterStatus"><option value="all">كل الحالات</option><option value="published">منشور</option><option value="draft">مسودة</option></select><select id="filterCollection"><option value="all">كل المجموعات</option></select></div><div id="productsList">جارٍ التحميل...</div></div></section>
+<section id="tab-editor" class="hidden"><div class="panel"><div class="headrow"><div><h2 id="formTitle">إضافة قطعة جديدة</h2><p class="muted">بيانات المنتج والصور والتسعير والتنوع والمخزون.</p></div><button class="secondary" id="cancelEdit">إلغاء</button></div>
 <form id="productForm">
 <input type="hidden" id="productId">
-
-<label>Product name</label>
-<input id="name" required placeholder="The Signature Coat">
-
-<label>Subtitle</label>
-<input id="subtitle" placeholder="A study in modern elegance">
-
-<label>Description</label>
-<textarea id="description" placeholder="Describe the piece..."></textarea>
-
-<label>Collection</label>
-<input id="collection" value="FORM 01">
-
-<label>Product images — select multiple</label>
-<input id="images" type="file" accept="image/jpeg,image/png,image/webp" multiple>
-<div id="previewGrid" class="preview-grid"></div>
-<p class="status">You can select several images at once. Maximum 10 MB per image.</p>
-
-<label>Display order</label>
-<input id="sortOrder" type="number" value="0">
-
-<label><input id="published" type="checkbox" checked> Publish this product</label>
-
-<button type="submit" id="saveButton">SAVE PRODUCT</button>
-<button type="button" id="cancelEdit" class="secondary hidden">CANCEL EDIT</button>
-</form>
-<div id="formStatus" class="status"></div>
+<div class="section-title"><h2>01 · معلومات المنتج</h2></div>
+<div class="form-grid">
+<div class="field"><label>اسم المنتج</label><input id="name" required placeholder="مثال: معطف شتوي"></div>
+<div class="field"><label>العنوان الفرعي</label><input id="subtitle" placeholder="وصف قصير أنيق"></div>
+<div class="field wide"><label>الوصف التفصيلي</label><textarea id="description" placeholder="الخامة، القصة، التفاصيل..."></textarea></div>
+<div class="field"><label>المجموعة / الموسم</label><input id="collection" list="collectionOptions" value="FORM 01"><datalist id="collectionOptions"></datalist></div>
+<div class="field"><label>ترتيب العرض</label><input id="sortOrder" type="number" value="0"></div>
+<div class="field"><label>السعر الأساسي</label><input id="price" type="number" min="0" step="0.01" placeholder="0.00"></div>
+<div class="field"><label>عملة السعر</label><select id="currency"><option>USD</option><option>TRY</option><option>EUR</option><option>GBP</option><option>SAR</option><option>AED</option></select></div>
+<div class="field"><label>رابط دليل المقاسات (اختياري)</label><input id="sizeGuide" placeholder="https://..."></div>
+<div class="field"><label>رابط SEO / slug</label><input id="slug" placeholder="winter-coat"></div>
+<div class="field wide"><label>عنوان SEO</label><input id="seoTitle"></div><div class="field wide"><label>وصف SEO</label><textarea id="seoDescription"></textarea></div>
 </div>
-
-<div class="panel">
-<h2>Your collection</h2>
-<div id="productsList">Loading products...</div>
-</div>
-</section>
-</main>
-
+<div class="section-title"><h2>02 · صور المنتج</h2></div>
+<div class="field"><label>رفع صور متعددة (JPEG / PNG / WEBP · حتى 10MB للصورة)</label><input id="images" type="file" accept="image/jpeg,image/png,image/webp" multiple></div><div id="previewGrid" class="preview-grid"></div><p class="muted">الصورة الأولى هي الصورة الرئيسية. الصور القديمة محفوظة عند تعديل المنتج.</p>
+<div class="section-title"><h2>03 · الألوان</h2><button type="button" id="customColor" class="ghost">＋ لون مخصص</button></div><div id="palette" class="palette"></div><div id="customColorFields" class="toolbar hidden"><input id="customColorName" placeholder="اسم اللون"><input id="customColorHex" type="color" value="#777777"><button type="button" id="addCustomColor">إضافة اللون</button></div>
+<div class="section-title"><h2>04 · المقاسات</h2></div><div id="sizes" class="sizes"></div><div class="toolbar"><input id="customSize" placeholder="مقاس مخصص مثل 3XL"><button type="button" id="addCustomSize" class="secondary">إضافة مقاس</button></div>
+<div class="section-title"><h2>05 · مصفوفة المخزون والتخفيضات</h2></div><p class="muted">أدخل الكمية لكل لون ومقاس. يمكن تحديد سعر خاص للمتغير لعمل تخفيض؛ اتركه فارغاً لاستخدام السعر الأساسي. لا نحذف المتغيرات القديمة، بل نوقف ظهور التركيبات غير المختارة.</p><div class="table-wrap"><table class="matrix"><thead id="matrixHead"></thead><tbody id="matrixBody"><tr><td>اختر الألوان والمقاسات أولاً.</td></tr></tbody></table></div>
+<div class="section-title"><h2>06 · الظهور والنشر</h2></div><label class="check"><input id="published" type="checkbox" checked> نشر المنتج في واجهة المتجر</label>
+<div class="toolbar"><button type="submit" id="saveButton">حفظ المنتج</button><button type="button" class="secondary" id="cancelBottom">إلغاء</button></div><div id="formStatus" class="status"></div>
+</form></div></section>
+<section id="tab-collections" class="hidden"><div class="panel"><h2>المجموعات والمواسم</h2><p class="muted">إدارة أسماء المجموعات وربط المنتجات بها.</p><form id="collectionForm" class="form-grid"><div class="field"><label>اسم المجموعة</label><input id="collectionName" required placeholder="FORM 02"></div><div class="field"><label>الرابط المختصر</label><input id="collectionSlug" required placeholder="form-02"></div><div class="field wide"><label>الوصف</label><textarea id="collectionDesc"></textarea></div><div class="field"><label class="check"><input id="collectionPublished" type="checkbox" checked> منشورة</label></div><div class="field"><button type="submit">حفظ المجموعة</button></div></form><div id="collectionsList"></div><div id="collectionStatus" class="status"></div></div></section>
+</div></div></section></main>
 <script type="module">
 import {supabase} from './config.js';
 const $=id=>document.getElementById(id);
-let products=[];
-let existingImages=[];
-
-function msg(id,text){$(id).textContent=text}
-
-async function checkSession(){
- const {data}=await supabase.auth.getSession();
- if(data.session)showDashboard();
- else $('login').classList.remove('hidden');
-}
-
-function showDashboard(){
- $('login').classList.add('hidden');
- $('dashboard').classList.remove('hidden');
- loadProducts();
-}
-
-$('loginForm').addEventListener('submit',async e=>{
- e.preventDefault();
- msg('loginStatus','Signing in...');
- const {error}=await supabase.auth.signInWithPassword({
-  email:$('email').value.trim(),
-  password:$('password').value
- });
- if(error){msg('loginStatus',error.message);return}
- msg('loginStatus','');
- showDashboard();
-});
-
-$('logout').addEventListener('click',async()=>{
- await supabase.auth.signOut();
- location.reload();
-});
-
-async function loadProducts(){
- $('productsList').textContent='Loading products...';
- const {data,error}=await supabase.from('products')
- .select('*').order('sort_order',{ascending:true});
- if(error){$('productsList').textContent=error.message;return}
- products=data||[];
- renderProducts();
-}
-
-function renderProducts(){
- const list=$('productsList');
- list.innerHTML='';
- if(!products.length){list.textContent='No products yet.';return}
- products.forEach(p=>{
-  const item=document.createElement('div');
-  item.className='product';
-  const img=document.createElement('img');
-  img.src=p.image_url||'';
-  const info=document.createElement('div');
-  const title=document.createElement('strong');
-  title.textContent=p.name||'Untitled';
-  const detail=document.createElement('p');
-  detail.textContent=(p.collection||'')+' · '+((p.image_urls||[]).length+ (p.image_url?1:0))+' images';
-  info.append(title,detail);
-  const actions=document.createElement('div');
-  actions.className='product-actions';
-  const edit=document.createElement('button');
-  edit.className='secondary';edit.textContent='EDIT';
-  edit.onclick=()=>editProduct(p);
-  const del=document.createElement('button');
-  del.className='danger';del.textContent='DELETE';
-  del.onclick=()=>deleteProduct(p);
-  actions.append(edit,del);
-  item.append(img,info,actions);
-  list.append(item);
- });
-}
-
-function editProduct(p){
- $('productId').value=p.id;
- $('name').value=p.name||'';
- $('subtitle').value=p.subtitle||'';
- $('description').value=p.description||'';
- $('collection').value=p.collection||'FORM 01';
- $('sortOrder').value=p.sort_order??0;
- $('published').checked=!!p.published;
- existingImages=[...(p.image_urls||[])];
- if(p.image_url&&!existingImages.includes(p.image_url))existingImages.unshift(p.image_url);
- $('previewGrid').innerHTML='';
- existingImages.forEach(url=>showPreview(url));
- $('formTitle').textContent='Edit product';
- $('saveButton').textContent='UPDATE PRODUCT';
- $('cancelEdit').classList.remove('hidden');
- $('productForm').scrollIntoView({behavior:'smooth'});
-}
-
-function showPreview(src){
- const img=document.createElement('img');
- img.src=src;
- $('previewGrid').append(img);
-}
-
-function resetForm(){
- $('productForm').reset();
- $('productId').value='';
- $('collection').value='FORM 01';
- $('sortOrder').value='0';
- $('published').checked=true;
- $('images').value='';
- $('previewGrid').innerHTML='';
- existingImages=[];
- $('formTitle').textContent='Add a new piece';
- $('saveButton').textContent='SAVE PRODUCT';
- $('cancelEdit').classList.add('hidden');
-}
-
-$('cancelEdit').onclick=resetForm;
-
-$('images').addEventListener('change',()=>{
- $('previewGrid').innerHTML='';
- existingImages.forEach(showPreview);
- [...$('images').files].forEach(file=>{
-  const img=document.createElement('img');
-  img.src=URL.createObjectURL(file);
-  $('previewGrid').append(img);
- });
-});
-
-async function uploadImages(files){
- const urls=[];
- for(const file of files){
-  if(file.size>10*1024*1024)throw new Error(file.name+' exceeds 10 MB.');
-  const ext=file.name.split('.').pop().toLowerCase();
-  const path=crypto.randomUUID()+'.'+ext;
-  const {error}=await supabase.storage.from('ayoo-media')
-   .upload(path,file,{upsert:false});
-  if(error)throw error;
-  const {data}=supabase.storage.from('ayoo-media').getPublicUrl(path);
-  urls.push(data.publicUrl);
- }
- return urls;
-}
-
-$('productForm').addEventListener('submit',async e=>{
- e.preventDefault();
- const button=$('saveButton');
- button.disabled=true;
- msg('formStatus','Saving product and images...');
- try{
-  const files=[...$('images').files];
-  const uploaded=await uploadImages(files);
-  const allImages=[...existingImages,...uploaded];
-  const mainImage=allImages[0]||'';
-  const product={
-   name:$('name').value.trim(),
-   subtitle:$('subtitle').value.trim(),
-   description:$('description').value.trim(),
-   collection:$('collection').value.trim()||'FORM 01',
-   image_url:mainImage,
-   image_urls:allImages,
-   sort_order:Number($('sortOrder').value)||0,
-   published:$('published').checked
-  };
-  const id=$('productId').value;
-  let result;
-  if(id) result=await supabase.from('products').update(product).eq('id',id);
-  else result=await supabase.from('products').insert(product);
-  if(result.error)throw result.error;
-  msg('formStatus','Product saved successfully.');
-  resetForm();
-  await loadProducts();
- }catch(error){
-  msg('formStatus',error.message||'Something went wrong.');
- }finally{
-  button.disabled=false;
- }
-});
-
-async function deleteProduct(p){
- if(!confirm('Delete '+p.name+'?'))return;
- const {error}=await supabase.from('products').delete().eq('id',p.id);
- if(error){msg('formStatus',error.message);return}
- msg('formStatus','Product deleted.');
- loadProducts();
-}
-
-supabase.auth.onAuthStateChange((_event,session)=>{
- if(session)showDashboard();
- else{
-  $('dashboard').classList.add('hidden');
-  $('login').classList.remove('hidden');
- }
-});
-checkSession();
-</script>
-</body>
-</html>
+const COLORS=[['أحمر','#c62828'],['عنابي','#64152b'],['وردي','#e7a0b1'],['برتقالي','#e87528'],['أصفر','#e7c94a'],['بيج','#d9c3a5'],['أبيض','#f7f5f0'],['رمادي','#888888'],['أسود','#171717'],['بني','#70452f'],['كحلي','#172744'],['أزرق','#2867a5'],['سماوي','#86c8df'],['أخضر','#28734d'],['زيتي','#697344'],['بنفسجي','#76509a']];
+const DEFAULT_SIZES=['XS','S','M','L','XL','XXL'];
+let products=[],collections=[],variants=[],selectedColors=[],selectedSizes=[],existingImages=[],customColors=[],customSizes=[],editingVariantMap={};
+const msg=(id,t)=>$(id).textContent=t;
+function showTab(tab){document.querySelectorAll('[id^="tab-"]').forEach(x=>x.classList.add('hidden'));$('tab-'+tab).classList.remove('hidden');document.querySelectorAll('[data-tab]').forEach(b=>b.classList.toggle('active',b.dataset.tab===tab));if(tab==='products')renderProducts();if(tab==='collections')renderCollections();}
+document.querySelectorAll('[data-tab]').forEach(b=>b.onclick=()=>showTab(b.dataset.tab));
+function setLoggedIn(on){$('login').classList.toggle('hidden',on);$('dashboard').classList.toggle('hidden',!on);$('logout').classList.toggle('hidden',!on);if(on)loadAll();}
+async function checkSession(){const {data}=await supabase.auth.getSession();setLoggedIn(!!data.session);}
+$('loginForm').onsubmit=async e=>{e.preventDefault();msg('loginStatus','جارٍ تسجيل الدخول...');const {error}=await supabase.auth.signInWithPassword({email:$('email').value.trim(),password:$('password').value});if(error){msg('loginStatus',error.message);return}msg('loginStatus','');setLoggedIn(true)};
+async function logout(){await supabase.auth.signOut();location.reload()}$('logout').onclick=logout;$('logoutSide').onclick=logout;
+async function loadAll(){await Promise.all([loadProducts(),loadCollections()]);}
+async function loadProducts(){const {data,error}=await supabase.from('products').select('*').order('sort_order',{ascending:true});if(error){msg('overviewList',error.message);return}products=data||[];const ids=products.map(p=>p.id);variants=[];if(ids.length){const r=await supabase.from('product_variants').select('*').in('product_id',ids);if(r.error){msg('overviewList','تعذر قراءة المتغيرات: '+r.error.message);return}variants=r.data||[]}renderStats();renderProducts();renderOverview();}
+async function loadCollections(){const {data,error}=await supabase.from('collections').select('*').order('sort_order',{ascending:true});if(error){msg('collectionStatus','تعذر تحميل المجموعات: '+error.message);return}collections=data||[];const dl=$('collectionOptions');dl.innerHTML='';collections.forEach(c=>{const o=document.createElement('option');o.value=c.name;dl.append(o)});const sel=$('filterCollection');sel.innerHTML='<option value="all">كل المجموعات</option>';collections.forEach(c=>{const o=document.createElement('option');o.value=c.name;o.textContent=c.name;sel.append(o)});renderCollections();}
+function renderStats(){$('statProducts').textContent=products.length;$('statPublished').textContent=products.filter(p=>p.published).length;$('statVariants').textContent=variants.length;$('statOut').textContent=variants.filter(v=>v.active!==false&&Number(v.stock_quantity||0)<=Number(v.reserved_quantity||0)).length;}
+function renderOverview(){const low=variants.filter(v=>v.active!==false&&Number(v.stock_quantity||0)<=3);$('overviewList').textContent=products.length+' منتج · '+variants.filter(v=>v.active!==false).length+' تركيبة لون/مقاس فعالة · '+low.length+' تركيبات مخزونها 3 أو أقل.';}
+function renderProducts(){const q=$('searchProducts').value.toLowerCase(),st=$('filterStatus').value,co=$('filterCollection').value;const list=$('productsList');list.innerHTML='';const filtered=products.filter(p=>(!q||[p.name,p.collection,p.subtitle].join(' ').toLowerCase().includes(q))&&(st==='all'||(st==='published'?p.published:!p.published))&&(co==='all'||p.collection===co));if(!filtered.length){list.textContent='لا توجد منتجات مطابقة.';return}filtered.forEach(p=>{const row=document.createElement('div');row.className='product-row';const img=document.createElement('img');img.src=p.image_url||'';const info=document.createElement('div');const name=document.createElement('strong');name.textContent=p.name||'بدون اسم';const sub=document.createElement('small');const pv=variants.filter(v=>v.product_id===p.id&&v.active!==false);const total=pv.reduce((n,v)=>n+Math.max(0,Number(v.stock_quantity||0)-Number(v.reserved_quantity||0)),0);sub.textContent=(p.collection||'—')+' · '+(p.price??'—')+' '+(p.currency||'USD')+' · '+pv.length+' تركيبة فعالة · '+total+' قطعة متاحة';const badge=document.createElement('span');badge.className='pill '+(p.published?'ok':'off');badge.textContent=p.published?'منشور':'مسودة';info.append(name,sub,badge);const actions=document.createElement('div');actions.className='actions';const edit=document.createElement('button');edit.className='secondary';edit.textContent='تعديل';edit.onclick=()=>editProduct(p);const del=document.createElement('button');del.className='danger';del.textContent='حذف';del.onclick=()=>deleteProduct(p);actions.append(edit,del);row.append(img,info,actions);list.append(row)});}
+$('searchProducts').oninput=renderProducts;$('filterStatus').onchange=renderProducts;$('filterCollection').onchange=renderProducts;
+function renderPalette(){const root=$('palette');root.innerHTML='';[...COLORS,...customColors].forEach(([name,hex])=>{const b=document.createElement('button');b.type='button';b.className='color-choice '+(selectedColors.some(c=>c.name===name)?'selected':'');const sw=document.createElement('i');sw.className='swatch';sw.style.background=hex;const tx=document.createElement('span');tx.textContent=name;b.append(sw,tx);b.onclick=()=>{const i=selectedColors.findIndex(c=>c.name===name);if(i>=0)selectedColors.splice(i,1);else selectedColors.push({name,hex});renderPalette();renderMatrix()};root.append(b)});}
+function renderSizes(){const root=$('sizes');root.innerHTML='';[...DEFAULT_SIZES,...customSizes].forEach(s=>{const b=document.createElement('button');b.type='button';b.className='size-choice '+(selectedSizes.includes(s)?'selected':'');b.textContent=s;b.onclick=()=>{selectedSizes=selectedSizes.includes(s)?selectedSizes.filter(x=>x!==s):[...selectedSizes,s];renderSizes();renderMatrix()};root.append(b)});}
+$('customColor').onclick=()=>$('customColorFields').classList.toggle('hidden');$('addCustomColor').onclick=()=>{const name=$('customColorName').value.trim(),hex=$('customColorHex').value;if(!name)return;if(!COLORS.some(c=>c[0]===name)&&!customColors.some(c=>c[0]===name))customColors.push([name,hex]);if(!selectedColors.some(c=>c.name===name))selectedColors.push({name,hex});$('customColorName').value='';renderPalette();renderMatrix()};$('addCustomSize').onclick=()=>{const s=$('customSize').value.trim().toUpperCase();if(s&&!DEFAULT_SIZES.includes(s)&&!customSizes.includes(s))customSizes.push(s);if(s&&!selectedSizes.includes(s))selectedSizes.push(s);$('customSize').value='';renderSizes();renderMatrix()};
+function key(c,s){return c+'__'+s}
+function renderMatrix(){const h=$('matrixHead'),b=$('matrixBody');h.innerHTML='';b.innerHTML='';if(!selectedColors.length||!selectedSizes.length){b.innerHTML='<tr><td>اختر لوناً ومقاساً على الأقل لعرض المصفوفة.</td></tr>';return}const hr=document.createElement('tr');['اللون / المقاس',...selectedSizes].forEach(t=>{const th=document.createElement('th');th.textContent=t;hr.append(th)});h.append(hr);selectedColors.forEach(c=>{const tr=document.createElement('tr');const td=document.createElement('td');td.className='colorcell';td.textContent=c.name;tr.append(td);selectedSizes.forEach(s=>{const cell=document.createElement('td');const wrap=document.createElement('div');const stock=document.createElement('input');stock.type='number';stock.min='0';stock.placeholder='الكمية';stock.setAttribute('aria-label','كمية '+c.name+' '+s);const price=document.createElement('input');price.type='number';price.min='0';price.step='.01';price.placeholder='سعر خاص';price.setAttribute('aria-label','سعر خاص '+c.name+' '+s);const old=editingVariantMap[key(c.name,s)];stock.value=old?.stock_quantity??0;price.value=old?.price_override??'';stock.dataset.stock=key(c.name,s);price.dataset.price=key(c.name,s);wrap.append(stock,price);cell.append(wrap);tr.append(cell)});b.append(tr)});}
+function showPreview(src){const d=document.createElement('div');d.className='preview';const img=document.createElement('img');img.src=src;d.append(img);$('previewGrid').append(d)}
+function resetForm(){ $('productForm').reset();$('productId').value='';$('collection').value='FORM 01';$('sortOrder').value=0;$('currency').value='USD';$('published').checked=true;$('previewGrid').innerHTML='';$('images').value='';existingImages=[];selectedColors=[];selectedSizes=[];customColors=[];customSizes=[];editingVariantMap={};renderPalette();renderSizes();renderMatrix();$('formTitle').textContent='إضافة قطعة جديدة';$('saveButton').textContent='حفظ المنتج';msg('formStatus','');}
+$('cancelEdit').onclick=resetForm;$('cancelBottom').onclick=resetForm;$('newProduct').onclick=()=>{resetForm();showTab('editor')};$('addFromProducts').onclick=()=>{resetForm();showTab('editor')};
+$('images').onchange=()=>{$('previewGrid').innerHTML='';existingImages.forEach(showPreview);[...$('images').files].forEach(f=>showPreview(URL.createObjectURL(f)))};
+async function editProduct(p){resetForm();$('productId').value=p.id;$('name').value=p.name||'';$('subtitle').value=p.subtitle||'';$('description').value=p.description||'';$('collection').value=p.collection||'FORM 01';$('sortOrder').value=p.sort_order??0;$('price').value=p.price??'';$('currency').value=p.currency||'USD';$('slug').value=p.slug||'';$('seoTitle').value=p.seo_title||'';$('seoDescription').value=p.seo_description||'';$('published').checked=!!p.published;existingImages=[...(p.image_urls||[])];if(p.image_url&&!existingImages.includes(p.image_url))existingImages.unshift(p.image_url);existingImages.forEach(showPreview);const {data,error}=await supabase.from('product_variants').select('*').eq('product_id',p.id);if(error){msg('formStatus','تعذر تحميل المتغيرات: '+error.message);return}editingVariantMap={};(data||[]).forEach(v=>{editingVariantMap[key(v.color_name,v.size)]=v;if(v.active!==false){if(!selectedColors.some(c=>c.name===v.color_name))selectedColors.push({name:v.color_name,hex:v.color_hex||'#888888'});if(!selectedSizes.includes(v.size))selectedSizes.push(v.size)}});selectedSizes=[...new Set([...(p.sizes||[]),...selectedSizes])];(p.colors||[]).forEach(c=>{if(typeof c==='string'&&!selectedColors.some(x=>x.name===c))selectedColors.push({name:c,hex:COLORS.find(z=>z[0]===c)?.[1]||'#888888'})});renderPalette();renderSizes();renderMatrix();$('formTitle').textContent='تعديل: '+p.name;$('saveButton').textContent='تحديث المنتج';showTab('editor');window.scrollTo({top:0,behavior:'smooth'});}
+async function uploadImages(files){const urls=[];for(const file of files){if(file.size>10*1024*1024)throw new Error(file.name+' أكبر من 10MB');const ext=file.name.split('.').pop().toLowerCase();const path=crypto.randomUUID()+'.'+ext;const {error}=await supabase.storage.from('ayoo-media').upload(path,file,{upsert:false});if(error)throw error;urls.push(supabase.storage.from('ayoo-media').getPublicUrl(path).data.publicUrl)}return urls}
+$('productForm').onsubmit=async e=>{e.preventDefault();const btn=$('saveButton');btn.disabled=true;msg('formStatus','جارٍ حفظ بيانات المنتج والصور والمخزون...');try{if(!selectedColors.length||!selectedSizes.length)throw new Error('اختر لوناً ومقاساً واحداً على الأقل.');const uploaded=await uploadImages([...$('images').files]);const allImages=[...existingImages,...uploaded];const id=$('productId').value;const product={name:$('name').value.trim(),subtitle:$('subtitle').value.trim(),description:$('description').value.trim(),collection:$('collection').value.trim()||'FORM 01',image_url:allImages[0]||'',image_urls:allImages,sort_order:Number($('sortOrder').value)||0,published:$('published').checked,price:$('price').value===''?null:Number($('price').value),currency:$('currency').value,slug:$('slug').value.trim()||null,seo_title:$('seoTitle').value.trim()||null,seo_description:$('seoDescription').value.trim()||null,sizes:selectedSizes,colors:selectedColors.map(c=>c.name)};let saved;if(id){saved=await supabase.from('products').update(product).eq('id',id).select('id').single()}else{saved=await supabase.from('products').insert(product).select('id').single()}if(saved.error)throw saved.error;const pid=saved.data.id;const rows=[];selectedColors.forEach(c=>selectedSizes.forEach(s=>{const stockInput=document.querySelector('[data-stock="'+CSS.escape(key(c.name,s))+'"]');const priceInput=document.querySelector('[data-price="'+CSS.escape(key(c.name,s))+'"]');const prev=editingVariantMap[key(c.name,s)];rows.push({product_id:pid,color_name:c.name,color_hex:c.hex,size:s,stock_quantity:Math.max(0,Number(stockInput?.value)||0),price_override:priceInput?.value===''?null:Number(priceInput?.value),active:true,image_url:prev?.image_url||null})}));const up=await supabase.from('product_variants').upsert(rows,{onConflict:'product_id,color_name,size'});if(up.error)throw up.error;const selectedKeys=new Set(rows.map(r=>key(r.color_name,r.size)));const stale=Object.values(editingVariantMap).filter(v=>!selectedKeys.has(key(v.color_name,v.size))&&v.active!==false).map(v=>v.id);if(stale.length){const off=await supabase.from('product_variants').update({active:false}).in('id',stale);if(off.error)throw off.error}msg('formStatus','تم حفظ المنتج والمتغيرات بنجاح.');resetForm();await loadAll();showTab('products');}catch(err){msg('formStatus','لم يكتمل الحفظ: '+(err.message||String(err)))}finally{btn.disabled=false}};
+async function deleteProduct(p){if(!confirm('حذف المنتج '+p.name+'؟ هذا يحذف سجله من المتجر.'))return;const {error}=await supabase.from('products').delete().eq('id',p.id);if(error){alert(error.message);return}await loadAll()}
+function renderCollections(){const root=$('collectionsList');root.innerHTML='';collections.forEach(c=>{const d=document.createElement('div');d.className='product-row';const info=document.createElement('div');info.style.gridColumn='1/-1';const n=document.createElement('strong');n.textContent=c.name+' · '+c.slug;const p=document.createElement('small');p.textContent=c.description||'بدون وصف';const badge=document.createElement('span');badge.className='pill '+(c.published?'ok':'off');badge.textContent=c.published?'منشورة':'مسودة';info.append(n,p,badge);d.append(info);root.append(d)})}
+$('collectionForm').onsubmit=async e=>{e.preventDefault();const slug=$('collectionSlug').value.trim();const payload={name:$('collectionName').value.trim(),slug,description:$('collectionDesc').value.trim(),published:$('collectionPublished').checked};const {error}=await supabase.from('collections').upsert(payload,{onConflict:'slug'});if(error){msg('collectionStatus',error.message);return}msg('collectionStatus','تم حفظ المجموعة.');$('collectionForm').reset();$('collectionPublished').checked=true;await loadCollections()};
+$('refresh').onclick=loadAll;
+supabase.auth.onAuthStateChange((_event,session)=>{if(!session)setLoggedIn(false)});
+renderPalette();renderSizes();renderMatrix();checkSession();
+</script></body></html>
