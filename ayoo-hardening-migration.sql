@@ -215,7 +215,7 @@ begin
       gen_random_uuid()::text
     );
 end;
-$;
+$wrapper$;
 revoke all on function public.ayoo_create_order(text,text,text,text,jsonb,text,jsonb,text,numeric)
   from public;
 grant execute on function public.ayoo_create_order(text,text,text,text,jsonb,text,jsonb,text,numeric)
