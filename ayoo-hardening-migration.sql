@@ -72,13 +72,13 @@ begin
      or length(trim(coalesce(p_customer_phone,''))) < 6 then
     raise exception 'Please provide valid customer name, email, and phone.';
   end if;
-  if jsonb_typeof(p_shipping_address) <> 'object'
+  if coalesce(jsonb_typeof(p_shipping_address),'') <> 'object'
      or length(trim(coalesce(p_shipping_address->>'address_line1',''))) < 4
      or length(trim(coalesce(p_shipping_address->>'city',''))) < 2
      or length(trim(coalesce(p_shipping_address->>'postal_code',''))) < 2 then
     raise exception 'A complete Turkish shipping address is required.';
   end if;
-  if jsonb_typeof(p_items) <> 'array' or jsonb_array_length(p_items) = 0
+  if coalesce(jsonb_typeof(p_items),'') <> 'array' or jsonb_array_length(p_items) = 0
      or jsonb_array_length(p_items) > 30 then
     raise exception 'Your bag must contain between 1 and 30 item lines.';
   end if;
@@ -243,11 +243,13 @@ as $$
 declare
   v_order public.orders%rowtype;
   v_next_status text;
+  v_item record;
+  v_updated integer;
 begin
   if auth.uid() is distinct from '03b2c71f-23d6-4968-8b4b-ca9d1681f91c'::uuid then
     raise exception 'Not authorized to update AYOO orders.';
   end if;
-  if p_new_status not in ('confirmed','processing','shipped','delivered') then
+  if p_new_status is null or p_new_status not in ('confirmed','processing','shipped','delivered') then
     raise exception 'Unsupported order status transition.';
   end if;
   select * into v_order from public.orders where id=p_order_id for update;
@@ -258,6 +260,25 @@ begin
   if v_next_status is null or p_new_status<>v_next_status then
     raise exception 'Invalid order status transition: % -> %.',v_order.order_status,p_new_status;
   end if;
+  -- On dispatch, convert each reservation into a physical stock deduction exactly once.
+  if v_order.order_status='processing' and p_new_status='shipped' then
+    for v_item in
+      select variant_id,quantity from public.order_items
+      where order_id=v_order.id order by variant_id
+    loop
+      update public.product_variants
+        set stock_quantity=stock_quantity-v_item.quantity,
+            reserved_quantity=reserved_quantity-v_item.quantity
+        where id=v_item.variant_id
+          and coalesce(stock_quantity,0)>=v_item.quantity
+          and coalesce(reserved_quantity,0)>=v_item.quantity;
+      get diagnostics v_updated = row_count;
+      if v_updated <> 1 then
+        raise exception 'Stock or reservation mismatch for variant %. Dispatch was rolled back.',v_item.variant_id;
+      end if;
+    end loop;
+  end if;
+
   update public.orders set order_status=p_new_status,updated_at=now() where id=v_order.id;
   return query select v_order.id,v_order.order_number,p_new_status;
 end;
