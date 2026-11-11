@@ -19,7 +19,7 @@ begin
     raise exception 'Not authorized to update AYOO orders.';
   end if;
 
-  if p_new_status not in ('confirmed','processing','shipped','delivered') then
+  if p_new_status is null or p_new_status not in ('confirmed','processing','shipped','delivered') then
     raise exception 'Unsupported order status transition.';
   end if;
 
