@@ -78,8 +78,10 @@ begin
      or length(trim(coalesce(p_shipping_address->>'postal_code',''))) < 2 then
     raise exception 'A complete Turkish shipping address is required.';
   end if;
-  if coalesce(jsonb_typeof(p_items),'') <> 'array' or jsonb_array_length(p_items) = 0
-     or jsonb_array_length(p_items) > 30 then
+  if coalesce(jsonb_typeof(p_items),'') <> 'array' then
+    raise exception 'Your bag must contain between 1 and 30 item lines.';
+  end if;
+  if jsonb_array_length(p_items) = 0 or jsonb_array_length(p_items) > 30 then
     raise exception 'Your bag must contain between 1 and 30 item lines.';
   end if;
 
