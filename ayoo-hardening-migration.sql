@@ -206,7 +206,7 @@ returns table(order_id uuid, order_number text, total_amount numeric, currency t
 language plpgsql
 security definer
 set search_path = public, pg_temp
-as $
+as $wrapper$
 begin
   return query
     select * from public.ayoo_create_order(
