@@ -1,0 +1,386 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AYOO — Admin Studio</title>
+<style>
+:root {
+  --wine:#470d1c;
+  --cream:#f4ede4;
+  --gold:#bd9870;
+  --ink:#271b19;
+  --white:#fffdf9;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;background:var(--cream);color:var(--ink);
+  font-family:Arial,sans-serif;
+}
+header{
+  background:var(--wine);color:white;padding:22px 6%;
+  display:flex;justify-content:space-between;align-items:center;
+}
+.logo{font:34px Georgia,serif;letter-spacing:-2px}
+.logo span{color:var(--gold)}
+header small{letter-spacing:3px;font-size:10px}
+main{max-width:1100px;margin:45px auto;padding:0 20px}
+h1,h2{font-family:Georgia,serif;font-weight:400}
+h1{font-size:38px}
+.muted{color:#88796f;font-size:13px;line-height:1.7}
+.panel{
+  background:var(--white);padding:28px;margin:22px 0;
+  border:1px solid #e4d9cf;
+}
+input,textarea,select{
+  width:100%;padding:13px;margin:7px 0 17px;
+  border:1px solid #d9cfc5;background:white;
+  font:14px Arial;color:var(--ink);border-radius:2px;
+}
+textarea{min-height:100px;resize:vertical}
+label{font-size:11px;letter-spacing:1px;text-transform:uppercase}
+button{
+  padding:13px 20px;border:0;cursor:pointer;
+  background:var(--wine);color:white;font-size:12px;
+  letter-spacing:1px;margin:5px 5px 5px 0;
+}
+button.secondary{background:#e9ded2;color:var(--ink)}
+button.danger{background:#8b2424}
+.hidden{display:none!important}
+.status{font-size:13px;margin:12px 0;color:var(--wine)}
+.product{
+  display:grid;grid-template-columns:95px 1fr auto;
+  gap:18px;align-items:center;border-top:1px solid #e5dbd1;
+  padding:15px 0;
+}
+.product img{width:95px;height:115px;object-fit:cover;background:#eee}
+.product strong{font-family:Georgia,serif;font-size:19px}
+.product p{font-size:12px;color:#88796f}
+.preview{width:120px;max-height:150px;object-fit:cover;margin:5px 0 15px}
+@media(max-width:600px){
+ header{padding:18px}
+ main{margin:25px auto}
+ .panel{padding:18px}
+ .product{grid-template-columns:70px 1fr}
+ .product img{width:70px;height:90px}
+ .product-actions{grid-column:2}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">AY<span>♡</span>O</div>
+  <small>ADMIN STUDIO</small>
+</header>
+
+<main>
+  <section id="login" class="panel">
+    <p class="muted">AYOO / PRIVATE ACCESS</p>
+    <h1>Welcome back.</h1>
+    <p class="muted">Sign in to manage your collections and products.</p>
+
+    <form id="loginForm">
+      <label>Email address</label>
+      <input id="email" type="email" required placeholder="Your admin email">
+      <label>Password</label>
+      <input id="password" type="password" required placeholder="Your password">
+      <button type="submit">SIGN IN ↗</button>
+    </form>
+    <div id="loginStatus" class="status"></div>
+  </section>
+
+  <section id="dashboard" class="hidden">
+    <p class="muted">AYOO / MANAGEMENT</p>
+    <h1>Admin Studio.</h1>
+    <p class="muted">Manage the products displayed in your AYOO catalog.</p>
+    <button id="logout" class="secondary">SIGN OUT</button>
+
+    <div class="panel">
+      <h2 id="formTitle">Add a new piece</h2>
+      <form id="productForm">
+        <input type="hidden" id="productId">
+
+        <label>Product name</label>
+        <input id="name" required placeholder="The Sculpted Coat">
+
+        <label>Subtitle</label>
+        <input id="subtitle" placeholder="A study in modern elegance">
+
+        <label>Description</label>
+        <textarea id="description" placeholder="Describe the piece..."></textarea>
+
+        <label>Collection</label>
+        <input id="collection" value="FORM 01">
+
+        <label>Product image</label>
+        <input id="image" type="file" accept="image/jpeg,image/png,image/webp">
+        <img id="preview" class="preview hidden" alt="Image preview">
+
+        <label>Display order</label>
+        <input id="sortOrder" type="number" value="0">
+
+        <label>
+          <input id="published" type="checkbox" checked style="width:auto;margin:0 7px 0 0">
+          Publish this product
+        </label>
+        <br><br>
+
+        <button type="submit" id="saveButton">SAVE PRODUCT</button>
+        <button type="button" id="cancelEdit" class="secondary hidden">CANCEL EDIT</button>
+      </form>
+      <div id="formStatus" class="status"></div>
+    </div>
+
+    <div class="panel">
+      <h2>Your collection</h2>
+      <div id="productsList" class="muted">Loading products...</div>
+    </div>
+  </section>
+</main>
+
+<script type="module">
+import { supabase } from './config.js';
+
+const $ = id => document.getElementById(id);
+let products = [];
+let currentImage = '';
+
+function message(id, text) {
+  $(id).textContent = text;
+}
+
+function safeImage(url) {
+  return typeof url === 'string' && /^https:\/\/images\.unsplash\.com\//.test(url)
+    ? url : url;
+}
+
+async function checkSession() {
+  const { data } = await supabase.auth.getSession();
+  if (data.session) {
+    showDashboard();
+  } else {
+    $('login').classList.remove('hidden');
+    $('dashboard').classList.add('hidden');
+  }
+}
+
+function showDashboard() {
+  $('login').classList.add('hidden');
+  $('dashboard').classList.remove('hidden');
+  loadProducts();
+}
+
+$('loginForm').addEventListener('submit', async event => {
+  event.preventDefault();
+  message('loginStatus', 'Signing in...');
+  const { error } = await supabase.auth.signInWithPassword({
+    email: $('email').value.trim(),
+    password: $('password').value
+  });
+  if (error) {
+    message('loginStatus', error.message);
+    return;
+  }
+  message('loginStatus', '');
+  showDashboard();
+});
+
+$('logout').addEventListener('click', async () => {
+  await supabase.auth.signOut();
+  location.reload();
+});
+
+async function loadProducts() {
+  message('formStatus', '');
+  $('productsList').textContent = 'Loading products...';
+
+  const { data, error } = await supabase
+    .from('products')
+    .select('*')
+    .order('sort_order', { ascending: true });
+
+  if (error) {
+    $('productsList').textContent = error.message;
+    return;
+  }
+
+  products = data || [];
+  renderProducts();
+}
+
+function renderProducts() {
+  const list = $('productsList');
+  list.innerHTML = '';
+
+  if (!products.length) {
+    list.textContent = 'No products yet. Add your first piece above.';
+    return;
+  }
+
+  products.forEach(product => {
+    const item = document.createElement('div');
+    item.className = 'product';
+
+    const img = document.createElement('img');
+    img.src = product.image_url || '';
+    img.alt = product.name || 'AYOO product';
+
+    const info = document.createElement('div');
+    const title = document.createElement('strong');
+    title.textContent = product.name || 'Untitled';
+    const details = document.createElement('p');
+    details.textContent = `${product.collection || ''} · ${product.published ? 'Published' : 'Hidden'}`;
+    info.append(title, details);
+
+    const actions = document.createElement('div');
+    actions.className = 'product-actions';
+
+    const edit = document.createElement('button');
+    edit.className = 'secondary';
+    edit.textContent = 'EDIT';
+    edit.addEventListener('click', () => editProduct(product));
+
+    const remove = document.createElement('button');
+    remove.className = 'danger';
+    remove.textContent = 'DELETE';
+    remove.addEventListener('click', () => deleteProduct(product));
+
+    actions.append(edit, remove);
+    item.append(img, info, actions);
+    list.append(item);
+  });
+}
+
+function editProduct(product) {
+  $('productId').value = product.id;
+  $('name').value = product.name || '';
+  $('subtitle').value = product.subtitle || '';
+  $('description').value = product.description || '';
+  $('collection').value = product.collection || 'FORM 01';
+  $('sortOrder').value = product.sort_order ?? 0;
+  $('published').checked = !!product.published;
+  currentImage = product.image_url || '';
+
+  $('preview').src = currentImage;
+  $('preview').classList.toggle('hidden', !currentImage);
+  $('formTitle').textContent = 'Edit product';
+  $('saveButton').textContent = 'UPDATE PRODUCT';
+  $('cancelEdit').classList.remove('hidden');
+  $('productForm').scrollIntoView({ behavior: 'smooth' });
+}
+
+function resetForm() {
+  $('productForm').reset();
+  $('productId').value = '';
+  $('collection').value = 'FORM 01';
+  $('sortOrder').value = '0';
+  $('published').checked = true;
+  $('preview').classList.add('hidden');
+  $('preview').src = '';
+  $('formTitle').textContent = 'Add a new piece';
+  $('saveButton').textContent = 'SAVE PRODUCT';
+  $('cancelEdit').classList.add('hidden');
+  currentImage = '';
+}
+
+$('cancelEdit').addEventListener('click', resetForm);
+
+$('image').addEventListener('change', () => {
+  const file = $('image').files[0];
+  if (!file) return;
+  $('preview').src = URL.createObjectURL(file);
+  $('preview').classList.remove('hidden');
+});
+
+$('productForm').addEventListener('submit', async event => {
+  event.preventDefault();
+  const button = $('saveButton');
+  button.disabled = true;
+  message('formStatus', 'Saving product...');
+
+  try {
+    const id = $('productId').value;
+    const file = $('image').files[0];
+    let imageUrl = currentImage;
+
+    if (file) {
+      if (file.size > 10 * 1024 * 1024) {
+        throw new Error('Image must be smaller than 10 MB.');
+      }
+
+      const extension = file.name.split('.').pop().toLowerCase();
+      const path = `${crypto.randomUUID()}.${extension}`;
+
+      const { error: uploadError } = await supabase.storage
+        .from('ayoo-media')
+        .upload(path, file, { upsert: false });
+
+      if (uploadError) throw uploadError;
+
+      const { data: publicData } = supabase.storage
+        .from('ayoo-media')
+        .getPublicUrl(path);
+
+      imageUrl = publicData.publicUrl;
+    }
+
+    const product = {
+      name: $('name').value.trim(),
+      subtitle: $('subtitle').value.trim(),
+      description: $('description').value.trim(),
+      collection: $('collection').value.trim() || 'FORM 01',
+      image_url: imageUrl,
+      sort_order: Number($('sortOrder').value) || 0,
+      published: $('published').checked
+    };
+
+    if (id) {
+      const { error } = await supabase.from('products').update(product).eq('id', id);
+      if (error) throw error;
+    } else {
+      const { error } = await supabase.from('products').insert(product);
+      if (error) throw error;
+    }
+
+    message('formStatus', 'Product saved successfully.');
+    resetForm();
+    await loadProducts();
+
+  } catch (error) {
+    message('formStatus', error.message || 'Something went wrong.');
+  } finally {
+    button.disabled = false;
+  }
+});
+
+async function deleteProduct(product) {
+  if (!confirm(`Delete "${product.name}"? This cannot be undone.`)) return;
+
+  const { error } = await supabase
+    .from('products')
+    .delete()
+    .eq('id', product.id);
+
+  if (error) {
+    message('formStatus', error.message);
+    return;
+  }
+
+  message('formStatus', 'Product deleted.');
+  loadProducts();
+}
+
+supabase.auth.onAuthStateChange((_event, session) => {
+  if (session) showDashboard();
+  else {
+    $('dashboard').classList.add('hidden');
+    $('login').classList.remove('hidden');
+  }
+});
+
+checkSession();
+</script>
+</body>
+</html>
