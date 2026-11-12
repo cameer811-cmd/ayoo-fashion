@@ -227,7 +227,8 @@ begin
         when coalesce(p_whatsapp_opt_in, false) then coalesce(whatsapp_opt_in_at, now())
         else null
       end
-  where id = v_order.order_id;
+  where id = v_order.order_id
+    and created_at = transaction_timestamp();
 
   return query
   select v_order.order_id, v_order.order_number, v_order.total_amount, v_order.currency;
