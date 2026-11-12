@@ -14,8 +14,6 @@ const WA_STATUS_TEMPLATE = Deno.env.get("AYOO_WHATSAPP_STATUS_TEMPLATE") ?? "";
 const WA_TEMPLATE_LANGUAGE = Deno.env.get("AYOO_WHATSAPP_TEMPLATE_LANGUAGE") ?? "en_US";
 const FONT_URL = "https://raw.githubusercontent.com/google/fonts/main/ofl/notonaskharabicui/NotoNaskhArabicUI%5Bwght%5D.ttf";
 
-if (!SUPABASE_URL || !SERVICE_ROLE_KEY) throw new Error("Supabase server environment is incomplete.");
-
 const WINE = rgb(0.25, 0.10, 0.16);
 const INK = rgb(0.16, 0.15, 0.15);
 const MUTED = rgb(0.42, 0.40, 0.39);
@@ -117,7 +115,7 @@ function drawInvoiceText(page: any, text: string, x: number, y: number, size: nu
   }
 }
 
-async function buildInvoicePdf(order: Order, items: OrderItem[], invoiceNumber: string): Promise<Uint8Array> {
+export async function buildInvoicePdf(order: Order, items: OrderItem[], invoiceNumber: string): Promise<Uint8Array> {
   const pdf = await PDFDocument.create();
   pdf.registerFontkit(fontkit);
   const latin = await pdf.embedFont(StandardFonts.Helvetica);
@@ -386,7 +384,9 @@ async function processJob(job: Job) {
   await rpc("ayoo_finish_notification_job", { p_job_id: job.job_id, p_error: jobError });
 }
 
-Deno.serve(async (req: Request) => {
+if (import.meta.main) {
+  if (!SUPABASE_URL || !SERVICE_ROLE_KEY) throw new Error("Supabase server environment is incomplete.");
+  Deno.serve(async (req: Request) => {
   if (req.method !== "POST") return new Response("Method not allowed", { status: 405 });
   const workerSecret = req.headers.get("x-ayoo-worker-secret") ?? "";
   if (!workerSecret) return Response.json({ error: "Unauthorized" }, { status: 401 });
@@ -409,4 +409,5 @@ Deno.serve(async (req: Request) => {
   } catch (error) {
     return Response.json({ ok: false, error: String(error).slice(0, 500) }, { status: 500 });
   }
-});
+  });
+}
