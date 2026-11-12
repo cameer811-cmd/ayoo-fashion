@@ -4,6 +4,9 @@ Status: implementation staged in `feature/ayoo-invoice-notifications`. Nothing i
 
 ## What this adds
 
+The PDF is an order invoice/receipt for customer communication. It is **not** a Turkish e-Fatura/e-Arşiv fiscal invoice or a substitute for a registered invoicing provider/accountant review. Confirm AYOO's legal invoicing requirements before using it as a statutory tax document. The first renderer supports up to 30 order-item lines per PDF; larger orders are stopped safely rather than silently truncated.
+
+
 - A private `ayoo-invoices` Storage bucket. Invoice PDFs are private and are never published as public URLs.
 - One invoice record per order, with a stable invoice number and SHA-256 checksum.
 - An idempotent notification outbox. New orders enqueue email and WhatsApp deliveries; order-status changes enqueue status notifications.
