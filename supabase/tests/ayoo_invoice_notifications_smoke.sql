@@ -47,6 +47,21 @@ begin
     raise exception 'Test checkout did not return an order.';
   end if;
 
+  -- A retry with the same idempotency key must not rewrite the original WhatsApp consent.
+  perform * from public.ayoo_create_order_with_consent(
+    'AYOO Invoice Test',
+    'invoice-test@example.invalid',
+    '+905000000000',
+    'TR',
+    jsonb_build_object('address_line1','Test Street 1','city','Istanbul','postal_code','34000'),
+    'cash_on_delivery',
+    v_items,
+    v_key,
+    'Automated invoice outbox smoke test',
+    0,
+    false
+  );
+
   select count(*) into v_invoice_count
   from private.ayoo_invoice_records where order_id = v_order.order_id;
 
@@ -56,6 +71,8 @@ begin
   where j.order_id = v_order.order_id and j.event_type = 'order_created';
 
   select whatsapp_opt_in into v_opt_in from public.orders where id = v_order.order_id;
+
+  if v_opt_in is distinct from true then raise exception 'An idempotent retry changed the original WhatsApp consent.'; end if;
 
   if v_invoice_count <> 1 then raise exception 'Expected one invoice record, got %', v_invoice_count; end if;
   if v_delivery_count <> 2 then raise exception 'Expected email + WhatsApp deliveries, got %', v_delivery_count; end if;
