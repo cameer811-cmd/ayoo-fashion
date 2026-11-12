@@ -49,7 +49,8 @@ async function verifyResend(raw: string, req: Request): Promise<boolean> {
   const secretValue = RESEND_WEBHOOK_SECRET.startsWith("whsec_") ? RESEND_WEBHOOK_SECRET.slice(6) : RESEND_WEBHOOK_SECRET;
   let secret: Uint8Array;
   try { secret = decodeBase64(secretValue); } catch { return false; }
-  const key = await crypto.subtle.importKey("raw", secret, { name: "HMAC", hash: "SHA-256" }, false, ["sign"]);
+  const secretBuffer = new Uint8Array(secret).buffer as ArrayBuffer;
+  const key = await crypto.subtle.importKey("raw", secretBuffer, { name: "HMAC", hash: "SHA-256" }, false, ["sign"]);
   const digest = btoa(String.fromCharCode(...new Uint8Array(await crypto.subtle.sign("HMAC", key, encoder.encode(id + "." + timestamp + "." + raw)))));
   const candidates = signature.split(" ").map((part) => part.trim()).filter(Boolean);
   return candidates.some((part) => {
