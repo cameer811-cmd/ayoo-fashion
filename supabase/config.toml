@@ -1,0 +1,7 @@
+project_id = "jfmhbmcrcbatoregunmk"
+
+[functions.ayoo-notification-worker]
+verify_jwt = false
+
+[functions.ayoo-provider-webhooks]
+verify_jwt = false
