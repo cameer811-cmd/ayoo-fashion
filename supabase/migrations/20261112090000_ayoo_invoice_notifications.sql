@@ -478,7 +478,7 @@ grant execute on function public.ayoo_finish_notification_job(uuid,text) to serv
 grant execute on function public.ayoo_record_delivery_webhook(text,text,text,text) to service_role;
 
 -- pg_cron + pg_net poll the outbox. Deploy the worker function before applying this migration.
-create extension if not exists pg_cron with schema pg_catalog;
+create extension if not exists pg_cron;
 create extension if not exists pg_net with schema extensions;
 
 do $$
