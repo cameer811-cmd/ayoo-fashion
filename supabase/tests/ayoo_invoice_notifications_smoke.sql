@@ -6,6 +6,7 @@ do $$
 declare
   v_variant uuid;
   v_order record;
+  v_original_order_id uuid;
   v_key text := encode(gen_random_bytes(16), 'hex');
   v_items jsonb;
   v_job_id uuid;
@@ -47,8 +48,10 @@ begin
     raise exception 'Test checkout did not return an order.';
   end if;
 
+  v_original_order_id := v_order.order_id;
+
   -- A retry with the same idempotency key must not rewrite the original WhatsApp consent.
-  perform * from public.ayoo_create_order_with_consent(
+  select * into v_order from public.ayoo_create_order_with_consent(
     'AYOO Invoice Test',
     'invoice-test@example.invalid',
     '+905000000000',
@@ -61,29 +64,30 @@ begin
     0,
     false
   );
+  if v_order.order_id is distinct from v_original_order_id then
+    raise exception 'An idempotent retry created a second order.';
+  end if;
 
   select count(*) into v_invoice_count
-  from private.ayoo_invoice_records where order_id = v_order.order_id;
+  from private.ayoo_invoice_records where order_id = v_original_order_id;
 
   select count(*) into v_delivery_count
   from private.ayoo_notification_jobs j
   join private.ayoo_notification_deliveries d on d.job_id = j.id
-  where j.order_id = v_order.order_id and j.event_type = 'order_created';
+  where j.order_id = v_original_order_id and j.event_type = 'order_created';
 
-  select whatsapp_opt_in into v_opt_in from public.orders where id = v_order.order_id;
+  select whatsapp_opt_in into v_opt_in from public.orders where id = v_original_order_id;
 
   if v_opt_in is distinct from true then raise exception 'An idempotent retry changed the original WhatsApp consent.'; end if;
 
   if v_invoice_count <> 1 then raise exception 'Expected one invoice record, got %', v_invoice_count; end if;
   if v_delivery_count <> 2 then raise exception 'Expected email + WhatsApp deliveries, got %', v_delivery_count; end if;
-  if v_opt_in is distinct from true then raise exception 'WhatsApp opt-in was not stored.'; end if;
-
-  update public.orders set order_status = 'confirmed' where id = v_order.order_id;
+  update public.orders set order_status = 'confirmed' where id = v_original_order_id;
 
   select count(*) into v_delivery_count
   from private.ayoo_notification_jobs j
   join private.ayoo_notification_deliveries d on d.job_id = j.id
-  where j.order_id = v_order.order_id and j.event_type = 'order_status';
+  where j.order_id = v_original_order_id and j.event_type = 'order_status';
 
   if v_delivery_count <> 2 then raise exception 'Expected two status deliveries, got %', v_delivery_count; end if;
 end;
