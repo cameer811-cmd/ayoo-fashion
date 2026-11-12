@@ -12,7 +12,7 @@ const META_GRAPH_API_VERSION = Deno.env.get("META_GRAPH_API_VERSION") ?? "";
 const WA_INVOICE_TEMPLATE = Deno.env.get("AYOO_WHATSAPP_INVOICE_TEMPLATE") ?? "";
 const WA_STATUS_TEMPLATE = Deno.env.get("AYOO_WHATSAPP_STATUS_TEMPLATE") ?? "";
 const WA_TEMPLATE_LANGUAGE = Deno.env.get("AYOO_WHATSAPP_TEMPLATE_LANGUAGE") ?? "en_US";
-const FONT_URL = "https://fuchsia.googlesource.com/third_party/github.com/googlefonts/noto-fonts/+/refs/tags/v2017-03-06-pre-phase3/unhinted/NotoNaskhArabicUI-Regular.ttf?format=TEXT";
+const FONT_URL = "https://fuchsia.googlesource.com/third_party/github.com/googlefonts/noto-fonts/%2B/refs/tags/v2017-03-06-pre-phase3/unhinted/NotoNaskhArabicUI-Regular.ttf?format=TEXT";
 
 const WINE = rgb(0.25, 0.10, 0.16);
 const INK = rgb(0.16, 0.15, 0.15);
