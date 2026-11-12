@@ -100,10 +100,15 @@ function escapeHtml(value: unknown): string {
 }
 async function arabicFontBytes(): Promise<Uint8Array> {
   if (!arabicFontBytesPromise) {
-    arabicFontBytesPromise = fetch(FONT_URL, { signal: AbortSignal.timeout(20000) }).then(async (response) => {
-      if (!response.ok) throw new Error("Arabic font download failed (" + response.status + ").");
-      return new Uint8Array(await response.arrayBuffer());
-    });
+    arabicFontBytesPromise = fetch(FONT_URL, { signal: AbortSignal.timeout(20000) })
+      .then(async (response) => {
+        if (!response.ok) throw new Error("Arabic font download failed (" + response.status + ").");
+        return new Uint8Array(await response.arrayBuffer());
+      })
+      .catch((error) => {
+        arabicFontBytesPromise = null;
+        throw error;
+      });
   }
   return await arabicFontBytesPromise;
 }
@@ -116,6 +121,7 @@ function drawInvoiceText(page: any, text: string, x: number, y: number, size: nu
 }
 
 export async function buildInvoicePdf(order: Order, items: OrderItem[], invoiceNumber: string): Promise<Uint8Array> {
+  if (items.length > 30) throw new Error("This invoice contains more than 30 lines; multi-page invoices are not enabled yet.");
   const pdf = await PDFDocument.create();
   pdf.registerFontkit(fontkit);
   const latin = await pdf.embedFont(StandardFonts.Helvetica);
@@ -276,7 +282,7 @@ async function metaPost(path: string, body: unknown): Promise<any> {
   }
   const raw = await response.text();
   if (!response.ok) throw new DeliveryError("WhatsApp API rejected the request (" + response.status + "): " + raw.slice(0, 500), {
-    retryable: response.status === 429, retryAfterSeconds: 300,
+    retryable: response.status === 429, uncertain: response.status >= 500, retryAfterSeconds: 300,
   });
   return raw ? JSON.parse(raw) : {};
 }
@@ -393,7 +399,7 @@ if (import.meta.main) {
   try {
     const valid = await rpc<boolean>("ayoo_validate_worker_secret", { p_secret: workerSecret });
     if (valid !== true) return Response.json({ error: "Unauthorized" }, { status: 401 });
-    const jobs = await rpc<Job[]>("ayoo_claim_notification_jobs", { p_limit: 10 });
+    const jobs = await rpc<Job[]>("ayoo_claim_notification_jobs", { p_limit: 2 });
     const results: Array<{ job_id: string; status: string; error?: string }> = [];
     for (const job of jobs) {
       try {
