@@ -109,9 +109,12 @@ async function arabicFontBytes(): Promise<Uint8Array> {
   }
   return await arabicFontBytesPromise;
 }
-function drawInvoiceText(page: any, text: string, x: number, y: number, size: number, latinFont: any, arabicFont: any, color = INK) {
+function drawInvoiceText(page: any, text: string, x: number, y: number, size: number, latinFont: any, arabicFont: any, color = INK, align: "left" | "right" = "right") {
   if (isArabic(text)) drawArabicText(page, text, { font: arabicFont, size, x, y, color });
-  else page.drawText(text, { x, y, size, font: latinFont, color });
+  else {
+    const textWidth = latinFont.widthOfTextAtSize(text, size);
+    page.drawText(text, { x: align === "right" ? x - textWidth : x, y, size, font: latinFont, color });
+  }
 }
 
 async function buildInvoicePdf(order: Order, items: OrderItem[], invoiceNumber: string): Promise<Uint8Array> {
@@ -141,17 +144,17 @@ async function buildInvoicePdf(order: Order, items: OrderItem[], invoiceNumber: 
 
   page.drawLine({ start: { x: 46, y: 594 }, end: { x: width - 46, y: 594 }, thickness: 0.8, color: LINE });
   page.drawText("ITEM", { x: 48, y: 572, size: 8, font: bold, color: WINE });
-  page.drawText("COLOUR / SIZE", { x: 310, y: 572, size: 8, font: bold, color: WINE });
-  page.drawText("QTY", { x: 405, y: 572, size: 8, font: bold, color: WINE });
+  page.drawText("COLOUR / SIZE", { x: 300, y: 572, size: 8, font: bold, color: WINE });
+  page.drawText("QTY", { x: 414, y: 572, size: 8, font: bold, color: WINE });
   page.drawText("UNIT", { x: 447, y: 572, size: 8, font: bold, color: WINE });
   page.drawText("TOTAL", { x: 510, y: 572, size: 8, font: bold, color: WINE });
   page.drawLine({ start: { x: 46, y: 560 }, end: { x: width - 46, y: 560 }, thickness: 0.6, color: LINE });
 
   let y = 538;
   for (const item of items.slice(0, 30)) {
-    drawInvoiceText(page, safeText(item.product_name).slice(0, 34), 290, y, 8, latin, arabic);
-    page.drawText(safeText(item.color_name).slice(0, 14) + " / " + safeText(item.size), { x: 310, y, size: 8, font: latin, color: MUTED });
-    page.drawText(String(item.quantity), { x: 408, y, size: 9, font: latin, color: INK });
+    drawInvoiceText(page, safeText(item.product_name).slice(0, 34), 295, y, 8, latin, arabic);
+    drawInvoiceText(page, safeText(item.color_name).slice(0, 14) + " / " + safeText(item.size), 405, y, 8, latin, arabic, MUTED);
+    page.drawText(String(item.quantity), { x: 414, y, size: 9, font: latin, color: INK });
     page.drawText(money(item.unit_price, item.currency).slice(0, 14), { x: 447, y, size: 8, font: latin, color: INK });
     page.drawText(money(item.line_total, item.currency).slice(0, 14), { x: 510, y, size: 8, font: bold, color: INK });
     page.drawLine({ start: { x: 46, y: y - 7 }, end: { x: width - 46, y: y - 7 }, thickness: 0.35, color: LINE });
