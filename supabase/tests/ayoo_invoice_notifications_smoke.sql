@@ -13,6 +13,10 @@ declare
   v_invoice_count integer;
   v_delivery_count integer;
   v_opt_in boolean;
+  v_delivery_id uuid;
+  v_status_job_id uuid;
+  v_job_status text;
+  v_webhook_id text := 'ayoo-test-' || gen_random_uuid()::text;
 begin
   select pv.id into v_variant
   from public.product_variants pv
@@ -90,6 +94,31 @@ begin
   where j.order_id = v_original_order_id and j.event_type = 'order_status';
 
   if v_delivery_count <> 2 then raise exception 'Expected two status deliveries, got %', v_delivery_count; end if;
+
+  -- A late provider webhook must resolve an earlier unknown delivery and refresh its parent job.
+  select d.id, d.job_id into v_delivery_id, v_status_job_id
+  from private.ayoo_notification_deliveries d
+  join private.ayoo_notification_jobs j on j.id = d.job_id
+  where j.order_id = v_original_order_id
+    and j.event_type = 'order_status'
+    and d.channel = 'email';
+
+  update private.ayoo_notification_deliveries
+  set status = 'unknown', provider_message_id = v_webhook_id, locked_at = null
+  where id = v_delivery_id;
+  update private.ayoo_notification_deliveries
+  set status = 'accepted', locked_at = null
+  where job_id = v_status_job_id and channel = 'whatsapp';
+  update private.ayoo_notification_jobs
+  set status = 'unknown', locked_at = null, completed_at = now()
+  where id = v_status_job_id;
+
+  perform public.ayoo_record_delivery_webhook('resend', v_webhook_id, 'delivered', null);
+  select status into v_job_status
+  from private.ayoo_notification_jobs where id = v_status_job_id;
+  if v_job_status <> 'completed' then
+    raise exception 'Late delivery webhook did not resolve the parent job.';
+  end if;
 end;
 $$;
 
