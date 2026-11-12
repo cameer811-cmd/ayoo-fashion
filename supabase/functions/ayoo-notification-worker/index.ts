@@ -128,9 +128,9 @@ async function buildInvoicePdf(order: Order, items: OrderItem[], invoiceNumber: 
 
   page.drawRectangle({ x: 0, y: 0, width, height: page.getHeight(), color: PAPER });
   page.drawRectangle({ x: 0, y: 735, width, height: 107, color: WINE });
-  page.drawText("AYOO", { x: 46, y: 785, size: 29, font: bold, color: rgb(1, 1, 1), characterSpacing: 2 });
+  page.drawText("AYOO", { x: 46, y: 785, size: 29, font: bold, color: rgb(1, 1, 1) });
   drawInvoiceText(page, "فاتورة طلب", 548, 790, 20, bold, arabic, rgb(1, 1, 1));
-  page.drawText("ORDER INVOICE", { x: 48, y: 760, size: 9, font: latin, color: rgb(0.93, 0.88, 0.86), characterSpacing: 1.5 });
+  page.drawText("ORDER INVOICE", { x: 48, y: 760, size: 9, font: latin, color: rgb(0.93, 0.88, 0.86) });
   page.drawText("Invoice: " + invoiceNumber, { x: 48, y: 710, size: 10, font: bold, color: INK });
   page.drawText("Order: " + safeText(order.order_number), { x: 48, y: 692, size: 10, font: latin, color: MUTED });
   page.drawText("Date: " + formatDate(order.created_at), { x: 48, y: 674, size: 10, font: latin, color: MUTED });
@@ -172,7 +172,7 @@ async function buildInvoicePdf(order: Order, items: OrderItem[], invoiceNumber: 
   page.drawText("PAYMENT: CASH ON DELIVERY", { x: 48, y: 92, size: 8, font: bold, color: MUTED });
   page.drawText("Shipping is not included. AYOO will confirm the delivery fee before dispatch.", { x: 48, y: 74, size: 7.5, font: latin, color: MUTED });
   drawInvoiceText(page, "شكراً لاختياركم AYOO", 548, 45, 11, latin, arabic, WINE);
-  page.drawText("AYOO · A VISION IN FORM", { x: 48, y: 45, size: 7, font: latin, color: MUTED, characterSpacing: 1 });
+  page.drawText("AYOO · A VISION IN FORM", { x: 48, y: 45, size: 7, font: latin, color: MUTED });
 
   pdf.setTitle("AYOO Invoice " + invoiceNumber);
   pdf.setAuthor("AYOO");
@@ -205,10 +205,11 @@ async function ensureInvoice(order: Order, items: OrderItem[]): Promise<{ invoic
   await rpc("ayoo_set_invoice_record", { p_order_id: order.id, p_status: "generating", p_error: null });
   try {
     const pdf = await buildInvoicePdf(order, items, record.invoice_number);
-    const digest = await crypto.subtle.digest("SHA-256", pdf);
+    const pdfBuffer = new Uint8Array(pdf).buffer as ArrayBuffer;
+    const digest = await crypto.subtle.digest("SHA-256", pdfBuffer);
     const sha256 = [...new Uint8Array(digest)].map((b) => b.toString(16).padStart(2, "0")).join("");
     const path = order.id + "/" + record.invoice_number + ".pdf";
-    const upload = await storageRequest(path, { method: "POST", headers: { "Content-Type": "application/pdf", "x-upsert": "true" }, body: pdf });
+    const upload = await storageRequest(path, { method: "POST", headers: { "Content-Type": "application/pdf", "x-upsert": "true" }, body: new Blob([pdfBuffer], { type: "application/pdf" }) });
     if (!upload.ok) throw new Error("Invoice storage upload failed (" + upload.status + "): " + (await upload.text()).slice(0, 400));
     await rpc("ayoo_set_invoice_record", { p_order_id: order.id, p_status: "ready", p_storage_path: path, p_sha256: sha256, p_error: null });
     return { invoiceNumber: record.invoice_number, pdf };
@@ -286,7 +287,8 @@ async function uploadWhatsappPdf(pdf: Uint8Array, filename: string): Promise<str
   const form = new FormData();
   form.append("messaging_product", "whatsapp");
   form.append("type", "application/pdf");
-  form.append("file", new Blob([pdf], { type: "application/pdf" }), filename);
+  const pdfBuffer = new Uint8Array(pdf).buffer as ArrayBuffer;
+  form.append("file", new Blob([pdfBuffer], { type: "application/pdf" }), filename);
   const result = await metaPost(META_PHONE_NUMBER_ID + "/media", form);
   if (!result.id) throw new DeliveryError("WhatsApp media upload returned no media ID.", { uncertain: true });
   return String(result.id);
