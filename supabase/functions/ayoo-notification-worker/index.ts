@@ -1,4 +1,4 @@
-import { jsPDF } from "npm:jspdf@3.0.2";
+import { buildInvoicePdf } from "./invoice.ts";
 
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
 const SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
@@ -10,14 +10,6 @@ const META_GRAPH_API_VERSION = Deno.env.get("META_GRAPH_API_VERSION") ?? "";
 const WA_INVOICE_TEMPLATE = Deno.env.get("AYOO_WHATSAPP_INVOICE_TEMPLATE") ?? "";
 const WA_STATUS_TEMPLATE = Deno.env.get("AYOO_WHATSAPP_STATUS_TEMPLATE") ?? "";
 const WA_TEMPLATE_LANGUAGE = Deno.env.get("AYOO_WHATSAPP_TEMPLATE_LANGUAGE") ?? "en_US";
-const FONT_URL = "https://raw.githubusercontent.com/jenskutilek/free-fonts/master/Noto/Noto%20Naskh%20Arabic/TTF/NotoNaskhArabic-Regular.ttf";
-
-const WINE: [number, number, number] = [64, 26, 41];
-const INK: [number, number, number] = [41, 38, 38];
-const MUTED: [number, number, number] = [107, 102, 100];
-const PAPER: [number, number, number] = [251, 249, 244];
-const LINE: [number, number, number] = [219, 212, 203];
-const WHITE: [number, number, number] = [255, 255, 255];
 
 type Order = {
   id: string; order_number: string; customer_name: string; customer_email: string;
@@ -45,8 +37,6 @@ class DeliveryError extends Error {
     this.retryAfterSeconds = opts.retryAfterSeconds ?? 300;
   }
 }
-
-let arabicFontBytesPromise: Promise<Uint8Array> | null = null;
 
 async function rpc<T = unknown>(name: string, args: Record<string, unknown>): Promise<T> {
   const response = await fetch(SUPABASE_URL + "/rest/v1/rpc/" + name, {
@@ -88,157 +78,12 @@ function money(value: number | string, currency: string): string {
 function formatDate(value: string): string {
   return new Intl.DateTimeFormat("en-GB", { day: "2-digit", month: "short", year: "numeric", timeZone: "Europe/Istanbul" }).format(new Date(value));
 }
-function isArabic(value: string): boolean {
-  return /[\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF]/.test(value);
-}
 function safeText(value: unknown): string {
   return String(value ?? "").replace(/[\r\n\t]+/g, " ").trim();
 }
 function escapeHtml(value: unknown): string {
   return safeText(value).replace(/[&<>"']/g, (char) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[char]!);
 }
-async function arabicFontBytes(): Promise<Uint8Array> {
-  if (!arabicFontBytesPromise) {
-    arabicFontBytesPromise = fetch(FONT_URL, { signal: AbortSignal.timeout(20000) })
-      .then(async (response) => {
-        if (!response.ok) throw new Error("Arabic font download failed (" + response.status + ").");
-        return new Uint8Array(await response.arrayBuffer());
-      })
-      .catch((error) => {
-        arabicFontBytesPromise = null;
-        throw error;
-      });
-  }
-  return await arabicFontBytesPromise;
-}
-function drawInvoiceText(doc: any, text: string, x: number, y: number, size: number, color: [number, number, number] = INK, align: "left" | "right" = "right") {
-  doc.setFontSize(size);
-  doc.setTextColor(color[0], color[1], color[2]);
-  if (isArabic(text)) {
-    doc.setFont("NotoNaskhArabic", "normal");
-    doc.setR2L(true);
-    doc.text(text, x, y, { align });
-    doc.setR2L(false);
-  } else {
-    doc.setFont("helvetica", "normal");
-    doc.text(text, x, y, { align });
-  }
-}
-
-export async function buildInvoicePdf(order: Order, items: OrderItem[], invoiceNumber: string): Promise<Uint8Array> {
-  if (items.length > 30) throw new Error("This invoice contains more than 30 lines; multi-page invoices are not enabled yet.");
-  const fontBytes = await arabicFontBytes();
-  const doc: any = new jsPDF({ unit: "mm", format: "a4", compress: true });
-  doc.addFileToVFS("NotoNaskhArabic-Regular.ttf", bytesToBase64(fontBytes));
-  doc.addFont("NotoNaskhArabic-Regular.ttf", "NotoNaskhArabic", "normal");
-
-  doc.setFillColor(PAPER[0], PAPER[1], PAPER[2]);
-  doc.rect(0, 0, 210, 297, "F");
-  doc.setFillColor(WINE[0], WINE[1], WINE[2]);
-  doc.rect(0, 0, 210, 38, "F");
-
-  doc.setFont("helvetica", "bold");
-  doc.setFontSize(28);
-  doc.setTextColor(255, 255, 255);
-  doc.text("AYOO", 16, 22);
-  drawInvoiceText(doc, "فاتورة طلب", 194, 18, 18, WHITE, "right");
-  doc.setFont("helvetica", "normal");
-  doc.setFontSize(8);
-  doc.setTextColor(239, 226, 229);
-  doc.text("ORDER INVOICE", 16, 31);
-
-  doc.setFont("helvetica", "bold");
-  doc.setFontSize(9);
-  doc.setTextColor(INK[0], INK[1], INK[2]);
-  doc.text("Invoice: " + invoiceNumber, 16, 52);
-  doc.setFont("helvetica", "normal");
-  doc.setTextColor(MUTED[0], MUTED[1], MUTED[2]);
-  doc.text("Order: " + safeText(order.order_number), 16, 59);
-  doc.text("Date: " + formatDate(order.created_at), 16, 66);
-  drawInvoiceText(doc, "بيانات العميل", 194, 52, 12, WINE, "right");
-  drawInvoiceText(doc, safeText(order.customer_name), 194, 61, 10, INK, "right");
-  doc.setFont("helvetica", "normal");
-  doc.setFontSize(8);
-  doc.setTextColor(MUTED[0], MUTED[1], MUTED[2]);
-  doc.text(safeText(order.customer_email).slice(0, 58), 16, 75);
-  doc.text(safeText(order.customer_phone), 16, 81);
-  const address = order.shipping_address || {};
-  const addressLine = [address.address_line1, address.city, address.postal_code].map(safeText).filter(Boolean).join(", ");
-  drawInvoiceText(doc, addressLine.slice(0, 72), 194, 72, 8, MUTED, "right");
-
-  doc.setDrawColor(LINE[0], LINE[1], LINE[2]);
-  doc.setLineWidth(0.3);
-  doc.line(16, 89, 194, 89);
-  doc.setFont("helvetica", "bold");
-  doc.setFontSize(7);
-  doc.setTextColor(WINE[0], WINE[1], WINE[2]);
-  doc.text("ITEM", 16, 99);
-  doc.text("COLOUR / SIZE", 105, 99);
-  doc.text("QTY", 150, 99);
-  doc.text("UNIT", 168, 99);
-  doc.text("TOTAL", 194, 99, { align: "right" });
-  doc.line(16, 102, 194, 102);
-
-  let y = 109;
-  for (const item of items) {
-    drawInvoiceText(doc, safeText(item.product_name).slice(0, 34), 96, y, 7.5, INK, "right");
-    drawInvoiceText(doc, safeText(item.color_name).slice(0, 14), 140, y, 7, MUTED, "right");
-    doc.setFont("helvetica", "normal");
-    doc.setFontSize(7);
-    doc.setTextColor(MUTED[0], MUTED[1], MUTED[2]);
-    doc.text(safeText(item.size), 143, y);
-    doc.setTextColor(INK[0], INK[1], INK[2]);
-    doc.text(String(item.quantity), 150, y);
-    doc.text(money(item.unit_price, item.currency).slice(0, 14), 168, y);
-    doc.setFont("helvetica", "bold");
-    doc.text(money(item.line_total, item.currency).slice(0, 14), 194, y, { align: "right" });
-    doc.setDrawColor(LINE[0], LINE[1], LINE[2]);
-    doc.line(16, y + 2.5, 194, y + 2.5);
-    y += 4.5;
-  }
-
-  const summaryY = Math.max(136, y + 7);
-  doc.setFont("helvetica", "normal");
-  doc.setFontSize(8);
-  doc.setTextColor(MUTED[0], MUTED[1], MUTED[2]);
-  doc.text("PRODUCT SUBTOTAL", 125, summaryY);
-  doc.setFont("helvetica", "bold");
-  doc.setTextColor(INK[0], INK[1], INK[2]);
-  doc.text(money(order.subtotal, order.currency), 194, summaryY, { align: "right" });
-  doc.setFont("helvetica", "normal");
-  doc.setTextColor(MUTED[0], MUTED[1], MUTED[2]);
-  doc.text("SHIPPING", 125, summaryY + 7);
-  doc.text("To be confirmed", 194, summaryY + 7, { align: "right" });
-  doc.setDrawColor(WINE[0], WINE[1], WINE[2]);
-  doc.setLineWidth(0.4);
-  doc.line(120, summaryY + 11, 194, summaryY + 11);
-  doc.setFont("helvetica", "bold");
-  doc.setTextColor(WINE[0], WINE[1], WINE[2]);
-  doc.text("AMOUNT FOR ITEMS", 125, summaryY + 18);
-  doc.setFontSize(10);
-  doc.text(money(order.total_amount, order.currency), 194, summaryY + 18, { align: "right" });
-
-  doc.setFont("helvetica", "bold");
-  doc.setFontSize(7);
-  doc.setTextColor(MUTED[0], MUTED[1], MUTED[2]);
-  doc.text("PAYMENT: CASH ON DELIVERY", 16, 280);
-  doc.setFont("helvetica", "normal");
-  doc.text("Shipping is not included. AYOO will confirm the delivery fee before dispatch.", 16, 285);
-  drawInvoiceText(doc, "شكراً لاختياركم", 194, 291, 9, WINE, "right");
-  doc.setFont("helvetica", "bold");
-  doc.setFontSize(6);
-  doc.setTextColor(MUTED[0], MUTED[1], MUTED[2]);
-  doc.text("AYOO · A VISION IN FORM", 16, 291);
-
-  doc.setProperties({
-    title: "AYOO Invoice " + invoiceNumber,
-    subject: "Order " + order.order_number,
-    author: "AYOO",
-    creator: "AYOO Store",
-  });
-  return new Uint8Array(doc.output("arraybuffer"));
-}
-
 function bytesToBase64(bytes: Uint8Array): string {
   let binary = "";
   const chunkSize = 0x8000;
@@ -445,9 +290,9 @@ async function processJob(job: Job) {
   await rpc("ayoo_finish_notification_job", { p_job_id: job.job_id, p_error: jobError });
 }
 
-if (import.meta.main) {
-  if (!SUPABASE_URL || !SERVICE_ROLE_KEY) throw new Error("Supabase server environment is incomplete.");
-  Deno.serve(async (req: Request) => {
+if (!SUPABASE_URL || !SERVICE_ROLE_KEY) throw new Error("Supabase server environment is incomplete.");
+
+Deno.serve(async (req: Request) => {
   if (req.method !== "POST") return new Response("Method not allowed", { status: 405 });
   const workerSecret = req.headers.get("x-ayoo-worker-secret") ?? "";
   if (!workerSecret) return Response.json({ error: "Unauthorized" }, { status: 401 });
@@ -469,6 +314,4 @@ if (import.meta.main) {
     return Response.json({ ok: true, claimed: jobs.length, results });
   } catch (error) {
     return Response.json({ ok: false, error: String(error).slice(0, 500) }, { status: 500 });
-  }
-  });
-}
+});
