@@ -12,7 +12,7 @@ const META_GRAPH_API_VERSION = Deno.env.get("META_GRAPH_API_VERSION") ?? "";
 const WA_INVOICE_TEMPLATE = Deno.env.get("AYOO_WHATSAPP_INVOICE_TEMPLATE") ?? "";
 const WA_STATUS_TEMPLATE = Deno.env.get("AYOO_WHATSAPP_STATUS_TEMPLATE") ?? "";
 const WA_TEMPLATE_LANGUAGE = Deno.env.get("AYOO_WHATSAPP_TEMPLATE_LANGUAGE") ?? "en_US";
-const FONT_URL = "https://fuchsia.googlesource.com/third_party/github.com/googlefonts/noto-fonts/%2B/refs/tags/v2017-03-06-pre-phase3/unhinted/NotoNaskhArabicUI-Regular.ttf?format=TEXT";
+const FONT_URL = "https://raw.githubusercontent.com/jenskutilek/free-fonts/master/Noto/Noto%20Naskh%20Arabic/TTF/NotoNaskhArabic-Regular.ttf";
 
 const WINE = rgb(0.25, 0.10, 0.16);
 const INK = rgb(0.16, 0.15, 0.15);
@@ -102,9 +102,7 @@ async function arabicFontBytes(): Promise<Uint8Array> {
   if (!arabicFontBytesPromise) {
     arabicFontBytesPromise = fetch(FONT_URL, { signal: AbortSignal.timeout(20000) }).then(async (response) => {
       if (!response.ok) throw new Error("Arabic font download failed (" + response.status + ").");
-      const encoded = (await response.text()).trim();
-      const binary = atob(encoded);
-      return Uint8Array.from(binary, (character) => character.charCodeAt(0));
+      return new Uint8Array(await response.arrayBuffer());
     });
   }
   return await arabicFontBytesPromise;
