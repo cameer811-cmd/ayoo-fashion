@@ -110,7 +110,7 @@ async function arabicFontBytes(): Promise<Uint8Array> {
   return await arabicFontBytesPromise;
 }
 function drawInvoiceText(page: any, text: string, x: number, y: number, size: number, latinFont: any, arabicFont: any, color = INK) {
-  if (isArabic(text)) drawArabicText(page, text, { font: arabicFont, size, x, y });
+  if (isArabic(text)) drawArabicText(page, text, { font: arabicFont, size, x, y, color });
   else page.drawText(text, { x, y, size, font: latinFont, color });
 }
 
@@ -149,13 +149,13 @@ async function buildInvoicePdf(order: Order, items: OrderItem[], invoiceNumber: 
 
   let y = 538;
   for (const item of items.slice(0, 30)) {
-    drawInvoiceText(page, safeText(item.product_name).slice(0, 34), 290, y, 9, latin, arabic);
+    drawInvoiceText(page, safeText(item.product_name).slice(0, 34), 290, y, 8, latin, arabic);
     page.drawText(safeText(item.color_name).slice(0, 14) + " / " + safeText(item.size), { x: 310, y, size: 8, font: latin, color: MUTED });
     page.drawText(String(item.quantity), { x: 408, y, size: 9, font: latin, color: INK });
     page.drawText(money(item.unit_price, item.currency).slice(0, 14), { x: 447, y, size: 8, font: latin, color: INK });
     page.drawText(money(item.line_total, item.currency).slice(0, 14), { x: 510, y, size: 8, font: bold, color: INK });
-    page.drawLine({ start: { x: 46, y: y - 9 }, end: { x: width - 46, y: y - 9 }, thickness: 0.35, color: LINE });
-    y -= 15;
+    page.drawLine({ start: { x: 46, y: y - 7 }, end: { x: width - 46, y: y - 7 }, thickness: 0.35, color: LINE });
+    y -= 12;
   }
 
   const summaryY = Math.max(78, y - 18);
