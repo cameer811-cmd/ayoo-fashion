@@ -445,31 +445,35 @@ set search_path = private, pg_temp
 as $$
 declare
   v_retry boolean;
+  v_processing boolean;
   v_unknown boolean;
-  v_pending boolean;
 begin
   select
-    coalesce(bool_or(status = 'retry'), false),
-    coalesce(bool_or(status = 'unknown'), false),
-    coalesce(bool_or(status in ('pending','processing')), false)
-  into v_retry, v_unknown, v_pending
+    coalesce(bool_or(status in ('pending','retry')), false),
+    coalesce(bool_or(status = 'processing'), false),
+    coalesce(bool_or(status = 'unknown'), false)
+  into v_retry, v_processing, v_unknown
   from private.ayoo_notification_deliveries
   where job_id = p_job_id;
 
-  update private.ayoo_notification_jobs
+  update private.ayoo_notification_jobs j
   set status = case
-        when v_pending or v_retry then 'retry'
+        when v_retry then 'retry'
+        when v_processing then 'processing'
         when v_unknown then 'unknown'
         else 'completed'
       end,
-      available_at = case when v_pending or v_retry then
-        (select min(available_at) from private.ayoo_notification_deliveries
-         where job_id = p_job_id and status in ('pending','retry'))
-        else available_at end,
-      locked_at = null,
-      completed_at = case when v_pending or v_retry then null else coalesce(completed_at, now()) end,
+      available_at = case when v_retry then
+        coalesce(
+          (select min(available_at) from private.ayoo_notification_deliveries
+           where job_id = p_job_id and status in ('pending','retry')),
+          j.available_at
+        )
+        else j.available_at end,
+      locked_at = case when v_processing then j.locked_at else null end,
+      completed_at = case when v_retry or v_processing then null else coalesce(j.completed_at, now()) end,
       last_error = p_error
-  where id = p_job_id;
+  where j.id = p_job_id;
 end;
 $$;
 
@@ -486,6 +490,10 @@ set search_path = private, pg_temp
 as $$
 declare
   v_count integer;
+  v_job_id uuid;
+  v_retry boolean;
+  v_processing boolean;
+  v_unknown boolean;
 begin
   if p_provider not in ('resend','whatsapp') then
     raise exception 'Unsupported delivery provider.';
@@ -493,6 +501,7 @@ begin
   if p_status not in ('accepted','delivered','failed') then
     raise exception 'Unsupported provider status.';
   end if;
+
   update private.ayoo_notification_deliveries
   set status = case
         when status = 'delivered' then 'delivered'
@@ -506,11 +515,45 @@ begin
   where provider = p_provider
     and provider_message_id = p_provider_message_id;
   get diagnostics v_count = row_count;
+
   if v_count = 0 then
     insert into private.ayoo_provider_webhook_events(provider, provider_message_id, provider_status, error_text)
     values (p_provider, p_provider_message_id, p_status, p_error)
     on conflict (provider, provider_message_id, provider_status) do nothing;
+  else
+    select d.job_id into v_job_id
+    from private.ayoo_notification_deliveries d
+    where d.provider = p_provider
+      and d.provider_message_id = p_provider_message_id
+    limit 1;
+
+    select
+      coalesce(bool_or(status in ('pending','retry')), false),
+      coalesce(bool_or(status = 'processing'), false),
+      coalesce(bool_or(status = 'unknown'), false)
+    into v_retry, v_processing, v_unknown
+    from private.ayoo_notification_deliveries
+    where job_id = v_job_id;
+
+    update private.ayoo_notification_jobs j
+    set status = case
+          when v_retry then 'retry'
+          when v_processing then 'processing'
+          when v_unknown then 'unknown'
+          else 'completed'
+        end,
+        available_at = case when v_retry then
+          coalesce(
+            (select min(available_at) from private.ayoo_notification_deliveries
+             where job_id = v_job_id and status in ('pending','retry')),
+            j.available_at
+          )
+          else j.available_at end,
+        locked_at = case when v_processing then j.locked_at else null end,
+        completed_at = case when v_retry or v_processing then null else coalesce(j.completed_at, now()) end
+    where j.id = v_job_id;
   end if;
+
   return v_count;
 end;
 $$;
