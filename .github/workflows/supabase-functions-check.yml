@@ -21,3 +21,5 @@ jobs:
         run: |
           deno check --no-lock supabase/functions/ayoo-notification-worker/index.ts
           deno check --no-lock supabase/functions/ayoo-provider-webhooks/index.ts
+          deno check --no-lock supabase/functions/ayoo-notification-worker/invoice.test.ts
+          deno test --no-lock --allow-net supabase/functions/ayoo-notification-worker/invoice.test.ts
