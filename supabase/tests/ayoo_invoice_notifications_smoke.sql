@@ -102,6 +102,9 @@ begin
   where j.order_id = v_original_order_id
     and j.event_type = 'order_status'
     and d.channel = 'email';
+  if v_delivery_id is null or v_status_job_id is null then
+    raise exception 'Could not locate the email delivery for webhook reconciliation test.';
+  end if;
 
   update private.ayoo_notification_deliveries
   set status = 'unknown', provider_message_id = v_webhook_id, locked_at = null
@@ -116,7 +119,7 @@ begin
   perform public.ayoo_record_delivery_webhook('resend', v_webhook_id, 'delivered', null);
   select status into v_job_status
   from private.ayoo_notification_jobs where id = v_status_job_id;
-  if v_job_status <> 'completed' then
+  if v_job_status is distinct from 'completed' then
     raise exception 'Late delivery webhook did not resolve the parent job.';
   end if;
 end;
