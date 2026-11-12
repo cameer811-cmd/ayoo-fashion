@@ -550,7 +550,8 @@ begin
           )
           else j.available_at end,
         locked_at = case when v_processing then j.locked_at else null end,
-        completed_at = case when v_retry or v_processing then null else coalesce(j.completed_at, now()) end
+        completed_at = case when v_retry or v_processing then null else coalesce(j.completed_at, now()) end,
+        last_error = case when v_retry or v_processing or v_unknown then j.last_error else null end
     where j.id = v_job_id;
   end if;
 
