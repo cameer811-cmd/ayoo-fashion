@@ -1,5 +1,5 @@
 import { PDFDocument } from "npm:pdf-lib@1.17.1";
-import { buildInvoicePdf } from "./index.ts";
+import { buildInvoicePdf } from "./invoice.ts";
 
 Deno.test("AYOO creates a readable one-page PDF invoice with Arabic and Latin text", async () => {
   const order = {
