@@ -1,6 +1,4 @@
-import { PDFDocument, StandardFonts, rgb } from "npm:pdf-lib@1.17.1";
-import fontkit from "npm:@pdf-lib/fontkit@1.1.1";
-import { drawArabicText } from "npm:arabic-bidi-shaper@0.1.1/pdf-lib";
+import { jsPDF } from "npm:jspdf@3.0.2";
 
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
 const SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
@@ -14,11 +12,12 @@ const WA_STATUS_TEMPLATE = Deno.env.get("AYOO_WHATSAPP_STATUS_TEMPLATE") ?? "";
 const WA_TEMPLATE_LANGUAGE = Deno.env.get("AYOO_WHATSAPP_TEMPLATE_LANGUAGE") ?? "en_US";
 const FONT_URL = "https://raw.githubusercontent.com/jenskutilek/free-fonts/master/Noto/Noto%20Naskh%20Arabic/TTF/NotoNaskhArabic-Regular.ttf";
 
-const WINE = rgb(0.25, 0.10, 0.16);
-const INK = rgb(0.16, 0.15, 0.15);
-const MUTED = rgb(0.42, 0.40, 0.39);
-const PAPER = rgb(0.985, 0.976, 0.957);
-const LINE = rgb(0.86, 0.83, 0.79);
+const WINE: [number, number, number] = [64, 26, 41];
+const INK: [number, number, number] = [41, 38, 38];
+const MUTED: [number, number, number] = [107, 102, 100];
+const PAPER: [number, number, number] = [251, 249, 244];
+const LINE: [number, number, number] = [219, 212, 203];
+const WHITE: [number, number, number] = [255, 255, 255];
 
 type Order = {
   id: string; order_number: string; customer_name: string; customer_email: string;
@@ -112,76 +111,132 @@ async function arabicFontBytes(): Promise<Uint8Array> {
   }
   return await arabicFontBytesPromise;
 }
-function drawInvoiceText(page: any, text: string, x: number, y: number, size: number, latinFont: any, arabicFont: any, color = INK, align: "left" | "right" = "right") {
-  if (isArabic(text)) drawArabicText(page, text, { font: arabicFont, size, x, y, color });
-  else {
-    const textWidth = latinFont.widthOfTextAtSize(text, size);
-    page.drawText(text, { x: align === "right" ? x - textWidth : x, y, size, font: latinFont, color });
+function drawInvoiceText(doc: any, text: string, x: number, y: number, size: number, color: [number, number, number] = INK, align: "left" | "right" = "right") {
+  doc.setFontSize(size);
+  doc.setTextColor(color[0], color[1], color[2]);
+  if (isArabic(text)) {
+    doc.setFont("NotoNaskhArabic", "normal");
+    doc.setR2L(true);
+    doc.text(text, x, y, { align });
+    doc.setR2L(false);
+  } else {
+    doc.setFont("helvetica", "normal");
+    doc.text(text, x, y, { align });
   }
 }
 
 export async function buildInvoicePdf(order: Order, items: OrderItem[], invoiceNumber: string): Promise<Uint8Array> {
   if (items.length > 30) throw new Error("This invoice contains more than 30 lines; multi-page invoices are not enabled yet.");
-  const pdf = await PDFDocument.create();
-  pdf.registerFontkit(fontkit);
-  const latin = await pdf.embedFont(StandardFonts.Helvetica);
-  const bold = await pdf.embedFont(StandardFonts.HelveticaBold);
-  const arabic = await pdf.embedFont(await arabicFontBytes(), { subset: true });
-  const page = pdf.addPage([595.28, 841.89]);
-  const width = page.getWidth();
+  const fontBytes = await arabicFontBytes();
+  const doc: any = new jsPDF({ unit: "mm", format: "a4", compress: true });
+  doc.addFileToVFS("NotoNaskhArabic-Regular.ttf", bytesToBase64(fontBytes));
+  doc.addFont("NotoNaskhArabic-Regular.ttf", "NotoNaskhArabic", "normal");
 
-  page.drawRectangle({ x: 0, y: 0, width, height: page.getHeight(), color: PAPER });
-  page.drawRectangle({ x: 0, y: 735, width, height: 107, color: WINE });
-  page.drawText("AYOO", { x: 46, y: 785, size: 29, font: bold, color: rgb(1, 1, 1) });
-  drawInvoiceText(page, "فاتورة طلب", 548, 790, 20, bold, arabic, rgb(1, 1, 1));
-  page.drawText("ORDER INVOICE", { x: 48, y: 760, size: 9, font: latin, color: rgb(0.93, 0.88, 0.86) });
-  page.drawText("Invoice: " + invoiceNumber, { x: 48, y: 710, size: 10, font: bold, color: INK });
-  page.drawText("Order: " + safeText(order.order_number), { x: 48, y: 692, size: 10, font: latin, color: MUTED });
-  page.drawText("Date: " + formatDate(order.created_at), { x: 48, y: 674, size: 10, font: latin, color: MUTED });
-  drawInvoiceText(page, "بيانات العميل", 548, 710, 13, bold, arabic, WINE);
-  drawInvoiceText(page, safeText(order.customer_name), 548, 690, 11, latin, arabic);
-  page.drawText(safeText(order.customer_email).slice(0, 48), { x: 48, y: 650, size: 9, font: latin, color: MUTED });
-  page.drawText(safeText(order.customer_phone), { x: 48, y: 634, size: 9, font: latin, color: MUTED });
+  doc.setFillColor(PAPER[0], PAPER[1], PAPER[2]);
+  doc.rect(0, 0, 210, 297, "F");
+  doc.setFillColor(WINE[0], WINE[1], WINE[2]);
+  doc.rect(0, 0, 210, 38, "F");
+
+  doc.setFont("helvetica", "bold");
+  doc.setFontSize(28);
+  doc.setTextColor(255, 255, 255);
+  doc.text("AYOO", 16, 22);
+  drawInvoiceText(doc, "فاتورة طلب", 194, 18, 18, WHITE, "right");
+  doc.setFont("helvetica", "normal");
+  doc.setFontSize(8);
+  doc.setTextColor(239, 226, 229);
+  doc.text("ORDER INVOICE", 16, 31);
+
+  doc.setFont("helvetica", "bold");
+  doc.setFontSize(9);
+  doc.setTextColor(INK[0], INK[1], INK[2]);
+  doc.text("Invoice: " + invoiceNumber, 16, 52);
+  doc.setFont("helvetica", "normal");
+  doc.setTextColor(MUTED[0], MUTED[1], MUTED[2]);
+  doc.text("Order: " + safeText(order.order_number), 16, 59);
+  doc.text("Date: " + formatDate(order.created_at), 16, 66);
+  drawInvoiceText(doc, "بيانات العميل", 194, 52, 12, WINE, "right");
+  drawInvoiceText(doc, safeText(order.customer_name), 194, 61, 10, INK, "right");
+  doc.setFont("helvetica", "normal");
+  doc.setFontSize(8);
+  doc.setTextColor(MUTED[0], MUTED[1], MUTED[2]);
+  doc.text(safeText(order.customer_email).slice(0, 58), 16, 75);
+  doc.text(safeText(order.customer_phone), 16, 81);
   const address = order.shipping_address || {};
   const addressLine = [address.address_line1, address.city, address.postal_code].map(safeText).filter(Boolean).join(", ");
-  page.drawText(addressLine.slice(0, 78), { x: 48, y: 618, size: 9, font: latin, color: MUTED });
+  drawInvoiceText(doc, addressLine.slice(0, 72), 194, 72, 8, MUTED, "right");
 
-  page.drawLine({ start: { x: 46, y: 594 }, end: { x: width - 46, y: 594 }, thickness: 0.8, color: LINE });
-  page.drawText("ITEM", { x: 48, y: 572, size: 8, font: bold, color: WINE });
-  page.drawText("COLOUR / SIZE", { x: 300, y: 572, size: 8, font: bold, color: WINE });
-  page.drawText("QTY", { x: 414, y: 572, size: 8, font: bold, color: WINE });
-  page.drawText("UNIT", { x: 447, y: 572, size: 8, font: bold, color: WINE });
-  page.drawText("TOTAL", { x: 510, y: 572, size: 8, font: bold, color: WINE });
-  page.drawLine({ start: { x: 46, y: 560 }, end: { x: width - 46, y: 560 }, thickness: 0.6, color: LINE });
+  doc.setDrawColor(LINE[0], LINE[1], LINE[2]);
+  doc.setLineWidth(0.3);
+  doc.line(16, 89, 194, 89);
+  doc.setFont("helvetica", "bold");
+  doc.setFontSize(7);
+  doc.setTextColor(WINE[0], WINE[1], WINE[2]);
+  doc.text("ITEM", 16, 99);
+  doc.text("COLOUR / SIZE", 105, 99);
+  doc.text("QTY", 150, 99);
+  doc.text("UNIT", 168, 99);
+  doc.text("TOTAL", 194, 99, { align: "right" });
+  doc.line(16, 102, 194, 102);
 
-  let y = 538;
-  for (const item of items.slice(0, 30)) {
-    drawInvoiceText(page, safeText(item.product_name).slice(0, 34), 295, y, 8, latin, arabic);
-    drawInvoiceText(page, safeText(item.color_name).slice(0, 14) + " / " + safeText(item.size), 405, y, 8, latin, arabic, MUTED);
-    page.drawText(String(item.quantity), { x: 414, y, size: 9, font: latin, color: INK });
-    page.drawText(money(item.unit_price, item.currency).slice(0, 14), { x: 447, y, size: 8, font: latin, color: INK });
-    page.drawText(money(item.line_total, item.currency).slice(0, 14), { x: 510, y, size: 8, font: bold, color: INK });
-    page.drawLine({ start: { x: 46, y: y - 7 }, end: { x: width - 46, y: y - 7 }, thickness: 0.35, color: LINE });
-    y -= 12;
+  let y = 109;
+  for (const item of items) {
+    drawInvoiceText(doc, safeText(item.product_name).slice(0, 34), 96, y, 7.5, INK, "right");
+    drawInvoiceText(doc, safeText(item.color_name).slice(0, 14), 140, y, 7, MUTED, "right");
+    doc.setFont("helvetica", "normal");
+    doc.setFontSize(7);
+    doc.setTextColor(MUTED[0], MUTED[1], MUTED[2]);
+    doc.text(safeText(item.size), 143, y);
+    doc.setTextColor(INK[0], INK[1], INK[2]);
+    doc.text(String(item.quantity), 150, y);
+    doc.text(money(item.unit_price, item.currency).slice(0, 14), 168, y);
+    doc.setFont("helvetica", "bold");
+    doc.text(money(item.line_total, item.currency).slice(0, 14), 194, y, { align: "right" });
+    doc.setDrawColor(LINE[0], LINE[1], LINE[2]);
+    doc.line(16, y + 2.5, 194, y + 2.5);
+    y += 4.5;
   }
 
-  const summaryY = Math.max(78, y - 18);
-  page.drawText("PRODUCT SUBTOTAL", { x: 340, y: summaryY, size: 9, font: latin, color: MUTED });
-  page.drawText(money(order.subtotal, order.currency), { x: 470, y: summaryY, size: 10, font: bold, color: INK });
-  page.drawText("SHIPPING", { x: 340, y: summaryY - 20, size: 9, font: latin, color: MUTED });
-  page.drawText("To be confirmed", { x: 470, y: summaryY - 20, size: 8, font: latin, color: MUTED });
-  page.drawLine({ start: { x: 330, y: summaryY - 30 }, end: { x: width - 46, y: summaryY - 30 }, thickness: 0.8, color: WINE });
-  page.drawText("AMOUNT FOR ITEMS", { x: 340, y: summaryY - 49, size: 9, font: bold, color: WINE });
-  page.drawText(money(order.total_amount, order.currency), { x: 465, y: summaryY - 50, size: 12, font: bold, color: WINE });
-  page.drawText("PAYMENT: CASH ON DELIVERY", { x: 48, y: 92, size: 8, font: bold, color: MUTED });
-  page.drawText("Shipping is not included. AYOO will confirm the delivery fee before dispatch.", { x: 48, y: 74, size: 7.5, font: latin, color: MUTED });
-  drawInvoiceText(page, "شكراً لاختياركم AYOO", 548, 45, 11, latin, arabic, WINE);
-  page.drawText("AYOO · A VISION IN FORM", { x: 48, y: 45, size: 7, font: latin, color: MUTED });
+  const summaryY = Math.max(136, y + 7);
+  doc.setFont("helvetica", "normal");
+  doc.setFontSize(8);
+  doc.setTextColor(MUTED[0], MUTED[1], MUTED[2]);
+  doc.text("PRODUCT SUBTOTAL", 125, summaryY);
+  doc.setFont("helvetica", "bold");
+  doc.setTextColor(INK[0], INK[1], INK[2]);
+  doc.text(money(order.subtotal, order.currency), 194, summaryY, { align: "right" });
+  doc.setFont("helvetica", "normal");
+  doc.setTextColor(MUTED[0], MUTED[1], MUTED[2]);
+  doc.text("SHIPPING", 125, summaryY + 7);
+  doc.text("To be confirmed", 194, summaryY + 7, { align: "right" });
+  doc.setDrawColor(WINE[0], WINE[1], WINE[2]);
+  doc.setLineWidth(0.4);
+  doc.line(120, summaryY + 11, 194, summaryY + 11);
+  doc.setFont("helvetica", "bold");
+  doc.setTextColor(WINE[0], WINE[1], WINE[2]);
+  doc.text("AMOUNT FOR ITEMS", 125, summaryY + 18);
+  doc.setFontSize(10);
+  doc.text(money(order.total_amount, order.currency), 194, summaryY + 18, { align: "right" });
 
-  pdf.setTitle("AYOO Invoice " + invoiceNumber);
-  pdf.setAuthor("AYOO");
-  pdf.setSubject("Order " + order.order_number);
-  return await pdf.save({ useObjectStreams: false });
+  doc.setFont("helvetica", "bold");
+  doc.setFontSize(7);
+  doc.setTextColor(MUTED[0], MUTED[1], MUTED[2]);
+  doc.text("PAYMENT: CASH ON DELIVERY", 16, 280);
+  doc.setFont("helvetica", "normal");
+  doc.text("Shipping is not included. AYOO will confirm the delivery fee before dispatch.", 16, 285);
+  drawInvoiceText(doc, "شكراً لاختياركم", 194, 291, 9, WINE, "right");
+  doc.setFont("helvetica", "bold");
+  doc.setFontSize(6);
+  doc.setTextColor(MUTED[0], MUTED[1], MUTED[2]);
+  doc.text("AYOO · A VISION IN FORM", 16, 291);
+
+  doc.setProperties({
+    title: "AYOO Invoice " + invoiceNumber,
+    subject: "Order " + order.order_number,
+    author: "AYOO",
+    creator: "AYOO Store",
+  });
+  return new Uint8Array(doc.output("arraybuffer"));
 }
 
 function bytesToBase64(bytes: Uint8Array): string {
