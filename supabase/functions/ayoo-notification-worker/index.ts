@@ -312,6 +312,7 @@ Deno.serve(async (req: Request) => {
       }
     }
     return Response.json({ ok: true, claimed: jobs.length, results });
-  } catch (error) {
+   } catch (error) {
     return Response.json({ ok: false, error: String(error).slice(0, 500) }, { status: 500 });
+  }
 });
