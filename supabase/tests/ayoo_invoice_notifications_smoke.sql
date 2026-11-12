@@ -1,0 +1,128 @@
+-- Run after applying 20261112090000_ayoo_invoice_notifications.sql.
+-- Entire test is rolled back; no order, stock reservation, or notification survives.
+begin;
+
+do $$
+declare
+  v_variant uuid;
+  v_order record;
+  v_original_order_id uuid;
+  v_key text := encode(gen_random_bytes(16), 'hex');
+  v_items jsonb;
+  v_job_id uuid;
+  v_invoice_count integer;
+  v_delivery_count integer;
+  v_opt_in boolean;
+  v_delivery_id uuid;
+  v_status_job_id uuid;
+  v_job_status text;
+  v_webhook_id text := 'ayoo-test-' || gen_random_uuid()::text;
+begin
+  select pv.id into v_variant
+  from public.product_variants pv
+  join public.products p on p.id = pv.product_id
+  where pv.active = true
+    and p.published = true
+    and coalesce(pv.stock_quantity,0) - coalesce(pv.reserved_quantity,0) > 0
+  order by p.sort_order nulls last, pv.size
+  limit 1;
+
+  if v_variant is null then
+    raise exception 'No in-stock test variant is available.';
+  end if;
+
+  v_items := jsonb_build_array(jsonb_build_object('variant_id', v_variant::text, 'quantity', 1));
+
+  select * into v_order
+  from public.ayoo_create_order_with_consent(
+    'AYOO Invoice Test',
+    'invoice-test@example.invalid',
+    '+905000000000',
+    'TR',
+    jsonb_build_object('address_line1','Test Street 1','city','Istanbul','postal_code','34000'),
+    'cash_on_delivery',
+    v_items,
+    v_key,
+    'Automated invoice outbox smoke test',
+    0,
+    true
+  );
+
+  if v_order.order_id is null then
+    raise exception 'Test checkout did not return an order.';
+  end if;
+
+  v_original_order_id := v_order.order_id;
+
+  -- A retry with the same idempotency key must not rewrite the original WhatsApp consent.
+  select * into v_order from public.ayoo_create_order_with_consent(
+    'AYOO Invoice Test',
+    'invoice-test@example.invalid',
+    '+905000000000',
+    'TR',
+    jsonb_build_object('address_line1','Test Street 1','city','Istanbul','postal_code','34000'),
+    'cash_on_delivery',
+    v_items,
+    v_key,
+    'Automated invoice outbox smoke test',
+    0,
+    false
+  );
+  if v_order.order_id is distinct from v_original_order_id then
+    raise exception 'An idempotent retry created a second order.';
+  end if;
+
+  select count(*) into v_invoice_count
+  from private.ayoo_invoice_records where order_id = v_original_order_id;
+
+  select count(*) into v_delivery_count
+  from private.ayoo_notification_jobs j
+  join private.ayoo_notification_deliveries d on d.job_id = j.id
+  where j.order_id = v_original_order_id and j.event_type = 'order_created';
+
+  select whatsapp_opt_in into v_opt_in from public.orders where id = v_original_order_id;
+
+  if v_opt_in is distinct from true then raise exception 'An idempotent retry changed the original WhatsApp consent.'; end if;
+
+  if v_invoice_count <> 1 then raise exception 'Expected one invoice record, got %', v_invoice_count; end if;
+  if v_delivery_count <> 2 then raise exception 'Expected email + WhatsApp deliveries, got %', v_delivery_count; end if;
+  update public.orders set order_status = 'confirmed' where id = v_original_order_id;
+
+  select count(*) into v_delivery_count
+  from private.ayoo_notification_jobs j
+  join private.ayoo_notification_deliveries d on d.job_id = j.id
+  where j.order_id = v_original_order_id and j.event_type = 'order_status';
+
+  if v_delivery_count <> 2 then raise exception 'Expected two status deliveries, got %', v_delivery_count; end if;
+
+  -- A late provider webhook must resolve an earlier unknown delivery and refresh its parent job.
+  select d.id, d.job_id into v_delivery_id, v_status_job_id
+  from private.ayoo_notification_deliveries d
+  join private.ayoo_notification_jobs j on j.id = d.job_id
+  where j.order_id = v_original_order_id
+    and j.event_type = 'order_status'
+    and d.channel = 'email';
+  if v_delivery_id is null or v_status_job_id is null then
+    raise exception 'Could not locate the email delivery for webhook reconciliation test.';
+  end if;
+
+  update private.ayoo_notification_deliveries
+  set status = 'unknown', provider_message_id = v_webhook_id, locked_at = null
+  where id = v_delivery_id;
+  update private.ayoo_notification_deliveries
+  set status = 'accepted', locked_at = null
+  where job_id = v_status_job_id and channel = 'whatsapp';
+  update private.ayoo_notification_jobs
+  set status = 'unknown', locked_at = null, completed_at = now()
+  where id = v_status_job_id;
+
+  perform public.ayoo_record_delivery_webhook('resend', v_webhook_id, 'delivered', null);
+  select status into v_job_status
+  from private.ayoo_notification_jobs where id = v_status_job_id;
+  if v_job_status is distinct from 'completed' then
+    raise exception 'Late delivery webhook did not resolve the parent job.';
+  end if;
+end;
+$$;
+
+rollback;
