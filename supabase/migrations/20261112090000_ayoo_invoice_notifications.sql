@@ -397,7 +397,7 @@ returns void
 language plpgsql
 security definer
 set search_path = private, pg_temp
-as $
+as $$
 declare
   v_provider text;
   v_message_id text;
@@ -435,7 +435,7 @@ begin
     end if;
   end if;
 end;
-$;
+$$;
 
 create or replace function public.ayoo_finish_notification_job(p_job_id uuid, p_error text default null)
 returns void
@@ -513,7 +513,7 @@ begin
   end if;
   return v_count;
 end;
-$;
+$$;
 
 revoke all on function public.ayoo_validate_worker_secret(text) from public, anon, authenticated;
 revoke all on function public.ayoo_claim_notification_jobs(integer) from public, anon, authenticated;
