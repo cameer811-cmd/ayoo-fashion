@@ -63,6 +63,19 @@ create table if not exists private.ayoo_notification_deliveries (
 create index if not exists ayoo_notification_deliveries_ready_idx
   on private.ayoo_notification_deliveries(status, available_at);
 
+create table if not exists private.ayoo_provider_webhook_events (
+  id uuid primary key default gen_random_uuid(),
+  provider text not null check (provider in ('resend','whatsapp')),
+  provider_message_id text not null,
+  provider_status text not null check (provider_status in ('accepted','delivered','failed')),
+  error_text text,
+  received_at timestamptz not null default now(),
+  unique (provider, provider_message_id, provider_status)
+);
+alter table private.ayoo_provider_webhook_events enable row level security;
+revoke all on private.ayoo_provider_webhook_events from public, anon, authenticated;
+grant all on private.ayoo_provider_webhook_events to service_role;
+
 create unique index if not exists ayoo_notification_provider_message_uidx
   on private.ayoo_notification_deliveries(provider, provider_message_id)
   where provider_message_id is not null;
@@ -371,7 +384,11 @@ returns void
 language plpgsql
 security definer
 set search_path = private, pg_temp
-as $$
+as $
+declare
+  v_provider text;
+  v_message_id text;
+  v_event record;
 begin
   if p_status not in ('accepted','delivered','failed','skipped','retry','unknown') then
     raise exception 'Invalid notification delivery status.';
@@ -386,9 +403,26 @@ begin
       sent_at = case when p_status in ('accepted','delivered') then coalesce(sent_at, now()) else sent_at end,
       locked_at = null,
       updated_at = now()
-  where id = p_delivery_id;
+  where id = p_delivery_id
+  returning provider, provider_message_id into v_provider, v_message_id;
+
+  -- A provider webhook can arrive before the worker saves the provider message ID.
+  if v_provider is not null and v_message_id is not null then
+    select * into v_event
+    from private.ayoo_provider_webhook_events
+    where provider = v_provider and provider_message_id = v_message_id
+    order by received_at desc
+    limit 1;
+    if found then
+      update private.ayoo_notification_deliveries
+      set status = v_event.provider_status, last_error = v_event.error_text, updated_at = now()
+      where id = p_delivery_id;
+      delete from private.ayoo_provider_webhook_events
+      where provider = v_provider and provider_message_id = v_message_id;
+    end if;
+  end if;
 end;
-$$;
+$;
 
 create or replace function public.ayoo_finish_notification_job(p_job_id uuid, p_error text default null)
 returns void
@@ -453,9 +487,14 @@ begin
   where provider = p_provider
     and provider_message_id = p_provider_message_id;
   get diagnostics v_count = row_count;
+  if v_count = 0 then
+    insert into private.ayoo_provider_webhook_events(provider, provider_message_id, provider_status, error_text)
+    values (p_provider, p_provider_message_id, p_status, p_error)
+    on conflict (provider, provider_message_id, provider_status) do nothing;
+  end if;
   return v_count;
 end;
-$$;
+$;
 
 revoke all on function public.ayoo_validate_worker_secret(text) from public, anon, authenticated;
 revoke all on function public.ayoo_claim_notification_jobs(integer) from public, anon, authenticated;
