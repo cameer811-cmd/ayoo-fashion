@@ -321,6 +321,18 @@ declare
   v_count integer;
 begin
   update private.ayoo_notification_deliveries d
+  set status = 'failed',
+      last_error = coalesce(d.last_error, 'Maximum delivery attempts reached'),
+      locked_at = null,
+      updated_at = now()
+  where d.id = p_delivery_id
+    and d.attempt_count >= 8
+    and (
+      (d.status in ('pending','retry') and d.available_at <= now())
+      or (d.status = 'processing' and d.locked_at < now() - interval '5 minutes')
+    );
+
+  update private.ayoo_notification_deliveries d
   set status = 'processing',
       locked_at = now(),
       attempt_count = d.attempt_count + 1,
@@ -328,8 +340,8 @@ begin
   where d.id = p_delivery_id
     and d.attempt_count < 8
     and (
-      d.status in ('pending','retry') and d.available_at <= now()
-      or d.status = 'processing' and d.locked_at < now() - interval '5 minutes'
+      (d.status in ('pending','retry') and d.available_at <= now())
+      or (d.status = 'processing' and d.locked_at < now() - interval '5 minutes')
     );
   get diagnostics v_count = row_count;
   return v_count = 1;
@@ -411,7 +423,7 @@ begin
     select * into v_event
     from private.ayoo_provider_webhook_events
     where provider = v_provider and provider_message_id = v_message_id
-    order by received_at desc
+    order by case provider_status when 'delivered' then 3 when 'failed' then 2 else 1 end desc, received_at desc
     limit 1;
     if found then
       update private.ayoo_notification_deliveries
@@ -481,8 +493,14 @@ begin
     raise exception 'Unsupported provider status.';
   end if;
   update private.ayoo_notification_deliveries
-  set status = p_status,
-      last_error = p_error,
+  set status = case
+        when status = 'delivered' then 'delivered'
+        when p_status = 'delivered' then 'delivered'
+        when status = 'failed' then 'failed'
+        when p_status = 'failed' then 'failed'
+        else 'accepted'
+      end,
+      last_error = case when p_status = 'failed' then p_error else last_error end,
       updated_at = now()
   where provider = p_provider
     and provider_message_id = p_provider_message_id;
