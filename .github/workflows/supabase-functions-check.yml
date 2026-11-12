@@ -1,0 +1,23 @@
+name: Supabase Edge Function checks
+
+on:
+  pull_request:
+    paths:
+      - "supabase/functions/**"
+      - "supabase/config.toml"
+  push:
+    branches:
+      - feature/ayoo-invoice-notifications
+
+jobs:
+  deno-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: denoland/setup-deno@v2
+        with:
+          deno-version: v2.x
+      - name: Type-check AYOO notification functions
+        run: |
+          deno check --no-lock supabase/functions/ayoo-notification-worker/index.ts
+          deno check --no-lock supabase/functions/ayoo-provider-webhooks/index.ts
