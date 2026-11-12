@@ -19,7 +19,7 @@ begin
   where pv.active = true
     and p.published = true
     and coalesce(pv.stock_quantity,0) - coalesce(pv.reserved_quantity,0) > 0
-  order by pv.created_at nulls last
+  order by p.sort_order nulls last, pv.size
   limit 1;
 
   if v_variant is null then
