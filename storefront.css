@@ -92,3 +92,52 @@ body.bag-open { overflow: hidden; }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; transition-duration: .01ms !important; }
 }
+
+/* Product photography remains the focus on small screens and in the viewer. */
+.product-gallery { min-width: 0; }
+.gallery-zoom { display: block; position: relative; width: 100%; border: 0; padding: 0; background: #eee4d7; cursor: zoom-in; }
+.gallery-zoom:disabled { cursor: default; }
+.gallery-zoom:disabled span { display: none; }
+.gallery-zoom span {
+  position: absolute;
+  inset-block-end: 14px;
+  inset-inline-end: 14px;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  font-size: 26px;
+  color: var(--ink);
+  background: var(--paper);
+}
+.thumbs { padding-block: 4px; overflow-x: auto; }
+.thumbs button { padding: 0; border: 2px solid transparent; flex: none; background: none; }
+.thumbs button[aria-pressed="true"] { border-color: var(--wine); }
+.thumbs button img { opacity: 1; }
+.image-dialog {
+  width: min(100%, 1120px);
+  max-width: 100%;
+  max-height: 100dvh;
+  padding: 0;
+  border: 0;
+  color: var(--ink);
+  background: var(--paper);
+}
+.image-dialog::backdrop { background: #211610ca; }
+.image-dialog img { width: 100%; height: calc(100dvh - 62px); object-fit: contain; background: #e4d8cb; }
+.image-toolbar { display: flex; align-items: center; justify-content: center; gap: 12px; min-height: 62px; }
+.image-toolbar button { min-width: 44px; min-height: 44px; font-size: 25px; background: transparent; border: 1px solid var(--line); color: var(--wine); }
+.image-toolbar button:disabled { opacity: .4; }
+.image-toolbar span { min-width: 54px; text-align: center; }
+body.image-open { overflow: hidden; }
+@media (max-width: 780px) {
+  .detail-layout { gap: 25px; }
+  .detail-info .buy-row {
+    position: sticky;
+    bottom: env(safe-area-inset-bottom, 0px);
+    z-index: 3;
+    padding-block: 10px;
+    background: var(--paper);
+  }
+}
+.clear-filters { border: 0; background: none; color: var(--wine); text-decoration: underline; padding: 12px 6px; }
